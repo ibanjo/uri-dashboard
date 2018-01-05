@@ -3,12 +3,12 @@ if ($('#vue-view-user').length) {
     const VueViewUser = new Vue({
         el: '#vue-view-user',
         data: {
-            ready: false,
+            ready: true,
             activeTab: 'registry',
-            user: window.user,
-            attachments: window.attachments,
+            user: DataFromBackend.user,
+            attachments: DataFromBackend.attachments,
             attachment_description: '',
-            mobility_statuses: window.mobilityStatuses,
+            mobility_statuses: DataFromBackend.mobilityStatuses,
             bankTableColumns: ['is_main', 'bank_name', 'iban', 'holder_name', 'holder_surname'],
             bankTableOptions: {
                 filterable: false,
@@ -143,9 +143,6 @@ if ($('#vue-view-user').length) {
             navigateToTab(navigateFunction, index) {
                 // TODO direct navigation between statuses not implemented
             }
-        },
-        mounted: function () {
-            this.ready = true;
         }
     });
 }

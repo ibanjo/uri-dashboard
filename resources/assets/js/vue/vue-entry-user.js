@@ -3,10 +3,10 @@ if ($('#vue-entry-user').length) {
     const VueEntryUser = new Vue({
         el: '#vue-entry-user',
         data: {
-            ready: false,
-            roles: window.roles,
-            departments: window.departments,
-            degree_courses: window.degreeCourses,
+            ready: true,
+            roles: DataFromBackend.roles,
+            departments: DataFromBackend.departments,
+            degree_courses: DataFromBackend.degreeCourses,
             user: {
                 registry: {
                     name: '',
@@ -56,9 +56,6 @@ if ($('#vue-entry-user').length) {
                         });
                     });
             }
-        },
-        mounted: function () {
-            this.ready = true;
         }
     });
 }

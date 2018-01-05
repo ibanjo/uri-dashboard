@@ -4,7 +4,7 @@ if ($('#vue-approve-users').length) {
         el: '#vue-approve-users',
         data: {
             activeTab: 'registry',
-            users: window.users,
+            users: DataFromBackend.users,
             nothingToBeDoneMessage: 'Tutti gli utenti sono stati approvati'
         },
         methods: {
@@ -13,7 +13,7 @@ if ($('#vue-approve-users').length) {
                 axios.put('/admin/approve', {id: id})
                     .then(response => {
                         this.users = this.users.filter((us) => {return us.id !== id});
-                        this.$messsage({
+                        this.$message({
                             type: response.data.status,
                             message: response.data.message
                         });
