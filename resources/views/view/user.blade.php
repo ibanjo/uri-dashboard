@@ -75,7 +75,7 @@
                                     </el-col>
                                 </el-row>
 
-                                <el-row>
+                                <el-row type="flex" justify="space-between" align="middle">
                                     <el-col :span="8">
                                         <el-upload
                                                 action="/file/attach"
@@ -87,6 +87,7 @@
                                                 :multiple="false"
                                                 :auto-upload="false"
                                                 :file-list="attachments"
+                                                :on-change="onAttachmentSelected"
                                                 :on-success="onAttachmentUploaded">
                                             <el-button slot="trigger" size="small" type="primary">Scegli allegato
                                             </el-button>
@@ -96,7 +97,10 @@
                                             <div slot="tip" class="el-upload__tip">Massima dimensione: 10Mb</div>
                                         </el-upload>
                                     </el-col>
-                                    <el-col :span="16">
+                                    <el-col :span="8">
+                                        <i :class="pre_upload_icon"></i>
+                                    </el-col>
+                                    <el-col :span="8">
                                         <el-input placeholder="Descrizione dell'allegato (opzionale)"
                                                   v-model="attachment_description"></el-input>
                                     </el-col>

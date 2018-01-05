@@ -33,6 +33,11 @@ if ($('#vue-view-user').length) {
             },
         },
         computed: {
+            pre_upload_icon: function () {
+                return {
+                    'fa fa-fw fa-file-pdf-o': true
+                }
+            },
             attachment_additions: function () {
                 return {
                     data: {
@@ -74,6 +79,9 @@ if ($('#vue-view-user').length) {
             uploadAttachment: function () {
                 this.$refs.attachmentUploader.submit();
             },
+            onAttachmentSelected: function (file, fileList) {
+                console.log('changed');
+            },
             onAttachmentUploaded: function (response, file, fileList) {
                 this.$message({
                     type: response.status,
@@ -87,7 +95,13 @@ if ($('#vue-view-user').length) {
                         this.downloadAttachment(file);
                         break;
                     case "Elimina":
-                        this.removeAttachment(file);
+                        this.$confirm('Eliminare l\'allegato?', 'Info', {
+                            confirmButtonText: 'OK',
+                            cancelButtonText: 'Annulla',
+                            type: 'info'
+                        }).then(() => {
+                            this.removeAttachment(file);
+                        }).catch(()=>{});
                         break;
                     default:
                         break;
@@ -107,7 +121,21 @@ if ($('#vue-view-user').length) {
                     });
             },
             removeAttachment: function (file) {
-                // TODO implement attachment removal
+                axios.delete('/file/delete/' + file.id)
+                    .then(response => {
+                        this.attachments = this.attachments.filter(att => {return att.id !== file.id});
+                        this.$message({
+                            type: response.data.status,
+                            message: response.data.message
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.$message({
+                            type: error.response.data.status,
+                            message: error.response.data.message
+                        });
+                    })
             },
             mobilityNextStep() {
                 this.$confirm('Portare la mobilità al prossimo stato?', 'Info', {
@@ -126,11 +154,11 @@ if ($('#vue-view-user').length) {
                                 message: response.data.message
                             });
                         })
-                        .catch((response) => {
-                            console.log(response);
+                        .catch(error => {
+                            console.log(error);
                             this.$message({
-                                type: response.data.status,
-                                message: response.data.message
+                                type: error.response.data.status,
+                                message: error.response.data.message
                             });
                         });
                 }).catch(() => {
