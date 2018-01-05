@@ -1,0 +1,1 @@
+{{-- Empty view used to directly pass data from controllers to VueJS --}}
