@@ -7,6 +7,7 @@ if ($('#vue-view-user').length) {
             activeTab: 'registry',
             user: DataFromBackend.user,
             attachments: DataFromBackend.attachments,
+            attachment_buffer: [],
             attachment_description: '',
             mobility_statuses: DataFromBackend.mobilityStatuses,
             bankTableColumns: ['is_main', 'bank_name', 'iban', 'holder_name', 'holder_surname'],
@@ -33,11 +34,6 @@ if ($('#vue-view-user').length) {
             },
         },
         computed: {
-            pre_upload_icon: function () {
-                return {
-                    'fa fa-fw fa-file-pdf-o': true
-                }
-            },
             attachment_additions: function () {
                 return {
                     data: {
@@ -76,11 +72,13 @@ if ($('#vue-view-user').length) {
                     });
                 this.user.active_bank_account_id = e.row.id;
             },
-            uploadAttachment: function () {
-                this.$refs.attachmentUploader.submit();
+            onAttachmentSelected: function () {
+                this.attachment_buffer = this.$refs.attachmentUploader.uploadFiles;
             },
-            onAttachmentSelected: function (file, fileList) {
-                console.log('changed');
+            uploadAttachment: function () {
+                let fileList = this.$refs.attachmentUploader.uploadFiles;
+                this.$refs.attachmentUploader.uploadFiles = [fileList[fileList.length - 1]];
+                this.$refs.attachmentUploader.submit();
             },
             onAttachmentUploaded: function (response, file, fileList) {
                 this.$message({
@@ -88,9 +86,11 @@ if ($('#vue-view-user').length) {
                     message: response.message
                 });
                 this.attachments.push(response.file);
+                this.$refs.attachmentUploader.uploadFiles = [];
+                this.attachment_description = '';
             },
             onAttachmentClicked: function (file, column, cell, event) {
-                switch(column.label) {
+                switch (column.label) {
                     case "Download":
                         this.downloadAttachment(file);
                         break;
@@ -101,7 +101,8 @@ if ($('#vue-view-user').length) {
                             type: 'info'
                         }).then(() => {
                             this.removeAttachment(file);
-                        }).catch(()=>{});
+                        }).catch(() => {
+                        });
                         break;
                     default:
                         break;
@@ -123,7 +124,9 @@ if ($('#vue-view-user').length) {
             removeAttachment: function (file) {
                 axios.delete('/file/delete/' + file.id)
                     .then(response => {
-                        this.attachments = this.attachments.filter(att => {return att.id !== file.id});
+                        this.attachments = this.attachments.filter(att => {
+                            return att.id !== file.id
+                        });
                         this.$message({
                             type: response.data.status,
                             message: response.data.message
@@ -162,14 +165,20 @@ if ($('#vue-view-user').length) {
                             });
                         });
                 }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Avanzamento annullato'
-                    });
+                    // this.$message({
+                    //     type: 'info',
+                    //     message: 'Avanzamento annullato'
+                    // });
                 });
             },
             navigateToTab(navigateFunction, index) {
                 // TODO direct navigation between statuses not implemented
+            }
+        },
+        components: {
+            'upload-preview': {
+                template: `<div><i class="fa fa-fw fa-file"></i>In caricamento: {{ name }}</div>`,
+                props: ['name', 'type']
             }
         }
     });

@@ -12,11 +12,15 @@ require('./sidebar');
  * Requiring the big ones
  */
 window.Vue = require('vue');
-window.IBAN = require('iban');
 import VueTables from 'vue-tables-2';
 import VueFormWizard from 'vue-form-wizard';
 import ElementUI from 'element-ui';
 import elementLocale from 'element-ui/lib/locale/lang/it';
+
+/**
+ * Requiring minor plugins
+ */
+window.IBAN = require('iban');
 
 /**
  * Injecting Vue dependencies
@@ -25,6 +29,7 @@ window.Vue.use(VueTables.ClientTable);
 Event = VueTables.Event;
 window.Vue.use(VueFormWizard);
 window.Vue.use(ElementUI, {locale: elementLocale});
+window.Vue.use(require('vue-moment'));
 
 /**
  * Requiring Vue VMs

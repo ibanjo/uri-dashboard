@@ -40,10 +40,7 @@
                 </li>
             @endif
             <li>
-                <a href="#"><i class="fa fa-fw fa-bank"></i> Page four</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-dropbox"></i> Page 5</a>
+                <a href="#"><i class="fa fa-fw fa-bank"></i> Altro...</a>
             </li>
             <li>
                 <a href="#" onclick="event.preventDefault();

@@ -7,13 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\BankAccount
  *
- * @property mixed id
- * @property integer user_id
- * @property string iban
- * @property string holder_name
- * @property string holder_middle_name
- * @property string holder_surname
- * @property string bank_name
  * @property-read \App\User $user
  * @mixin \Eloquent
  * @property int $id

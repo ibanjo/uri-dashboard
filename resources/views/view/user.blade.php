@@ -86,7 +86,6 @@
                                                 :show-file-list="false"
                                                 :multiple="false"
                                                 :auto-upload="false"
-                                                :file-list="attachments"
                                                 :on-change="onAttachmentSelected"
                                                 :on-success="onAttachmentUploaded">
                                             <el-button slot="trigger" size="small" type="primary">Scegli allegato
@@ -98,7 +97,8 @@
                                         </el-upload>
                                     </el-col>
                                     <el-col :span="8">
-                                        <i :class="pre_upload_icon"></i>
+                                        <upload-preview v-if="attachment_buffer.length > 0"
+                                                        :name="attachment_buffer[0].name"/>
                                     </el-col>
                                     <el-col :span="8">
                                         <el-input placeholder="Descrizione dell'allegato (opzionale)"
@@ -114,16 +114,17 @@
                                             </template>
                                         </el-table-column>
 
-                                        <el-table-column label="Nome">
-                                            <template slot-scope="scope">
-                                                @{{ scope.row.name }}
-                                            </template>
+                                        <el-table-column label="Nome" prop="name" sortable>
                                         </el-table-column>
 
-                                        <el-table-column label="Descrizione">
-                                            <template slot-scope="scope">
-                                                @{{ scope.row.description }}
-                                            </template>
+                                        <el-table-column label="Descrizione" prop="description" sortable>
+                                        </el-table-column>
+
+                                        <el-table-column label="Data" prop="created_at" sortable>
+                                            {{--<template slot-scope="scope">--}}
+                                                {{--@{{ scope.row.created_at | moment('dd/mm/YYY, hh:mm') }}--}}
+                                            {{--</template>--}}
+                                            {{-- TODO integrate momentJs in webpack to format dates --}}
                                         </el-table-column>
 
                                         <el-table-column label="Elimina">
