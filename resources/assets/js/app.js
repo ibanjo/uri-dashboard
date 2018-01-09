@@ -21,6 +21,8 @@ import elementLocale from 'element-ui/lib/locale/lang/it';
  * Importing custom components
  */
 import UserSummary from './components/UserSummary';
+import MobilityTracker from './components/MobilityTracker';
+import AttachmentManager from './components/AttachmentManager';
 
 /**
  * Requiring minor plugins
@@ -35,7 +37,10 @@ Event = VueTables.Event;
 window.Vue.use(VueFormWizard);
 window.Vue.use(ElementUI, {locale: elementLocale});
 window.Vue.use(require('vue-moment'));
+
 window.Vue.component('user-summary', UserSummary);
+window.Vue.component('mobility-tracker', MobilityTracker);
+window.Vue.component('attachment-manager', AttachmentManager);
 
 /**
  * Requiring Vue VMs

@@ -1,6 +1,9 @@
 <template>
-    <el-collapse v-model="active_tab" accordion>
-        <el-collapse-item title="Dati anagrafici" name="registry">
+    <el-collapse v-model="active_tab">
+        <el-collapse-item name="registry">
+            <template slot="title">
+                <p><i class="fa fa-fw fa-user"></i> Dati anagrafici</p>
+            </template>
             <dl>
                 <dt>Nome</dt>
                 <dd>{{ user.name }}</dd>
@@ -18,6 +21,9 @@
         </el-collapse-item>
 
         <el-collapse-item title="Dati accademici" name="academic">
+            <template slot="title">
+                <p><i class="fa fa-fw fa-graduation-cap"></i> Dati accademici</p>
+            </template>
             <dt>Ruolo</dt>
             <dd>{{ user.role.description }}</dd>
             <dt>Dipartimento</dt>
@@ -31,7 +37,10 @@
             <dd>{{ user.degree_course.name_ita }}</dd>
         </el-collapse-item>
 
-        <el-collapse-item title="Conti bancari registrati" name="bank">
+        <el-collapse-item title="Conti bancari" name="bank">
+            <template slot="title">
+                <p><i class="fa fa-fw fa-bank"></i> Conti bancari</p>
+            </template>
             <p v-if="user.bank_accounts.length === 0">Nessun conto associato all'utente</p>
             <ul v-else>
                 <li v-for="acc in user.bank_accounts">{{ acc.bank_name }}</li>
@@ -45,7 +54,7 @@
         name: 'user-summary',
         data: function () {
             return {
-                active_tab: 'registry'
+                active_tab: ''
             }
         },
         props: ['user']
