@@ -3,9 +3,9 @@ if ($('#vue-entry-mobility').length) {
     const VueEntryUser = new Vue({
         el: '#vue-entry-mobility',
         data: {
-            ready: false,
+            ready: true,
             activeTab: 'registry',
-            user: window.user,
+            user: DataFromBackend.user,
             mobility: {
                 university_branch_id: '',
                 semester_id: 1,
@@ -14,9 +14,9 @@ if ($('#vue-entry-mobility').length) {
                 estimated_cfu_exams: 0,
                 estimated_cfu_thesis: 0
             },
-            countries: window.countries,
-            semesters: window.semesters,
-            university_branches: window.university_branches
+            countries: DataFromBackend.countries,
+            semesters: DataFromBackend.semesters,
+            university_branches: DataFromBackend.university_branches
         },
         computed: {
             // TODO implement automated expected days calculation
@@ -43,9 +43,6 @@ if ($('#vue-entry-mobility').length) {
             onCancel: function () {
                 window.location = '/view/users/' + this.user.id;
             }
-        },
-        mounted: function () {
-            this.ready = true;
         }
     });
 }

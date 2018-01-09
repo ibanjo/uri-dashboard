@@ -35,6 +35,7 @@ class CreateMobilitiesTable extends Migration
             $table->unsignedSmallInteger('estimated_cfu_exams');
             $table->unsignedSmallInteger('estimated_cfu_thesis');
 
+            $table->string('contract_number')->nullable();
             $table->boolean('granted')->nullable();
 
             // Transcript data

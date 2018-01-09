@@ -12,11 +12,22 @@ require('./sidebar');
  * Requiring the big ones
  */
 window.Vue = require('vue');
-window.IBAN = require('iban');
 import VueTables from 'vue-tables-2';
 import VueFormWizard from 'vue-form-wizard';
 import ElementUI from 'element-ui';
 import elementLocale from 'element-ui/lib/locale/lang/it';
+
+/**
+ * Importing custom components
+ */
+import UserSummary from './components/UserSummary';
+import MobilityTracker from './components/MobilityTracker';
+import AttachmentManager from './components/AttachmentManager';
+
+/**
+ * Requiring minor plugins
+ */
+window.IBAN = require('iban');
 
 /**
  * Injecting Vue dependencies
@@ -25,6 +36,11 @@ window.Vue.use(VueTables.ClientTable);
 Event = VueTables.Event;
 window.Vue.use(VueFormWizard);
 window.Vue.use(ElementUI, {locale: elementLocale});
+window.Vue.use(require('vue-moment'));
+
+window.Vue.component('user-summary', UserSummary);
+window.Vue.component('mobility-tracker', MobilityTracker);
+window.Vue.component('attachment-manager', AttachmentManager);
 
 /**
  * Requiring Vue VMs

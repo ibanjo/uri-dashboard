@@ -27,7 +27,7 @@ class CreateDegreeCoursesTable extends Migration
             $table->foreign('university_branch_id')->references('id')->on('university_branches');
 
             $table->integer('degree_course_type_id')->unsigned();
-            $table->foreign('degree_course_type_id')->references('id')->on('course_types');
+            $table->foreign('degree_course_type_id')->references('id')->on('degree_course_types');
         });
     }
 
