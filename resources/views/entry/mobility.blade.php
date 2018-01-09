@@ -38,7 +38,7 @@
                                 </el-form-item>
 
                                 <el-form-item label="Semestre">
-                                    <el-select v-model="mobility.semester_id" placeholder="Ruolo">
+                                    <el-select v-model="mobility.semester_id" placeholder="Semestre">
                                         <el-option
                                                 v-for="semester in semesters"
                                                 :key="semester.id"

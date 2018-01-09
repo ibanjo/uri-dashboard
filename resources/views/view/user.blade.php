@@ -13,11 +13,6 @@
                     <h2>Dettagli su @{{ full_name }}</h2>
                 </el-col>
 
-                <el-col :span="24" align="center" v-if="!ready">
-                    <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw"></i>
-                    <span class="sr-only">Loading...</span>
-                </el-col>
-
                 <el-row>
                     <el-col :span="24" v-if="ready">
                         <div class="panel" :class="{'panel-info': has_mobilities, 'panel-default': !has_mobilities}">
@@ -35,25 +30,69 @@
                                                 <el-form :inline="true">
                                                     {{-- FIXME only one mobility can be active at a time --}}
                                                     <el-form-item label="Sede estera:">
-                                                        @{{ user.mobilities[0].university_branch.name }}
+                                                        <el-select v-model="user.mobilities[0].university_branch_id"
+                                                                   placeholder="Sede estera" :disabled="!editMobility"
+                                                                   :style="university_branch_style" filterable>
+                                                            <el-option
+                                                                    v-for="branch in university_branches"
+                                                                    :key="branch.id"
+                                                                    :label="branch.name"
+                                                                    :value="branch.id">
+                                                            </el-option>
+                                                        </el-select>
                                                     </el-form-item>
                                                     <el-form-item label="CFU previsti da esami:">
-                                                        @{{ user.mobilities[0].estimated_cfu_exams }}
+                                                        <el-input-number
+                                                                v-model="user.mobilities[0].estimated_cfu_exams"
+                                                                :disabled="!editMobility" controls-position="right"
+                                                                :min="0" style="width: 100px"></el-input-number>
                                                     </el-form-item>
                                                     <el-form-item label="CFU previsti da tesi:">
-                                                        @{{ user.mobilities[0].estimated_cfu_thesis }}
+                                                        <el-input-number
+                                                                v-model="user.mobilities[0].estimated_cfu_thesis"
+                                                                :disabled="!editMobility" controls-position="right"
+                                                                :min="0" style="width: 100px"></el-input-number>
                                                     </el-form-item>
                                                     <br>
                                                     <el-form-item label="Semestre:">
-                                                        @{{ user.mobilities[0].semester.name_ita }}
+                                                        {{-- TODO change to select as in mobility entry --}}
+                                                        <el-select v-model="user.mobilities[0].semester_id"
+                                                                   placeholder="Semestre" :disabled="!editMobility"
+                                                                   :style="semester_style">
+                                                            <el-option
+                                                                    v-for="semester in semesters"
+                                                                    :key="semester.id"
+                                                                    :label="semester.name_ita"
+                                                                    :value="semester.id">
+                                                            </el-option>
+                                                        </el-select>
                                                     </el-form-item>
                                                     <el-form-item label="Inizio contratto:">
-                                                        @{{ user.mobilities[0].estimated_in }}
+                                                        <el-date-picker
+                                                                v-model="user.mobilities[0].estimated_in"
+                                                                type="date" :disabled="!editMobility"
+                                                                format="dd-MM-yyyy"
+                                                                placeholder="Inizio contratto">
+                                                        </el-date-picker>
                                                     </el-form-item>
                                                     <el-form-item label="Fine contratto:">
-                                                        @{{ user.mobilities[0].estimated_out }}
+                                                        <el-date-picker
+                                                                v-model="user.mobilities[0].estimated_out"
+                                                                type="date" :disabled="!editMobility"
+                                                                format="dd-MM-yyyy"
+                                                                placeholder="Fine contratto">
+                                                        </el-date-picker>
                                                     </el-form-item>
                                                 </el-form>
+                                                <el-button type="primary" @click="editMobility = !editMobility">
+                                                    Modifica
+                                                </el-button>
+                                                <el-button type="success" @click="">
+                                                    Salva
+                                                </el-button>
+                                                <el-button type="warning" @click="">
+                                                    Ripristina
+                                                </el-button>
                                             </div>
                                         </el-card>
                                     </el-col>
@@ -122,7 +161,7 @@
 
                                         <el-table-column label="Data" prop="created_at" sortable>
                                             {{--<template slot-scope="scope">--}}
-                                                {{--@{{ scope.row.created_at | moment('dd/mm/YYY, hh:mm') }}--}}
+                                            {{--@{{ scope.row.created_at | moment('dd/mm/YYY, hh:mm') }}--}}
                                             {{--</template>--}}
                                             {{-- TODO integrate momentJs in webpack to format dates --}}
                                         </el-table-column>
@@ -155,41 +194,10 @@
                     <el-col :span="8" v-if="ready">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4>Dati anagrafici</h4>
+                                <h4>Riepilogo utente</h4>
                             </div>
                             <div class="panel-body">
-                                <el-collapse v-model="activeTab" accordion>
-                                    <el-collapse-item title="Dati anagrafici" name="registry">
-                                        <dl>
-                                            <dt>Nome</dt>
-                                            <dd>@{{ user.name }}</dd>
-                                            <dt>Secondo nome</dt>
-                                            <dd>@{{ user.middle_name }}</dd>
-                                            <dt>Cognome</dt>
-                                            <dd>@{{ user.surname }}</dd>
-                                            <dt>Codice fiscale</dt>
-                                            <dd>@{{ user.fiscal_code }}</dd>
-                                            <dt>Email</dt>
-                                            <dd>@{{ user.email }}</dd>
-                                            <dt>Telefono</dt>
-                                            <dd>@{{ user.telephone }}</dd>
-                                        </dl>
-                                    </el-collapse-item>
-
-                                    <el-collapse-item title="Dati accademici" name="academic">
-                                        <dt>Ruolo</dt>
-                                        <dd>@{{ user.role.description }}</dd>
-                                        <dt>Dipartimento</dt>
-                                        <dd>@{{ user.department.name }}</dd>
-                                        {{-- TODO handle multiple register numbers --}}
-                                        <dt>Numero di matricola</dt>
-                                        <dd v-for="reg in user.registers">@{{ reg.number }}</dd>
-                                        <dt>Tipo corso di laurea</dt>
-                                        <dd>@{{ user.degree_course.degree_course_type.name_ita }}</dd>
-                                        <dt>Corso di laurea</dt>
-                                        <dd>@{{ user.degree_course.name_ita }}</dd>
-                                    </el-collapse-item>
-                                </el-collapse>
+                                <user-summary :user="user"></user-summary>
                             </div>
                         </div>
                     </el-col>

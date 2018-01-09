@@ -18,6 +18,11 @@ import ElementUI from 'element-ui';
 import elementLocale from 'element-ui/lib/locale/lang/it';
 
 /**
+ * Importing custom components
+ */
+import UserSummary from './components/UserSummary';
+
+/**
  * Requiring minor plugins
  */
 window.IBAN = require('iban');
@@ -30,6 +35,7 @@ Event = VueTables.Event;
 window.Vue.use(VueFormWizard);
 window.Vue.use(ElementUI, {locale: elementLocale});
 window.Vue.use(require('vue-moment'));
+window.Vue.component('user-summary', UserSummary);
 
 /**
  * Requiring Vue VMs

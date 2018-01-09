@@ -4,12 +4,14 @@ if ($('#vue-view-user').length) {
         el: '#vue-view-user',
         data: {
             ready: true,
-            activeTab: 'registry',
+            editMobility: false,
             user: DataFromBackend.user,
             attachments: DataFromBackend.attachments,
             attachment_buffer: [],
             attachment_description: '',
-            mobility_statuses: DataFromBackend.mobilityStatuses,
+            mobility_statuses: DataFromBackend.mobility_statuses,
+            semesters: DataFromBackend.semesters,
+            university_branches: DataFromBackend.university_branches,
             bankTableColumns: ['is_main', 'bank_name', 'iban', 'holder_name', 'holder_surname'],
             bankTableOptions: {
                 filterable: false,
@@ -34,6 +36,19 @@ if ($('#vue-view-user').length) {
             },
         },
         computed: {
+            university_branch_style: function () {
+                let id = this.user.mobilities[0].university_branch_id,
+                    branch = this.university_branches.find(un => {return un.id === id});
+                return {
+                    'width': 20 + 8*branch.name.length + 'px'
+                }
+            },
+            semester_style: function () {
+                return {
+                    // FIXME seems not to have any effect
+                    'width': '50 px'
+                }
+            },
             attachment_additions: function () {
                 return {
                     data: {
@@ -165,10 +180,6 @@ if ($('#vue-view-user').length) {
                             });
                         });
                 }).catch(() => {
-                    // this.$message({
-                    //     type: 'info',
-                    //     message: 'Avanzamento annullato'
-                    // });
                 });
             },
             navigateToTab(navigateFunction, index) {

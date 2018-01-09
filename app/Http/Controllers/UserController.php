@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Attachment;
 use App\MobilityStatus;
 use App\Role;
+use App\Semester;
+use App\UniversityBranch;
 use Illuminate\Http\Request;
 use JavaScript;
 use App\User;
@@ -46,7 +48,9 @@ class UserController extends Controller
                 'mobilities.universityBranch.country',
                 'bank_accounts'])->find($id),
             'attachments' => is_null($active_mobility) ? null : Attachment::where('mobility_id', $active_mobility->id)->get(),
-            'mobilityStatuses' => MobilityStatus::all()
+            'mobility_statuses' => MobilityStatus::all(),
+            'semesters' => Semester::all(),
+            'university_branches' => UniversityBranch::all()
         ]);
         return View::make('view.user', ['user_id' => $id]);
     }
