@@ -43,13 +43,4 @@ class FileController extends Controller
         $file = Attachment::find($id);
         return response()->download(storage_path('app/'.$file->path), $file->name);
     }
-
-    public function deleteAttachment($id)
-    {
-        Attachment::destroy($id);
-        return response([
-            'status' => 'success',
-            'message' => 'Allegato eliminato correttamente'
-        ], 200);
-    }
 }
