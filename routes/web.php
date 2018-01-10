@@ -71,7 +71,6 @@ Route::prefix('file')->group(function() {
         Route::post('attach', 'FileController@attachFile');
         Route::post('retrieve', 'FileController@retrieveAttachment')->name('file.retrieve');
         Route::get('retrieve/{name}', 'FileController@downloadAttachment')->name('file.downloadattachment');
-        Route::delete('delete/{id}', 'FileController@deleteAttachment')->name('file.deleteattachment');
     });
 });
 

@@ -132,9 +132,6 @@ class RegisterController extends Controller
                     $message = 'Utente registrato correttamente';
                 }
             }
-        } else {
-            $status = 'success';
-            $message = 'Utente registrato correttamente';
         }
 
         // Create a register record and associate the new user

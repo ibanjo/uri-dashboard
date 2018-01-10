@@ -3,58 +3,10 @@ if ($('#vue-entry-user').length) {
     const VueEntryUser = new Vue({
         el: '#vue-entry-user',
         data: {
-            ready: true,
-            recapTab: 'registry',
-            roles: DataFromBackend.roles,
-            departments: DataFromBackend.departments,
-            degree_courses: DataFromBackend.degreeCourses,
-            rules: {
-                registry: {
-                    name: [
-                        {required: true, message: 'Il nome è richiesto', trigger: 'blur'}
-                    ],
-                    surname: [
-                        {required: true, message: 'Il cognome è richiesto', trigger: 'blur'}
-                    ],
-                    fiscal_code: [
-                        {required: true, message: 'Il codice fiscale è richiesto', trigger: 'blur'},
-                        {
-                            validator: (rule, value, callback) => {
-                                if (!(/^(?:[B-DF-HJ-NP-TV-Z](?:[AEIOU]{2}|[AEIOU]X)|[AEIOU]{2}X|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[1256LMRS][\dLMNP-V])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[\dLMNP-V][1-9MNP-V]|[1-9MNP-V][0L]))[A-Z]$/i).test(value)) {
-                                    callback(new Error('Il codice fiscale non è valido'))
-                                } else
-                                    callback();
-                            },
-                            trigger: 'blur'
-                        }
-                    ],
-                    email: [
-                        {required: true, message: 'Inserire un indirizzo email', trigger: 'blur'},
-                        {type: 'email', message: 'Inserire un indirizzo email valido', trigger: 'blur'}
-                    ],
-                    password: [
-                        {required: true, message: 'Inserire una password', trigger: 'blur'}
-                    ],
-                    password_confirm: [
-                        {required: true, message: 'Ripetere la password', trigger: 'blur'},
-                        {
-                            validator: (rule, value, callback) => {
-                                // TODO actually match passwords
-                                callback();
-                            },
-                            trigger: 'blur'
-                        }
-                    ]
-                },
-                academic: {
-                    candidate_role_id: [
-                        {required: true, message: 'Scegliere un ruolo', trigger: 'blur'}
-                    ],
-                    degree_course_id: [
-                        {required: true, message: 'Scegliere il corso di laurea di afferenza', trigger: 'blur'}
-                    ]
-                }
-            },
+            ready: false,
+            roles: window.roles,
+            departments: window.departments,
+            degree_courses: window.degreeCourses,
             user: {
                 registry: {
                     name: '',
@@ -104,6 +56,9 @@ if ($('#vue-entry-user').length) {
                         });
                     });
             }
+        },
+        mounted: function () {
+            this.ready = true;
         }
     });
 }

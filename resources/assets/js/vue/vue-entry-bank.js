@@ -3,9 +3,9 @@ if ($('#vue-entry-bank').length) {
     const VueEntryBank = new Vue({
         el: '#vue-entry-bank',
         data: {
-            ready: true,
+            ready: false,
             activeTab: 'registry',
-            user: DataFromBackend.user,
+            user: {},
             rules: {
                 bank_name: [
                     {required: true, message: 'Inserisci il nome della banca', trigger: 'blur'}
@@ -58,6 +58,12 @@ if ($('#vue-entry-bank').length) {
             onCancel: function () {
                 window.location = '/view/users/' + this.user.id;
             }
+        },
+        created: function () {
+            this.user = window.user;
+        },
+        mounted: function () {
+            this.ready = true;
         }
     });
 }

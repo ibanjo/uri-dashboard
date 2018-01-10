@@ -11,32 +11,32 @@
             <form-wizard title="Registrazione nuovo utente" subtitle="Inserisci i tuoi dati" @on-complete="registerUser"
                          next-button-text="Avanti" back-button-text="Indietro" finish-button-text="Invia">
                 <tab-content title="Dati Anagrafici">
-                    <el-form :model="user.registry" :rules="rules.registry" label-width="200px">
+                    <el-form :model="user.registry" ref="userRegistryForm" status-icon>
                         {{-- TODO profile picture upload and form validation --}}
-                        <el-form-item label="Nome" prop="name">
+                        <el-form-item label="Nome">
                             <el-input v-model="user.registry.name" placeholder="Nome"/>
                         </el-form-item>
                         <el-form-item label="Secondo nome">
                             <el-input v-model="user.registry.middle_name" placeholder="Secondo nome"/>
                         </el-form-item>
-                        <el-form-item label="Cognome" prop="surname">
+                        <el-form-item label="Cognome">
                             <el-input v-model="user.registry.surname" placeholder="Cognome"/>
                         </el-form-item>
-                        <el-form-item label="Codice fiscale" prop="fiscal_code">
+                        <el-form-item label="Codice fiscale">
                             <el-input v-model="user.registry.fiscal_code" placeholder="Codice fiscale"/>
                         </el-form-item>
-                        <el-form-item label="Email" prop="email">
+                        <el-form-item label="Email">
                             <el-input v-model="user.registry.email" placeholder="Email"/>
                         </el-form-item>
                         <el-form-item label="Telefono">
                             <el-input v-model="user.registry.telephone" placeholder="Telefono"/>
                         </el-form-item>
 
-                        <el-form-item label="Password" prop="password">
+                        <el-form-item label="Password" prop="pass">
                             <el-input type="password" v-model="user.registry.password"
                                       auto-complete="off"/>
                         </el-form-item>
-                        <el-form-item label="Conferma password" prop="password_confirm">
+                        <el-form-item label="Conferma password" prop="checkPass">
                             <el-input type="password" v-model="user.registry.password_confirm"
                                       auto-complete="off"/>
                         </el-form-item>
@@ -44,8 +44,8 @@
                 </tab-content>
 
                 <tab-content title="Dati Accademici">
-                    <el-form :model="user.academic" :rules="rules.academic" label-width="200px">
-                        <el-form-item label="Ruolo" prop="candidate_role_id">
+                    <el-form :model="user.academic">
+                        <el-form-item label="Ruolo">
                             <el-select v-model="user.academic.candidate_role_id" placeholder="Ruolo">
                                 <el-option
                                         v-for="role in roles"
@@ -56,7 +56,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="Corso di Laurea" prop="degree_course_id">
+                        <el-form-item label="Corso di Laurea">
                             <el-select v-model="user.academic.degree_course_id" filterable
                                        placeholder="Corso di laurea">
                                 <el-option
@@ -91,7 +91,7 @@
                 </tab-content>
 
                 <tab-content title="Dati Bancari">
-                    <el-form :model="user.bank" label-width="200px">
+                    <el-form :model="user.bank">
                         <el-form-item>
                             <el-checkbox v-model="user.bank.has_bank_account">Inserisci coordinate bancarie
                             </el-checkbox>
@@ -132,44 +132,67 @@
                 <tab-content title="Riepilogo">
                     {{-- TODO use element here--}}
                     <h3>Riepilogo</h3>
-                    {{--<el-collapse v-model="recapTab" accordion>
-                        <el-collapse-item title="Dati anagrafici" name="registry">
-                            <dl>
-                                <dt>Nome</dt>
-                                <dd>@{{ user.name }}</dd>
-                                <dt>Secondo nome</dt>
-                                <dd>@{{ user.middle_name }}</dd>
-                                <dt>Cognome</dt>
-                                <dd>@{{ user.surname }}</dd>
-                                <dt>Codice fiscale</dt>
-                                <dd>@{{ user.fiscal_code }}</dd>
-                                <dt>Email</dt>
-                                <dd>@{{ user.email }}</dd>
-                                <dt>Telefono</dt>
-                                <dd>@{{ user.telephone }}</dd>
-                            </dl>
-                        </el-collapse-item>
-
-                        <el-collapse-item title="Dati accademici" name="academic">
-                            <dt>Ruolo</dt>
-                            <dd>@{{ user.role.description }}</dd>
-                            <dt>Dipartimento</dt>
-                            <dd>@{{ user.department.name }}</dd>
-                            --}}{{-- TODO handle multiple register numbers --}}{{--
-                            <dt>Numero di matricola</dt>
-                            <dd v-for="reg in user.registers">@{{ reg.number }}</dd>
-                            <dt>Tipo corso di laurea</dt>
-                            <dd>@{{ user.degree_course.degree_course_type.name_ita }}</dd>
-                            <dt>Corso di laurea</dt>
-                            <dd>@{{ user.degree_course.name_ita }}</dd>
-                        </el-collapse-item>
-                        <el-collapse-item title="Conti bancari registrati" name="bank">
-                            <p v-if="user.bank_accounts.length === 0">Nessun conto associato all'utente</p>
-                            <ul v-else>
-                                <li v-for="acc in user.bank_accounts">@{{ acc.bank_name }}</li>
-                            </ul>
-                        </el-collapse-item>
-                    </el-collapse>--}}
+                    <div class="col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Dati anagrafici</div>
+                            <div class="panel-body">
+                                <dl>
+                                    <dt>Nome</dt>
+                                    <dd>@{{ user.registry.name }}</dd>
+                                    <dt>Secondo nome</dt>
+                                    <dd>@{{ user.registry.middle_name }}</dd>
+                                    <dt>Cognome</dt>
+                                    <dd>@{{ user.registry.surname }}</dd>
+                                    <dt>Codice fiscale</dt>
+                                    <dd>@{{ user.registry.fiscal_code }}</dd>
+                                    <dt>Email</dt>
+                                    <dd>@{{ user.registry.email }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Dati accademici</div>
+                            <div class="panel-body">
+                                <dl>
+                                    <dt>Ruolo</dt>
+                                    <dd>TODO</dd>
+                                    <dt>Corso di laurea</dt>
+                                    <dd>TODO</dd>
+                                    <dt>Dipartimento</dt>
+                                    <dd>TODO</dd>
+                                    <dt>Numero di matricola</dt>
+                                    <dd>@{{ user.academic.number }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Dati bancari</div>
+                            <div class="panel-body">
+                                <div v-if="user.bank.has_bank_account">
+                                    <dl>
+                                        <dt>Codice IBAN</dt>
+                                        <dd>@{{ user.bank.iban }}</dd>
+                                    </dl>
+                                    <p>Dati intestatario</p>
+                                    <dl>
+                                        <dt>Nome</dt>
+                                        <dd>@{{ user.bank.holder_name }}</dd>
+                                        <dt>Secondo nome</dt>
+                                        <dd>@{{ user.bank.holder_middle_name }}</dd>
+                                        <dt>Cognome</dt>
+                                        <dd>@{{ user.bank.holder_surname }}</dd>
+                                    </dl>
+                                </div>
+                                <div v-else>
+                                    <p>Dati non inseriti</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tab-content>
             </form-wizard>
         </div>

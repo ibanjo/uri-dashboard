@@ -4,12 +4,12 @@ if ($('#vue-view-users').length) {
         el: '#vue-view-users',
         data: {
             ready: true,
-            subview: DataFromBackend.subview,
+            subview: {},
             departmentQuery: '',
             registerQuery: '',
             roleQuery: '',
-            columns: ['id', 'name', 'surname', 'department_name', 'register_number', 'uri'],
-            users: DataFromBackend.users,
+            columns: [],
+            users: [],
             options: {
                 // TODO translate texts
                 filterByColumn: true,
@@ -78,8 +78,21 @@ if ($('#vue-view-users').length) {
             }
         },
         created: function () {
+            this.users = window.users;
+            this.subview = window.subview;
+            this.columns = [
+                'id',
+                'name',
+                'surname',
+                'department_name',
+                'register_number',
+                'uri'
+            ];
             if(this.subview.name === 'all')
                 this.columns.splice(3, 0, 'role');
+        },
+        mounted: function () {
+            this.ready = true;
         }
     });
 }

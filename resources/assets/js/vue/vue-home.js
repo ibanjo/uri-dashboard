@@ -4,7 +4,7 @@ if ($('#vue-home').length) {
         el: '#vue-home',
         // TODO put all text in a locale file
         data: {
-            toApprove: DataFromBackend.toApprove,
+            toApprove: window.toApprove,
             toApproveMessage: 'Nuovi utenti in attesa di approvazione',
             nothingToBeDoneMessage: 'Hai finito!',
             attentionRequired: []
