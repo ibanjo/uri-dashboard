@@ -38,10 +38,11 @@ class MobilityController extends Controller
         $mob->mobility_status_id = 1;
         $mob->university_branch_id = $data['university_branch_id'];
         $mob->semester_id = $data['semester_id'];
-        $mob->estimated_in = Carbon::parse($data['estimated_in']);
+        $mob->estimated_in = Carbon::parse($data['estimated_in']); // FIXME Carbon::parse gives the day before
         $mob->estimated_out = Carbon::parse($data['estimated_out']);
         $mob->estimated_cfu_exams = $data['estimated_cfu_exams'];
         $mob->estimated_cfu_thesis = $data['estimated_cfu_thesis'];
+        $mob->granted = $data['granted'];
 
         $mob->save();
 
@@ -61,6 +62,23 @@ class MobilityController extends Controller
         return response([
             'status' => 'success',
             'message' => 'Stato della mobilità correttamente aggiornato'
+        ], 200);
+    }
+
+    public function editMobility(Request $request)
+    {
+        $data = $request->all();
+        $mobility = Mobility::find($data['id']);
+        foreach (array_keys($data) as $key) {
+            if(in_array($key, ['estimated_in', 'estimated_out', 'acknowledged_in', 'acknowledged_out']))
+                $mobility[$key] = Carbon::parse($data[$key]);
+            else
+                $mobility[$key] = $data[$key];
+        }
+        $mobility->save();
+        return response([
+            'status' => 'success',
+            'message' => 'Mobilità aggiornata correttamente'
         ], 200);
     }
 }

@@ -79,7 +79,8 @@ Route::prefix('file')->group(function() {
 Route::prefix('edit')->group(function() {
     Route::middleware(['auth'])->group(function() {
         Route::put('user/activebank', 'UserController@changeActiveBankAccount');
-        Route::put('mobility', 'MobilityController@changeMobilityStatus');
+        Route::put('mobility/status', 'MobilityController@changeMobilityStatus')->name('edit.mobility.status');
+        Route::put('mobility', 'MobilityController@editMobility')->name('edit.mobility');
     });
 });
 

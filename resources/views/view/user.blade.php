@@ -20,7 +20,8 @@
                                 <h4>Mobilità</h4>
                             </div>
                             <div v-if="has_mobilities" class="panel-body">
-                                <mobility-tracker :mobility="user.mobilities[0]" :semesters="semesters" :attachments="attachments"
+                                <mobility-tracker :mobility="user.mobilities[0]" :semesters="semesters"
+                                                  :attachments="attachments"
                                                   :mobility-statuses="mobility_statuses"
                                                   :university-branches="university_branches"></mobility-tracker>
                             </div>

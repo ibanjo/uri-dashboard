@@ -24,8 +24,8 @@ class MobilityStatusesTableSeeder extends Seeder
             'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
         ]);
         DB::table($tab)->insert([
-            'name' => 'Firma in attesa',
-            'description' => 'In attesa della firma da parte di ...', // FIXME detail this one
+            'name' => 'Accettazione',
+            'description' => 'In attesa di accettazione',
             'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
         ]);
         DB::table($tab)->insert([
@@ -44,8 +44,8 @@ class MobilityStatusesTableSeeder extends Seeder
             'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
         ]);
         DB::table($tab)->insert([
-            'name' => 'Rifiutata',
-            'description' => 'La richiesta di mobilità è stata rifiutata',
+            'name' => 'Abortita',
+            'description' => 'La mobilità è stata chiusa anticipatamente',
             'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
         ]);
     }

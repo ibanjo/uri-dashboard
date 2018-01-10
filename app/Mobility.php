@@ -7,14 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Mobility
  *
- * @property int user_id
- * @property int mobility_status_id
- * @property int university_branch_id
- * @property int semester_id
- * @property string estimated_in
- * @property string estimated_out
- * @property int estimated_cfu_exams
- * @property int estimated_cfu_thesis
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $attachments
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Exam[] $exams
  * @property-read \App\MobilityStatus $mobilityStatus
@@ -34,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $estimated_out
  * @property int $estimated_cfu_exams
  * @property int $estimated_cfu_thesis
- * @property int|null $granted
+ * @property boolean $granted
  * @property int|null $transcript_cfu_exams
  * @property int|null $transcript_cfu_thesis
  * @property string|null $acknowledged_in
@@ -74,7 +66,8 @@ use Illuminate\Database\Eloquent\Model;
 class Mobility extends Model
 {
     protected $casts = [
-        'mobility_status_id' => 'integer'
+        'mobility_status_id' => 'integer',
+        'granted' => 'boolean'
     ];
 
     public function semester() {

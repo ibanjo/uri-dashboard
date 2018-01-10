@@ -12,38 +12,7 @@
                     <el-carousel-item v-for="user in users" :key="user.id">
                         <el-row type="flex" justify="center">
                             <el-col :span="18">
-                                <el-collapse v-model="activeTab" accordion>
-                                    <el-collapse-item title="Dati anagrafici" name="registry">
-                                        <dl>
-                                            <dt>Nome</dt>
-                                            <dd>@{{ user.name }}</dd>
-                                            <dt>Secondo nome</dt>
-                                            <dd>@{{ user.middle_name }}</dd>
-                                            <dt>Cognome</dt>
-                                            <dd>@{{ user.surname }}</dd>
-                                            <dt>Codice fiscale</dt>
-                                            <dd>@{{ user.fiscal_code }}</dd>
-                                            <dt>Email</dt>
-                                            <dd>@{{ user.email }}</dd>
-                                            <dt>Telefono</dt>
-                                            <dd>@{{ user.telephone }}</dd>
-                                        </dl>
-                                    </el-collapse-item>
-
-                                    <el-collapse-item title="Dati accademici" name="academic">
-                                        <dt>Ruolo</dt>
-                                        <dd>@{{ user.candidate_role.description }}</dd>
-                                        <dt>Dipartimento</dt>
-                                        <dd>@{{ user.department.name }}</dd>
-                                        {{-- TODO handle multiple register numbers --}}
-                                        <dt>Numero di matricola</dt>
-                                        <dd v-for="reg in user.registers">@{{ reg.number }}</dd>
-                                        <dt>Tipo corso di laurea</dt>
-                                        <dd>@{{ user.degree_course.degree_course_type.name_ita }}</dd>
-                                        <dt>Corso di laurea</dt>
-                                        <dd>@{{ user.degree_course.name_ita }}</dd>
-                                    </el-collapse-item>
-                                </el-collapse>
+                                <user-summary :user="user" :accordion="true" default-tab="registry"></user-summary>
                             </el-col>
                         </el-row>
                         <el-row type="flex" justify="center">

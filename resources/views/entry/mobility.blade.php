@@ -67,6 +67,17 @@
                                 </el-form-item>
 
                                 <el-form-item>
+                                    <el-switch
+                                            style="display: block"
+                                            v-model="mobility.granted"
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949"
+                                            active-text="Assegnatario"
+                                            inactive-text="Idoneo">
+                                    </el-switch>
+                                </el-form-item>
+
+                                <el-form-item>
                                     <el-button type="primary" @click="onSubmit">Crea mobilità</el-button>
                                     <el-button @click="onCancel">Annulla</el-button>
                                 </el-form-item>

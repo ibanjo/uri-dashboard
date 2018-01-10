@@ -2,17 +2,17 @@
     <div>
         <el-row style="margin-bottom: 20px">
             <el-col :span="24">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>Informazioni generali</span>
-                    </div>
-                    <div class="text item">
+                <el-tabs type="border-card">
+                    <el-tab-pane> <!-- Learning Agreement -->
+                        <span slot="label">
+                            <i class="fa fa-fw fa-handshake-o"></i> Learning Agreement
+                        </span>
                         <el-form :inline="true">
-                            <!-- FIXME only one mobility can be active at a time -->
                             <el-form-item label="Sede estera:">
-                                <el-select v-model="mobility.university_branch_id"
+                                <el-select v-model="mobilityBuffer.university_branch_id"
                                            placeholder="Sede estera" :disabled="!editMobility"
-                                           :style="universityBranchStyle" filterable>
+                                           :style="universityBranchStyle" filterable
+                                           @change="addModified('university_branch_id')">
                                     <el-option
                                             v-for="branch in universityBranches"
                                             :key="branch.id"
@@ -23,21 +23,24 @@
                             </el-form-item>
                             <el-form-item label="CFU previsti da esami:">
                                 <el-input-number
-                                        v-model="mobility.estimated_cfu_exams"
+                                        v-model="mobilityBuffer.estimated_cfu_exams"
                                         :disabled="!editMobility" controls-position="right"
-                                        :min="0" style="width: 100px"></el-input-number>
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('estimated_cfu_exams')"></el-input-number>
                             </el-form-item>
                             <el-form-item label="CFU previsti da tesi:">
                                 <el-input-number
-                                        v-model="mobility.estimated_cfu_thesis"
+                                        v-model="mobilityBuffer.estimated_cfu_thesis"
                                         :disabled="!editMobility" controls-position="right"
-                                        :min="0" style="width: 100px"></el-input-number>
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('estimated_cfu_thesis')"></el-input-number>
                             </el-form-item>
                             <br>
                             <el-form-item label="Semestre:">
-                                <el-select v-model="mobility.semester_id"
+                                <el-select v-model="mobilityBuffer.semester_id"
                                            placeholder="Semestre" :disabled="!editMobility"
-                                           :style="semesterStyle">
+                                           :style="semesterStyle"
+                                           @change="addModified('semester_id')">
                                     <el-option
                                             v-for="semester in semesters"
                                             :key="semester.id"
@@ -48,33 +51,67 @@
                             </el-form-item>
                             <el-form-item label="Inizio contratto:">
                                 <el-date-picker
-                                        v-model="mobility.estimated_in"
+                                        v-model="mobilityBuffer.estimated_in"
                                         type="date" :disabled="!editMobility"
                                         format="dd-MM-yyyy"
-                                        placeholder="Inizio contratto">
+                                        placeholder="Inizio contratto"
+                                        @change="addModified('estimated_in')">
                                 </el-date-picker>
                             </el-form-item>
                             <el-form-item label="Fine contratto:">
                                 <el-date-picker
-                                        v-model="mobility.estimated_out"
+                                        v-model="mobilityBuffer.estimated_out"
                                         type="date" :disabled="!editMobility"
                                         format="dd-MM-yyyy"
-                                        placeholder="Fine contratto">
+                                        placeholder="Fine contratto"
+                                        @change="addModified('estimated_out')">
                                 </el-date-picker>
                             </el-form-item>
-
-                            <el-button type="primary" @click="triggerEditMobility">
-                                Modifica
-                            </el-button>
-                            <el-button type="success" @click="">
-                                Salva
-                            </el-button>
-                            <el-button type="warning" @click="">
-                                Ripristina
-                            </el-button>
+                            <el-form-item label="Numero contratto: ">
+                                <el-input
+                                        v-model="mobilityBuffer.contract_number"
+                                        :disabled="!editMobility" @change="addModified('contract_number')">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-switch
+                                        style="display: block"
+                                        v-model="mobilityBuffer.granted"
+                                        active-color="#13ce66"
+                                        inactive-color="#ff4949"
+                                        active-text="Assegnatario"
+                                        inactive-text="Idoneo"
+                                        :disabled="!editMobility"
+                                        @change="addModified('granted')">
+                                </el-switch>
+                            </el-form-item>
+                            <br>
+                            <el-form-item>
+                                <el-button type="primary" v-if="!editMobility" @click="triggerEditMobility">
+                                    Modifica
+                                </el-button>
+                                <el-button type="success" v-if="editMobility" @click="commitEditMobility">
+                                    Salva
+                                </el-button>
+                                <el-button type="warning" v-if="editMobility" @click="undoEditMobility">
+                                    Annulla
+                                </el-button>
+                            </el-form-item>
                         </el-form>
-                    </div>
-                </el-card>
+                    </el-tab-pane>
+                    <el-tab-pane>
+                        <span slot="label">
+                            <i class="fa fa-fw fa-exchange"></i> Transcript of Records
+                        </span>
+                        TOR
+                    </el-tab-pane>
+                    <el-tab-pane>
+                        <span slot="label">
+                            <i class="fa fa-fw fa-check-square-o"></i> Modulo Riconoscimento Crediti
+                        </span>
+                        Role
+                    </el-tab-pane>
+                </el-tabs>
             </el-col>
         </el-row>
 
@@ -114,7 +151,9 @@
         data: function () {
             return {
                 editMobility: false,
-                mobilityTemp: {}
+                mobilityBuffer: this.mobility,
+                tempMobilityBuffer: {},
+                modifiedKeys: []
             }
         },
         computed: {
@@ -138,22 +177,71 @@
             }
         },
         methods: {
+            getLearningAgreementSubset(mobility) {
+                return Object.assign({},
+                    (({university_branch_id, estimated_cfu_exams, estimated_cfu_thesis, semester_id, estimated_in, estimated_out, granted}) => ({
+                        university_branch_id,
+                        estimated_cfu_exams,
+                        estimated_cfu_thesis,
+                        semester_id,
+                        estimated_in,
+                        estimated_out,
+                        granted
+                    }))(mobility));
+            },
             triggerEditMobility() {
-                if (!this.editMobility) {
-                    this.mobilityTemp = Object.assign({}, this.mobility);
-                    this.editMobility = true;
-                } else {
-                    this.$confirm('I cambiamenti effettuati verranno persi, continuare?', 'Attenzione', {
-                        confirmButtonText: 'OK',
-                        cancelButtonText: 'Annulla',
-                        type: 'warning'
-                    }).then(() => {
-                        // FIXME this directly mutates the mobility prop, and should be avoided
-                        this.mobility = Object.assign({}, this.mobilityTemp);
-                        this.editMobility = false;
-                    }).catch(() => {
-                    })
-                }
+                this.tempMobilityBuffer = this.getLearningAgreementSubset(this.mobilityBuffer);
+                this.editMobility = true;
+            },
+            addModified(key) {
+                this.modifiedKeys.push(key);
+                this.modifiedKeys = this.modifiedKeys.filter((value, index, self) => {
+                    return self.indexOf(value) === index;
+                });
+            },
+            commitEditMobility() {
+                this.$confirm('Applicare i cambiamenti?', 'Info', {
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Annulla',
+                    type: 'info'
+                }).then(() => {
+                    let modifiedMobility = {};
+                    this.modifiedKeys.forEach(k => {
+                        modifiedMobility[k] = this.mobilityBuffer[k]
+                    });
+                    modifiedMobility.id = this.mobilityBuffer.id;
+                    axios.put('/edit/mobility', modifiedMobility)
+                        .then(response => {
+                            this.$message({
+                                type: response.data.status,
+                                message: response.data.message
+                            });
+                            this.tempMobilityBuffer = {};
+                            this.modifiedKeys = [];
+                            this.editMobility = false;
+                        })
+                        .catch(error => {
+                            this.$message({
+                                type: error.response.data.status,
+                                message: error.response.data.message
+                            });
+                        });
+                }).catch(() => {
+                });
+            },
+            undoEditMobility() {
+                this.$confirm('I cambiamenti effettuati verranno persi, continuare?', 'Attenzione', {
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Annulla',
+                    type: 'warning'
+                }).then(() => {
+                    Object.keys(this.tempMobilityBuffer)
+                        .forEach(k => this.mobilityBuffer[k] = this.tempMobilityBuffer[k]);
+                    this.tempMobilityBuffer = {};
+                    this.modifiedKeys = [];
+                    this.editMobility = false;
+                }).catch(() => {
+                });
             },
             mobilityNextStep() {
                 this.$confirm('Portare la mobilità al prossimo stato?', 'Info', {
@@ -161,19 +249,18 @@
                     cancelButtonText: 'Annulla',
                     type: 'info'
                 }).then(() => {
-                    axios.put('/edit/mobility', {
+                    axios.put('/edit/mobility/status', {
                         id: this.mobility.id,
                         new_status_id: this.mobility.mobility_status_id + 1
                     })
-                        .then((response) => {
-                            this.mobility.mobility_status_id++;
+                        .then(response => {
+                            this.mobilityBuffer.mobility_status_id++;
                             this.$message({
                                 type: response.data.status,
                                 message: response.data.message
                             });
                         })
                         .catch(error => {
-                            console.log(error);
                             this.$message({
                                 type: error.response.data.status,
                                 message: error.response.data.message

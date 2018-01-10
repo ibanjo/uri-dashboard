@@ -18,6 +18,7 @@ class AdminController extends Controller
                     'department',
                     'registers',
                     'candidate_role',
+                    'role',
                     'degree_course.degree_course_type',
                     'mobilities.semester',
                     'mobilities.universityBranch.country',

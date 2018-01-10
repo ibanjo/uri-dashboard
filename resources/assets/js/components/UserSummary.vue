@@ -1,5 +1,5 @@
 <template>
-    <el-collapse v-model="active_tab">
+    <el-collapse v-model="active_tab" :accordion="accordion">
         <el-collapse-item name="registry">
             <template slot="title">
                 <p><i class="fa fa-fw fa-user"></i> Dati anagrafici</p>
@@ -25,7 +25,7 @@
                 <p><i class="fa fa-fw fa-graduation-cap"></i> Dati accademici</p>
             </template>
             <dt>Ruolo</dt>
-            <dd>{{ user.role.description }}</dd>
+            <dd>{{ user.role.id === 6 ? user.candidate_role.description  : user.role.description }}</dd>
             <dt>Dipartimento</dt>
             <dd>{{ user.department.name }}</dd>
             <!-- TODO handle multiple register numbers -->
@@ -54,10 +54,23 @@
         name: 'user-summary',
         data: function () {
             return {
-                active_tab: ''
+                active_tab: this.defaultTab
             }
         },
-        props: ['user']
+        props: {
+            user: {
+                type: Object,
+                required: true
+            },
+            accordion: {
+                type: Boolean,
+                default: false
+            },
+            defaultTab: {
+                type: String,
+                default: ''
+            }
+        }
     }
 </script>
 

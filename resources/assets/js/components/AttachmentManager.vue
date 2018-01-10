@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row type="flex" justify="space-between" align="middle">
-            <el-col :span="8">
+            <el-col :span="6">
                 <el-upload
                         action="/file/attach"
                         ref="attachmentUploader"
@@ -25,14 +25,14 @@
                 <upload-preview v-if="attachment_buffer.length > 0"
                                 :name="attachment_buffer[0].name"/>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="10" v-if="attachment_buffer.length > 0">
                 <el-input placeholder="Descrizione dell'allegato (opzionale)"
                           v-model="attachment_description"></el-input>
             </el-col>
         </el-row>
 
         <el-row v-if="hasAttachments">
-            <el-table :data="attachments" style="width: 100%" @cell-click="onAttachmentClicked">
+            <el-table :data="attachmentArray" style="width: 100%" @cell-click="onAttachmentClicked">
                 <el-table-column label="Download">
                     <template slot-scope="scope">
                         <i class="fa fa-fw fa-file-pdf-o"></i>
@@ -74,11 +74,12 @@
             return {
                 attachment_description: '',
                 attachment_buffer: [],
+                attachmentArray: this.attachments
             }
         },
         computed: {
             hasAttachments: function () {
-                return this.attachments.length > 0;
+                return this.attachmentArray.length > 0;
             },
             attachmentAdditions: function () {
                 return {
@@ -106,7 +107,7 @@
                     type: response.status,
                     message: response.message
                 });
-                this.attachments.push(response.file);
+                this.attachmentArray.push(response.file);
                 this.$refs.attachmentUploader.uploadFiles = [];
                 this.attachment_description = '';
             },
@@ -145,7 +146,7 @@
             removeAttachment: function (file) {
                 axios.delete('/file/delete/' + file.id)
                     .then(response => {
-                        this.attachments = this.attachments.filter(att => {
+                        this.attachmentArray = this.attachmentArray.filter(att => {
                             return att.id !== file.id
                         });
                         this.$message({

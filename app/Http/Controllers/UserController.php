@@ -52,6 +52,7 @@ class UserController extends Controller
             'semesters' => Semester::all(),
             'university_branches' => UniversityBranch::all()
         ]);
+        // FIXME attachments go under user.mobilities
         return View::make('view.user', ['user_id' => $id]);
     }
 
