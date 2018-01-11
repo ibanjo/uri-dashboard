@@ -29,6 +29,8 @@ class CreateMobilitiesTable extends Migration
             $table->integer('university_branch_id')->unsigned();
             $table->foreign('university_branch_id')->references('id')->on('university_branches');
 
+            $table->string('academic_year');
+
             // Estimated mobility data
             $table->integer('semester_id')->unsigned();
             $table->foreign('semester_id')->references('id')->on('semesters');
@@ -43,19 +45,22 @@ class CreateMobilitiesTable extends Migration
             // Transcript data
             $table->unsignedSmallInteger('transcript_cfu_exams')->nullable();
             $table->unsignedSmallInteger('transcript_cfu_thesis')->nullable();
-
-            // Acknowledgement data
             $table->date('acknowledged_in')->nullable();
             $table->date('acknowledged_out')->nullable();
+
+            // Acknowledgement data
             $table->unsignedSmallInteger('acknowledged_cfu_exams')->nullable();
             $table->unsignedSmallInteger('acknowledged_cfu_thesis')->nullable();
+            $table->unsignedSmallInteger('acknowledged_cfu_supernumerary')->nullable();
+            $table->mediumInteger('extension')->unsigned()->nullable(); // Mobility extension in days
 
-            // Money grants
-            $table->mediumInteger('eu_grant')->unsigned()->nullable();
-            $table->mediumInteger('eu_grant_spent')->unsigned()->nullable();
-            $table->mediumInteger('extension')->unsigned()->nullable();
-            $table->mediumInteger('co_funding')->unsigned()->nullable();
-            $table->mediumInteger('other_funding')->unsigned()->nullable();
+            // Money grants (in Euro)
+            $table->mediumInteger('eu_grant')->nullable();
+            $table->mediumInteger('travel_grant')->nullable();
+            $table->mediumInteger('co_funding')->nullable();
+            $table->mediumInteger('other_funding')->nullable();
+            $table->mediumInteger('spent_grant')->nullable();
+
             $table->string('funding_notes')->nullable();
         });
     }

@@ -5,6 +5,7 @@
                 <p><i class="fa fa-fw fa-user"></i> Dati anagrafici</p>
             </template>
             <dl>
+                <!-- TODO this must be made an editable form -->
                 <dt>Nome</dt>
                 <dd>{{ user.name }}</dd>
                 <dt>Secondo nome</dt>

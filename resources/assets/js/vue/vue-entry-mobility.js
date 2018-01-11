@@ -13,6 +13,7 @@ if ($('#vue-entry-mobility').length) {
                 estimated_out: '',
                 estimated_cfu_exams: 0,
                 estimated_cfu_thesis: 0,
+                academic_year: '',
                 granted: false
             },
             countries: DataFromBackend.countries,

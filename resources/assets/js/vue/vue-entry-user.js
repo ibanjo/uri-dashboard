@@ -63,8 +63,8 @@ if ($('#vue-entry-user').length) {
                     fiscal_code: '',
                     email: '',
                     telephone: '',
-                    password: '',
-                    password_confirm: ''
+                    password: DataFromBackend.userLoggedIn ? 'password' : '',
+                    password_confirm: DataFromBackend.userLoggedIn ? 'password' : ''
                 },
                 academic: {
                     degree_course_id: '',

@@ -7,6 +7,7 @@ use App\BankAccount;
 use App\Register;
 use App\Role;
 use App\User;
+use Auth;
 
 trait CreatesModels
 {
@@ -71,9 +72,15 @@ trait CreatesModels
         $user->department_id = $data['department_id'];
         $user->degree_course_id = $data['degree_course_id'];
 
-        // Account must be approved by an administrator
-        $user->role_id = Role::where('name', 'suspended')->first()->id;
-        $user->candidate_role_id = $data['candidate_role_id'];
+        // Account must be approved by an administrator if registered externally
+        if(Auth::check()) {
+            $user->candidate_role_id = $data['candidate_role_id'];
+            $user->role_id = $data['candidate_role_id'];
+        }
+        else {
+            $user->role_id = Role::where('name', 'suspended')->first()->id;
+            $user->candidate_role_id = $data['candidate_role_id'];
+        }
 
         $user->save();
 
