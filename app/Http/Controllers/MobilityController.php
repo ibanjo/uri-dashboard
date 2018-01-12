@@ -22,6 +22,7 @@ class MobilityController extends Controller
             'user' => User::with([
                 'department',
                 'registers',
+                'candidate_role',
                 'role',
                 'degree_course.degree_course_type',
                 'mobilities.semester',

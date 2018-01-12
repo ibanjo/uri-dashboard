@@ -4,7 +4,7 @@ if ($('#vue-view-user').length) {
         el: '#vue-view-user',
         data: {
             ready: true,
-            editLearningAgreement: false,
+            editMobility: false,
             user: DataFromBackend.user,
             attachments: DataFromBackend.attachments,
             mobility_statuses: DataFromBackend.mobility_statuses,

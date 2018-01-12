@@ -16,6 +16,22 @@ if ($('#vue-entry-mobility').length) {
                 academic_year: '',
                 granted: false
             },
+            rules: {
+                mobility: {
+                    academic_year: [
+                        {required: true, message: 'L\'anno accademico è richiesto', trigger: 'blur'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (!/\d{4}\/\d{2}$/.test(value)) {
+                                    callback(new Error('Formato: AAAA/AA'))
+                                } else
+                                    callback();
+                            },
+                            trigger: 'blur'
+                        }
+                    ]
+                }
+            },
             countries: DataFromBackend.countries,
             semesters: DataFromBackend.semesters,
             university_branches: DataFromBackend.university_branches

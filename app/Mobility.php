@@ -109,4 +109,8 @@ class Mobility extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function learningAgreement() {
+        return $this->belongsTo(LearningAgreement::class); // FIXME should be hasOne: need to change the schema
+    }
 }

@@ -14,7 +14,7 @@
                             <span>Nuova mobilità</span>
                         </div>
                         <div class="text item">
-                            <el-form :model="mobility" label-width="200px">
+                            <el-form :model="mobility" :rules="rules.mobility" label-width="200px">
                                 <el-form-item label="Sede estera">
                                     <el-select v-model="mobility.university_branch_id" filterable
                                                placeholder="Sede estera">
@@ -66,7 +66,7 @@
                                     </el-date-picker>
                                 </el-form-item>
 
-                                <el-form-item label="Anno accademico">
+                                <el-form-item label="Anno accademico" prop="academic_year">
                                     <el-input
                                             v-model="mobility.academic_year"
                                             placeholder="Formato: 2015/16">

@@ -3,7 +3,7 @@
         <el-row type="flex" justify="space-between" align="middle">
             <el-col :span="6">
                 <el-upload
-                        action="/file/attach"
+                        action="/file/upload"
                         ref="attachmentUploader"
                         :data="attachmentAdditions.data"
                         :headers="attachmentAdditions.headers"

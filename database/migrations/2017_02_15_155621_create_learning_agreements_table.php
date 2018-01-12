@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMobiilityAcknowledgementsTable extends Migration
+class CreateLearningAgreementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateMobiilityAcknowledgementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mobiility_acknowledgements', function (Blueprint $table) {
+        Schema::create('learning_agreements', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+
+            $table->string('name');
+            $table->string('type');
+            $table->string('path');
         });
     }
 
@@ -26,6 +30,6 @@ class CreateMobiilityAcknowledgementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mobiility_acknowledgements');
+        Schema::dropIfExists('learning_agreements');
     }
 }

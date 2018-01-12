@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attachment;
 use App\BankAccount;
+use App\LearningAgreement;
 use App\Register;
 use App\Role;
 use App\User;
@@ -73,11 +74,10 @@ trait CreatesModels
         $user->degree_course_id = $data['degree_course_id'];
 
         // Account must be approved by an administrator if registered externally
-        if(Auth::check()) {
+        if (Auth::check()) {
             $user->candidate_role_id = $data['candidate_role_id'];
             $user->role_id = $data['candidate_role_id'];
-        }
-        else {
+        } else {
             $user->role_id = Role::where('name', 'suspended')->first()->id;
             $user->candidate_role_id = $data['candidate_role_id'];
         }
@@ -100,5 +100,19 @@ trait CreatesModels
         $attachment->save();
 
         return $attachment;
+    }
+
+    public function newMobilityDocument($data)
+    {
+        //$document = new $data['document_type']();
+        // FIXME only for testing, need to convert snake_case to CamelCase
+        $document = new LearningAgreement();
+
+        $document->name = $data['name'];
+        $document->path = $data['path'];
+        $document->type = $data['type'];
+        $document->save();
+
+        return $document;
     }
 }

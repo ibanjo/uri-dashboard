@@ -69,7 +69,6 @@
                                 </p>
                                 <v-client-table v-else :columns="bankTableColumns" :options="bankTableOptions"
                                                 :data="user.bank_accounts" @row-click="changeActiveBankAccount">
-
                                 </v-client-table>
                             </div>
                         </div>
