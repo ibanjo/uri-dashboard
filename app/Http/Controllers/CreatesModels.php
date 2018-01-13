@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Attachment;
 use App\BankAccount;
 use App\LearningAgreement;
+use App\Transcript;
+use App\MobilityAcknowledgement;
 use App\Register;
 use App\Role;
 use App\User;
@@ -104,9 +106,8 @@ trait CreatesModels
 
     public function newMobilityDocument($data)
     {
-        //$document = new $data['document_type']();
-        // FIXME only for testing, need to convert snake_case to CamelCase
-        $document = new LearningAgreement();
+        $class_name = 'App\\'.studly_case($data['document_type']);
+        $document = new $class_name();
 
         $document->name = $data['name'];
         $document->path = $data['path'];

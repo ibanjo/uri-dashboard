@@ -16,6 +16,10 @@ class CreateMobilityAcknowledgementsTable extends Migration
         Schema::create('mobility_acknowledgements', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+
+            $table->string('name');
+            $table->string('type');
+            $table->string('path');
         });
     }
 
