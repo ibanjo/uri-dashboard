@@ -63,6 +63,13 @@ Route::prefix('entry')->group(function () {
         Route::get('mobility/{user_id}', 'MobilityController@showNewMobilityForm')->name('entry.mobility');
         Route::post('mobility', 'MobilityController@createNewMobility');
     });
+
+    Route::middleware(['auth', 'admin'])->group(function() {
+        Route::get('universities', 'AdminController@entryUniversities')->name('entry.universities');
+
+        Route::post('country', 'AdminController@saveNewCountry')->name('new.country');
+        Route::post('university', 'AdminController@saveNewUniversity')->name('new.university');
+    });
 });
 
 // File managament routes
@@ -98,6 +105,4 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// FIXME draft route for testing stuff
-Route::get('/draft', function () {
-});
+// FIXME need to completely refactor routes (before it is too late)

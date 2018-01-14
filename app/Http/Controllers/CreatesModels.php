@@ -4,16 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Attachment;
 use App\BankAccount;
+use App\Country;
 use App\LearningAgreement;
 use App\Transcript;
 use App\MobilityAcknowledgement;
 use App\Register;
 use App\Role;
+use App\UniversityBranch;
 use App\User;
 use Auth;
 
 trait CreatesModels
 {
+
+    public function newCountry($data)
+    {
+        $country = new Country;
+        $country->name_eng = $data['name_eng'];
+        $country->name_ita = $data['name_ita'];
+        $country->monthly_grant = $data['monthly_grant'];
+        $country->travel_grant = $data['travel_grant'];
+        $country->save();
+        return $country;
+    }
+
+    public function newUniversityBranch($data)
+    {
+        $university = new UniversityBranch;
+        $university->name = $data['name'];
+        $university->name_eng = $data['name_eng'];
+        $university->country_id = $data['country_id'];
+        $university->erasmus_code = $data['erasmus_code'];
+        $university->max_outgoing = $data['max_outgoing'];
+        $university->save();
+        return $university;
+    }
 
     /**
      * @param $data
@@ -106,7 +131,7 @@ trait CreatesModels
 
     public function newMobilityDocument($data)
     {
-        $class_name = 'App\\'.studly_case($data['document_type']);
+        $class_name = 'App\\' . studly_case($data['document_type']);
         $document = new $class_name();
 
         $document->name = $data['name'];

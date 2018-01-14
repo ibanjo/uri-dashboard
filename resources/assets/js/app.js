@@ -23,6 +23,8 @@ import elementLocale from 'element-ui/lib/locale/lang/it';
 import UserSummary from './components/UserSummary';
 import MobilityTracker from './components/MobilityTracker';
 import AttachmentManager from './components/AttachmentManager';
+import CountryForm from './components/CountryForm';
+import UniversityBranchForm from './components/UniversityBranchForm';
 
 /**
  * Requiring minor plugins
@@ -41,6 +43,8 @@ window.Vue.use(require('vue-moment'));
 window.Vue.component('user-summary', UserSummary);
 window.Vue.component('mobility-tracker', MobilityTracker);
 window.Vue.component('attachment-manager', AttachmentManager);
+window.Vue.component('country-form', CountryForm);
+window.Vue.component('university-branch-form', UniversityBranchForm);
 
 /**
  * Requiring Vue VMs
@@ -53,3 +57,4 @@ require('./vue/vue-view-user');
 require('./vue/vue-entry-bank');
 require('./vue/vue-entry-mobility');
 require('./vue/vue-approve-users');
+require('./vue/vue-entry-universities');
