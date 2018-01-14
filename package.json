@@ -34,7 +34,7 @@
         "vue-tables-2": "^1.2.40"
     },
     "name": "uri-dashboard",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "repository": "https://github.com/ibanjo/uri-dashboard",
     "author": "Giuseppe Maria D'Aucelli <giuseppe.daucelli@gmail.com>",
     "license": "MIT"
