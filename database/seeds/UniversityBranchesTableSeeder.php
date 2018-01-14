@@ -36,7 +36,7 @@ class UniversityBranchesTableSeeder extends Seeder
 
         DB::table($tab)->insert([
             'name' => 'Universidad Politécnica de Madrid',
-            'name_eng' => null,
+            'name_eng' => 'Polytechnic University of Madrid',
             'erasmus_code' => 'E MADRID05',
             'country_id' => 2, // Spain
             'max_outgoing' => 6,

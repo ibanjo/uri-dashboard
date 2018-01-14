@@ -9,21 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * App\User
  *
- * @property integer id
- * @property string name
- * @property string middle_name
- * @property string surname
- * @property string fiscal_code
- * @property string email
- * @property string password
- * @property mixed|null bank_account_id
- * @property mixed register_number
- * @property integer department_id
- * @property integer role_id
- * @property integer candidate_role_id
- * @property string telephone
- * @property mixed active_bank_account_id
- * @property integer degree_course_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\BankAccount[] $active_bank_account
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\BankAccount[] $bank_accounts
  * @property-read \App\Role $candidate_role

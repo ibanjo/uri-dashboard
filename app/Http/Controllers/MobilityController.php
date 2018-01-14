@@ -14,15 +14,20 @@ use View;
 
 class MobilityController extends Controller
 {
+    use CreatesModels;
+
     public function showNewMobilityForm($user_id)
     {
         JavaScript::put([
             'user' => User::with([
-                'role',
-                'bank_accounts',
+                'department',
                 'registers',
+                'candidate_role',
+                'role',
                 'degree_course.degree_course_type',
-                'department'])->find($user_id),
+                'mobilities.semester',
+                'mobilities.universityBranch.country',
+                'bank_accounts'])->find($user_id),
             'countries' => Country::all(),
             'semesters' => Semester::all(),
             'university_branches' => UniversityBranch::with(['country'])->get()
@@ -42,6 +47,7 @@ class MobilityController extends Controller
         $mob->estimated_out = Carbon::parse($data['estimated_out']);
         $mob->estimated_cfu_exams = $data['estimated_cfu_exams'];
         $mob->estimated_cfu_thesis = $data['estimated_cfu_thesis'];
+        $mob->academic_year = $data['academic_year'];
         $mob->granted = $data['granted'];
 
         $mob->save();

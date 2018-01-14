@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attachment;
+use App\Mobility;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -50,6 +51,27 @@ class FileController extends Controller
         return response([
             'status' => 'success',
             'message' => 'Allegato eliminato correttamente'
+        ], 200);
+    }
+
+    public function uploadDocument(Request $request) {
+        $data = $request->all();
+        $file = $request->file('document');
+        $path = $file->store('documents');
+        $document = $this->newMobilityDocument(array_merge($data, [
+            'type' => $file->getMimeType(),
+            'name' => $file->getClientOriginalName(),
+            'path' => $path
+        ]));
+
+        $mobility = Mobility::find($data['mobility_id']);
+        $mobility[$data['document_type'].'_id'] = $document->id;
+        $mobility->save();
+
+        return response([
+            'file' => $document,
+            'status' => 'success',
+            'message' => 'Documento inserito correttamente'
         ], 200);
     }
 }

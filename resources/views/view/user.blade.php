@@ -47,7 +47,7 @@
                                 <h4>Riepilogo utente</h4>
                             </div>
                             <div class="panel-body">
-                                <user-summary :user="user"></user-summary>
+                                <user-summary :user="user" :accordion="true"></user-summary>
                             </div>
                         </div>
                     </el-col>
@@ -69,7 +69,6 @@
                                 </p>
                                 <v-client-table v-else :columns="bankTableColumns" :options="bankTableOptions"
                                                 :data="user.bank_accounts" @row-click="changeActiveBankAccount">
-
                                 </v-client-table>
                             </div>
                         </div>

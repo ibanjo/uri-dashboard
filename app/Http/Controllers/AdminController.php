@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Role;
+use App\UniversityBranch;
 use App\User as User;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -10,6 +12,8 @@ use View;
 
 class AdminController extends Controller
 {
+    use CreatesModels;
+
     public function checkUnapproved()
     {
         JavaScript::put([
@@ -27,12 +31,43 @@ class AdminController extends Controller
         return View::make('admin.approve');
     }
 
+    public function entryUniversities()
+    {
+        JavaScript::put([
+            'countries' => Country::all(),
+            'university_branches' => UniversityBranch::with(['country'])->get()
+        ]);
+        return View::make('entry.universities');
+    }
+
+    public function saveNewCountry(Request $request)
+    {
+        $data = $request->all();
+        $country = $this->newCountry($data);
+        return response([
+            'country' => $country,
+            'status' => 'success',
+            'message' => 'Paese correttamente inserito'
+        ], 200);
+    }
+
+    public function saveNewUniversity(Request $request)
+    {
+        $data = $request->all();
+        $university = $this->newUniversityBranch($data);
+        return response([
+            'university_branch' => $university,
+            'status' => 'success',
+            'message' => 'Sede correttamente inserita'
+        ], 200);
+    }
+
     public function approveUser(Request $request)
     {
         $data = $request->all();
         $user = User::find($data['id']);
         $user->role_id = $user->candidate_role_id;
         $user->save();
-        return(response(['status' => 'success', 'message' => 'Utente '.$user->full_name().' approvato con successo'], 200));
+        return (response(['status' => 'success', 'message' => 'Utente ' . $user->full_name() . ' approvato con successo'], 200));
     }
 }

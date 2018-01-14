@@ -33,8 +33,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Inserimento dati</li>
-                        <li><a href="#"><i class="fa fa-fw fa-globe"></i> Paesi</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-university"></i> Sedi straniere</a></li>
+                        <li><a href="{{ route('entry.universities') }}"><i class="fa fa-fw fa-university"></i> Sedi straniere</a></li>
                         <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Corsi di laurea</a></li>
                     </ul>
                 </li>

@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 // View routes
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('view')->group(function () {
         // Match the "/view/whatever" URLs
         Route::get('users', 'UserController@viewAll')->name('view.allusers');
@@ -37,7 +37,7 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Password Reset Routes...
-Route::prefix('password')->group(function(){
+Route::prefix('password')->group(function () {
     Route::get('reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('forgotten_password');
     Route::post('email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('send_reset_link');
     Route::get('reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('reset_password');
@@ -63,21 +63,34 @@ Route::prefix('entry')->group(function () {
         Route::get('mobility/{user_id}', 'MobilityController@showNewMobilityForm')->name('entry.mobility');
         Route::post('mobility', 'MobilityController@createNewMobility');
     });
+
+    Route::middleware(['auth', 'admin'])->group(function() {
+        Route::get('universities', 'AdminController@entryUniversities')->name('entry.universities');
+
+        Route::post('country', 'AdminController@saveNewCountry')->name('new.country');
+        Route::post('university', 'AdminController@saveNewUniversity')->name('new.university');
+    });
 });
 
 // File managament routes
-Route::prefix('file')->group(function() {
-    Route::middleware(['auth'])->group(function () {
-        Route::post('attach', 'FileController@attachFile');
+Route::middleware(['auth'])->group(function () {
+    // Generic attachment routes
+    Route::prefix('file')->group(function () {
+        Route::post('upload', 'FileController@attachFile');
         Route::post('retrieve', 'FileController@retrieveAttachment')->name('file.retrieve');
         Route::get('retrieve/{name}', 'FileController@downloadAttachment')->name('file.downloadattachment');
         Route::delete('delete/{id}', 'FileController@deleteAttachment')->name('file.deleteattachment');
     });
+
+    // Specific document-related routes
+    Route::prefix('document')->group(function () {
+        Route::post('upload', 'FileController@uploadDocument')->name('document.upload');
+    });
 });
 
 // Edit record routes
-Route::prefix('edit')->group(function() {
-    Route::middleware(['auth'])->group(function() {
+Route::prefix('edit')->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::put('user/activebank', 'UserController@changeActiveBankAccount');
         Route::put('mobility/status', 'MobilityController@changeMobilityStatus')->name('edit.mobility.status');
         Route::put('mobility', 'MobilityController@editMobility')->name('edit.mobility');
@@ -92,6 +105,4 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// FIXME draft route for testing stuff
-Route::get('/draft', function () {
-});
+// FIXME need to completely refactor routes (before it is too late)

@@ -13,7 +13,24 @@ if ($('#vue-entry-mobility').length) {
                 estimated_out: '',
                 estimated_cfu_exams: 0,
                 estimated_cfu_thesis: 0,
+                academic_year: '',
                 granted: false
+            },
+            rules: {
+                mobility: {
+                    academic_year: [
+                        {required: true, message: 'L\'anno accademico è richiesto', trigger: 'blur'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (!/\d{4}\/\d{2}$/.test(value)) {
+                                    callback(new Error('Formato: AAAA/AA'))
+                                } else
+                                    callback();
+                            },
+                            trigger: 'blur'
+                        }
+                    ]
+                }
             },
             countries: DataFromBackend.countries,
             semesters: DataFromBackend.semesters,

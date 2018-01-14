@@ -17,11 +17,14 @@ class BankController extends Controller
     {
         JavaScript::put([
             'user' => User::with([
-                'role',
-                'bank_accounts',
+                'department',
                 'registers',
+                'candidate_role',
+                'role',
                 'degree_course.degree_course_type',
-                'department'])->find($userId)
+                'mobilities.semester',
+                'mobilities.universityBranch.country',
+                'bank_accounts'])->find($userId),
         ]);
         return View::make('entry.bankaccount');
     }

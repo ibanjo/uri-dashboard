@@ -26,14 +26,14 @@
                                         v-model="mobilityBuffer.estimated_cfu_exams"
                                         :disabled="!editMobility" controls-position="right"
                                         :min="0" style="width: 100px"
-                                        @change="addModified('estimated_cfu_exams')"></el-input-number>
+                                        @change="addModified('estimated_cfu_exams')"/>
                             </el-form-item>
                             <el-form-item label="CFU previsti da tesi:">
                                 <el-input-number
                                         v-model="mobilityBuffer.estimated_cfu_thesis"
                                         :disabled="!editMobility" controls-position="right"
                                         :min="0" style="width: 100px"
-                                        @change="addModified('estimated_cfu_thesis')"></el-input-number>
+                                        @change="addModified('estimated_cfu_thesis')"/>
                             </el-form-item>
                             <br>
                             <el-form-item label="Semestre:">
@@ -67,6 +67,10 @@
                                         @change="addModified('estimated_out')">
                                 </el-date-picker>
                             </el-form-item>
+                            <el-form-item label="Anno accademico: ">
+                                <el-input v-model="mobilityBuffer.academic_year" :disabled="!editMobility"
+                                          @change="addModified('academic_year')"/>
+                            </el-form-item>
                             <el-form-item label="Numero contratto: ">
                                 <el-input
                                         v-model="mobilityBuffer.contract_number"
@@ -86,6 +90,26 @@
                                 </el-switch>
                             </el-form-item>
                             <br>
+
+                            <el-form-item label="Learning agreement caricato: ">
+                                <div v-if="mobilityBuffer.learning_agreement === null">
+                                    <i class="fa fa-fw fa-exclamation-triangle"></i>
+                                    <span> Documento non caricato</span>
+                                </div>
+                                <div v-else>
+                                    <i class="fa fa-fw fa-file-pdf-o"></i>
+                                    <span> {{ mobilityBuffer.learning_agreement.name }}</span>
+                                </div>
+                            </el-form-item>
+
+                            <document-uploader
+                                    upload-url="/document/upload"
+                                    document-type="learning_agreement"
+                                    label="Carica learning agreement: "
+                                    :mobility-buffer="mobilityBuffer"
+                                    :disabled="!editMobility"/>
+
+                            <br>
                             <el-form-item>
                                 <el-button type="primary" v-if="!editMobility" @click="triggerEditMobility">
                                     Modifica
@@ -103,13 +127,166 @@
                         <span slot="label">
                             <i class="fa fa-fw fa-exchange"></i> Transcript of Records
                         </span>
-                        TOR
+                        <el-form :inline="true">
+                            <el-form-item label="CFU da esami (Transcript):">
+                                <el-input-number
+                                        v-model="mobilityBuffer.transcript_cfu_exams"
+                                        :disabled="!editMobility" controls-position="right"
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('transcript_cfu_exams')"/>
+                            </el-form-item>
+                            <el-form-item label="CFU da tesi (Transcript):">
+                                <el-input-number
+                                        v-model="mobilityBuffer.transcript_cfu_thesis"
+                                        :disabled="!editMobility" controls-position="right"
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('transcript_cfu_thesis')"/>
+                            </el-form-item>
+                            <el-form-item label="Estensione mobilità (giorni):">
+                                <el-input-number
+                                        v-model="mobilityBuffer.extension" style="width: 100px"
+                                        :disabled="!editMobility" controls-position="right"
+                                        @change="addModified('extension')"/>
+                            </el-form-item>
+                            <br>
+                            <el-form-item label="Inizio effettivo mobilità:">
+                                <el-date-picker
+                                        v-model="mobilityBuffer.acknowledged_in"
+                                        type="date" :disabled="!editMobility"
+                                        format="dd-MM-yyyy"
+                                        placeholder="Inizio effettivo mobilità"
+                                        @change="addModified('acknowledged_in')">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="Fine effettiva mobilità:">
+                                <el-date-picker
+                                        v-model="mobilityBuffer.acknowledged_out"
+                                        type="date" :disabled="!editMobility"
+                                        format="dd-MM-yyyy"
+                                        placeholder="Fine effettiva mobilità"
+                                        @change="addModified('acknowledged_out')">
+                                </el-date-picker>
+                            </el-form-item>
+                            <br>
+                            <el-form-item label="EU grant:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.eu_grant" style="width: 100px"
+                                        :disabled="!editMobility" controls-position="right"
+                                        @change="addModified('eu_grant')"/>
+                            </el-form-item>
+                            <el-form-item label="Travel grant:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.travel_grant" style="width: 100px"
+                                        :disabled="!editMobility" controls-position="right"
+                                        @change="addModified('travel_grant')"/>
+                            </el-form-item>
+                            <el-form-item label="Co-funding:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.co_funding" style="width: 100px"
+                                        :disabled="!editMobility" controls-position="right"
+                                        @change="addModified('co_funding')"/>
+                            </el-form-item>
+                            <br>
+                            <el-form-item label="Altri finanziamenti:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.other_funding" style="width: 100px"
+                                        :disabled="!editMobility" controls-position="right"
+                                        @change="addModified('other_funding')"/>
+                            </el-form-item>
+                            <el-form-item label="Note finanziamenti:">
+                                <el-input v-model="mobilityBuffer.funding_notes" style="width: 100%"
+                                          :disabled="!editMobility" @change="addModified('funding_notes')"
+                                          placeholder="Note su altri finanziamenti"/>
+                            </el-form-item>
+                            <br>
+
+                            <el-form-item label="Transcript of records caricato: ">
+                                <div v-if="mobilityBuffer.transcript === null">
+                                    <i class="fa fa-fw fa-exclamation-triangle"></i>
+                                    <span> Documento non caricato</span>
+                                </div>
+                                <div v-else>
+                                    <i class="fa fa-fw fa-file-pdf-o"></i>
+                                    <span> {{ mobilityBuffer.transcript.name }}</span>
+                                </div>
+                            </el-form-item>
+                            <document-uploader
+                                    upload-url="/document/upload"
+                                    document-type="transcript"
+                                    label="Carica transcript of records: "
+                                    :mobility-buffer="mobilityBuffer"
+                                    :disabled="!editMobility"/>
+                            <br>
+                            <el-form-item>
+                                <el-button type="primary" v-if="!editMobility" @click="triggerEditMobility">
+                                    Modifica
+                                </el-button>
+                                <el-button type="success" v-if="editMobility" @click="commitEditMobility">
+                                    Salva
+                                </el-button>
+                                <el-button type="warning" v-if="editMobility" @click="undoEditMobility">
+                                    Annulla
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
                     </el-tab-pane>
                     <el-tab-pane>
                         <span slot="label">
                             <i class="fa fa-fw fa-check-square-o"></i> Modulo Riconoscimento Crediti
                         </span>
-                        Role
+                        <el-form :inline="true">
+                            <el-form-item label="CFU da esami riconosciuti:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.acknowledged_cfu_exams"
+                                        :disabled="!editMobility" controls-position="right"
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('acknowledged_cfu_exams')"/>
+                            </el-form-item>
+                            <el-form-item label="CFU da tesi riconosciuti:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.acknowledged_cfu_thesis"
+                                        :disabled="!editMobility" controls-position="right"
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('acknowledged_cfu_thesis')"/>
+                            </el-form-item>
+                            <el-form-item label="CFU sovrannumerari:">
+                                <el-input-number
+                                        v-model="mobilityBuffer.acknowledged_cfu_supernumerary"
+                                        :disabled="!editMobility" controls-position="right"
+                                        :min="0" style="width: 100px"
+                                        @change="addModified('acknowledged_cfu_supernumerary')"/>
+                            </el-form-item>
+                            <br>
+                            <el-form-item label="MCR caricato: ">
+                                <div v-if="mobilityBuffer.mobility_acknowledgement === null">
+                                    <i class="fa fa-fw fa-exclamation-triangle"></i>
+                                    <span> Documento non caricato</span>
+                                </div>
+                                <div v-else>
+                                    <i class="fa fa-fw fa-file-pdf-o"></i>
+                                    <span> {{ mobilityBuffer.mobility_acknowledgement.name }}</span>
+                                </div>
+                            </el-form-item>
+
+                            <document-uploader
+                                    upload-url="/document/upload"
+                                    document-type="mobility_acknowledgement"
+                                    label="Carica modulo riconoscimento crediti: "
+                                    :mobility-buffer="mobilityBuffer"
+                                    :disabled="!editMobility"/>
+                            <br>
+                            <el-form-item>
+                                <el-button type="primary" v-if="!editMobility" @click="triggerEditMobility">
+                                    Modifica
+                                </el-button>
+                                <el-button type="success" v-if="editMobility" @click="commitEditMobility">
+                                    Salva
+                                </el-button>
+                                <el-button type="warning" v-if="editMobility" @click="undoEditMobility">
+                                    Annulla
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>
@@ -120,7 +297,7 @@
                 <el-steps :active="mobilityStatusActiveTab" finish-status="success"
                           align-center>
                     <el-step v-for="mob in mobilityStatuses" title=""
-                             :description="mob.name" :key="mob.id"></el-step>
+                             :description="mob.name" :key="mob.id"/>
                 </el-steps>
             </el-col>
         </el-row>
@@ -131,15 +308,19 @@
             </el-col>
         </el-row>
 
-        <attachment-manager :mobility-id="mobility.id" :attachments="attachments"></attachment-manager>
+        <attachment-manager :mobility-id="mobility.id" :attachments="attachments"/>
     </div>
 </template>
 
 <script>
     import AttachmentManager from "./AttachmentManager";
+    import DocumentUploader from "./DocumentUploader";
 
     export default {
-        components: {AttachmentManager},
+        components: {
+            DocumentUploader,
+            AttachmentManager
+        },
         name: 'mobility-tracker',
         props: {
             mobility: Object,
@@ -151,6 +332,8 @@
         data: function () {
             return {
                 editMobility: false,
+                editTranscript: false,
+                editAcknowledgement: false,
                 mobilityBuffer: this.mobility,
                 tempMobilityBuffer: {},
                 modifiedKeys: []
@@ -177,20 +360,8 @@
             }
         },
         methods: {
-            getLearningAgreementSubset(mobility) {
-                return Object.assign({},
-                    (({university_branch_id, estimated_cfu_exams, estimated_cfu_thesis, semester_id, estimated_in, estimated_out, granted}) => ({
-                        university_branch_id,
-                        estimated_cfu_exams,
-                        estimated_cfu_thesis,
-                        semester_id,
-                        estimated_in,
-                        estimated_out,
-                        granted
-                    }))(mobility));
-            },
             triggerEditMobility() {
-                this.tempMobilityBuffer = this.getLearningAgreementSubset(this.mobilityBuffer);
+                this.tempMobilityBuffer = Object.assign({}, this.mobilityBuffer);
                 this.editMobility = true;
             },
             addModified(key) {

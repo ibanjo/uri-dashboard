@@ -35,7 +35,12 @@ if ($('#vue-view-user').length) {
         },
         computed: {
             full_name: function () {
-                return !this.ready ? '...' : this.user.name + ' ' + this.user.middle_name + ' ' + this.user.surname;
+                if(!this.ready) {
+                    return '...'
+                } else if(this.user.middle_name === null) {
+                    return this.user.name + ' ' + this.user.surname;
+                } else
+                    return this.user.name + ' ' + this.user.middle_name + ' ' + this.user.surname;
             },
             has_mobilities: function () {
                 return !this.ready ? false : this.user.mobilities.length > 0;
