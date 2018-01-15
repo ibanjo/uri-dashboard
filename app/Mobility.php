@@ -70,6 +70,11 @@ class Mobility extends Model
         'granted' => 'boolean'
     ];
 
+    protected $dates = [
+        'created_at', 'updated_at', 'deleted_at', 'first_semester_deadline',
+        'second_semester_deadline', 'expiration_date'
+    ];
+
     public function semester()
     {
         return $this->belongsTo(Semester::class);

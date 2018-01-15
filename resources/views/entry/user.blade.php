@@ -128,12 +128,6 @@
                         </el-form-item>
                     </el-form>
                 </tab-content>
-
-                <tab-content title="Riepilogo">
-                    {{-- TODO use element here--}}
-                    <h3>Riepilogo</h3>
-
-                </tab-content>
             </form-wizard>
         </div>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\DegreeCourseType;
 use App\Role;
 use App\UniversityBranch;
 use App\User as User;
@@ -35,7 +36,8 @@ class AdminController extends Controller
     {
         JavaScript::put([
             'countries' => Country::all(),
-            'university_branches' => UniversityBranch::with(['country'])->get()
+            'university_branches' => UniversityBranch::with(['country'])->get(),
+            'degree_course_types' => DegreeCourseType::all()
         ]);
         return View::make('entry.universities');
     }

@@ -31,7 +31,12 @@ use Illuminate\Database\Eloquent\Model;
 class UniversityBranch extends Model
 {
     protected $casts = [
-        'country_id' => 'integer'
+        'country_id' => 'integer',
+        'iad_levels' => 'array'
+    ];
+
+    protected $dates = [
+        'first_semester_deadline', 'second_semester_deadline', 'expiration_date'
     ];
 
     /**

@@ -1,5 +1,6 @@
 <template>
-    <el-form :inline="inline" :rules="rules" :model="universityBranch" :label-width="labelWidth" ref="universityBranchForm">
+    <el-form :inline="inline" :rules="rules" :model="universityBranch" :label-width="labelWidth"
+             ref="universityBranchForm">
         <el-form-item prop="name" label="Nome originale: ">
             <el-input v-model="universityBranch.name"/>
         </el-form-item>
@@ -17,11 +18,48 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item prop="erasmus_code" label="Travel grant: ">
+        <el-form-item prop="erasmus_code" label="Codice Erasmus: ">
             <el-input v-model="universityBranch.erasmus_code"/>
         </el-form-item>
         <el-form-item prop="max_outgoing" label="Posti disponibili: ">
             <el-input-number v-model="universityBranch.max_outgoing" controls-position="right" :min="0"/>
+        </el-form-item>
+        <el-form-item label="Livelli accettati: ">
+            <el-select v-model="universityBranch.iad_levels" multiple>
+                <el-option
+                        v-for="type in degreeCourseTypes"
+                        :key="type.id"
+                        :label="type.name_ita"
+                        :value="type.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="Scadenza (semestre 1): ">
+            <el-date-picker
+                    v-model="universityBranch.first_semester_deadline"
+                    format="dd-MM-yyyy"
+                    value-format="dd-MM-yyyy"
+                    placeholder="Deadline primo semestre">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="Scadenza (semestre 2): ">
+            <el-date-picker
+                    v-model="universityBranch.second_semester_deadline"
+                    format="dd-MM-yyyy"
+                    value-format="dd-MM-yyyy"
+                    placeholder="Deadline secondo semestre">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item prop="expiration_date" label="Scadenza agreement: ">
+            <el-date-picker
+                    v-model="universityBranch.expiration_date"
+                    format="dd-MM-yyyy"
+                    value-format="dd-MM-yyyy"
+                    placeholder="Scadenza agreement">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="Livello lingua: ">
+            <el-input v-model="universityBranch.language_level" placeholder="Certificazione linguistica richiesta"/>
         </el-form-item>
         <el-form-item>
             <el-button-group>
@@ -39,6 +77,7 @@
             inline: {type: Boolean, default: false},
             labelWidth: {type: String, default: '200px'},
             countries: {type: Array, required: true},
+            degreeCourseTypes: {type: Array, required: true},
             action: {type: String, required: true}
         },
         data: function () {
@@ -48,7 +87,12 @@
                     name_eng: '',
                     country_id: 1,
                     erasmus_code: '',
-                    max_outgoing: 0
+                    max_outgoing: 0,
+                    expiration_date: '',
+                    first_semester_deadline: '',
+                    second_semester_deadline: '',
+                    language_level: '',
+                    iad_levels: []
                 },
                 rules: {
                     name: [
@@ -56,6 +100,9 @@
                     ],
                     name_eng: [
                         {required: true, message: 'Inserire il nome in inglese della sede', trigger: 'blur'}
+                    ],
+                    expiration_date: [
+                        {required: true, message: 'Inserire la data di scadenza dell\'agreement', trigger: 'blur'}
                     ]
                 }
             }

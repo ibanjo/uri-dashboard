@@ -25,6 +25,7 @@ import MobilityTracker from './components/MobilityTracker';
 import AttachmentManager from './components/AttachmentManager';
 import CountryForm from './components/CountryForm';
 import UniversityBranchForm from './components/UniversityBranchForm';
+import MobilityForm from './components/MobilityForm';
 
 /**
  * Requiring minor plugins
@@ -45,6 +46,7 @@ window.Vue.component('mobility-tracker', MobilityTracker);
 window.Vue.component('attachment-manager', AttachmentManager);
 window.Vue.component('country-form', CountryForm);
 window.Vue.component('university-branch-form', UniversityBranchForm);
+window.Vue.component('mobility-form', MobilityForm);
 
 /**
  * Requiring Vue VMs

@@ -84,6 +84,11 @@ if ($('#vue-entry-user').length) {
                 }
             }
         },
+        computed: {
+            recap: function () {
+                return Object.assign({}, this.user.registry, this.user.academic, this.user.bank);
+            }
+        },
         methods: {
             registerUser: function () {
                 // TODO implement validation

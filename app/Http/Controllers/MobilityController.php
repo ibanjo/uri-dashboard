@@ -43,8 +43,8 @@ class MobilityController extends Controller
         $mob->mobility_status_id = 1;
         $mob->university_branch_id = $data['university_branch_id'];
         $mob->semester_id = $data['semester_id'];
-        $mob->estimated_in = Carbon::parse($data['estimated_in']); // FIXME Carbon::parse gives the day before
-        $mob->estimated_out = Carbon::parse($data['estimated_out']);
+        $mob->estimated_in = Carbon::createFromFormat('d-m-Y', $data['estimated_in']);
+        $mob->estimated_out = Carbon::createFromFormat('d-m-Y', $data['estimated_out']);
         $mob->estimated_cfu_exams = $data['estimated_cfu_exams'];
         $mob->estimated_cfu_thesis = $data['estimated_cfu_thesis'];
         $mob->academic_year = $data['academic_year'];
@@ -77,7 +77,7 @@ class MobilityController extends Controller
         $mobility = Mobility::find($data['id']);
         foreach (array_keys($data) as $key) {
             if(in_array($key, ['estimated_in', 'estimated_out', 'acknowledged_in', 'acknowledged_out']))
-                $mobility[$key] = Carbon::parse($data[$key]);
+                $mobility[$key] = Carbon::createFromFormat('d-m-Y', $data[$key]);
             else
                 $mobility[$key] = $data[$key];
         }

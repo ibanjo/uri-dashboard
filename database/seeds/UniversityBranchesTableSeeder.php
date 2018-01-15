@@ -20,16 +20,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'erasmus_code' => 'I BARI05',
             'country_id' => 1, // Italy
             'max_outgoing' => 6, // FIXME only in this case this means "incoming"
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
-
-        DB::table($tab)->insert([ // FIXME just an example
-            'name' => 'Politecnico di Milano',
-            'name_eng' => 'Polytechnic University of Milan',
-            'erasmus_code' => 'I MILANO02',
-            'country_id' => 1, // Italy
-            'max_outgoing' => 6,
+            'expiration_date' => Carbon::parse('2030-12-30'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -40,6 +31,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'erasmus_code' => 'E MADRID05',
             'country_id' => 2, // Spain
             'max_outgoing' => 6,
+            'expiration_date' => Carbon::parse('2018-12-30'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -50,6 +42,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'erasmus_code' => 'D SAARBRU03',
             'country_id' => 3, // Germany
             'max_outgoing' => 6,
+            'expiration_date' => Carbon::parse('2018-12-30'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

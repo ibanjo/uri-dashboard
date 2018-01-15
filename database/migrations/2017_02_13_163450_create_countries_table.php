@@ -24,8 +24,8 @@ class CreateCountriesTable extends Migration
             $table->string('name_eng');
 
             // TODO consider referencing the monthly grant field to an external table with timestamps
-            $table->integer('monthly_grant');
-            $table->integer('travel_grant');
+            $table->decimal('monthly_grant', 15, 2);
+            $table->decimal('travel_grant', 15, 2);
         });
     }
 

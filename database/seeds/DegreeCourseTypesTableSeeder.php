@@ -34,5 +34,12 @@ class DegreeCourseTypesTableSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        DB::table($tab)->insert([
+            'name_ita' => 'Dottorato di Ricerca',
+            'name_eng' => 'PhD',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
     }
 }

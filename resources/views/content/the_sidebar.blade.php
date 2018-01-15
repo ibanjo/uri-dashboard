@@ -39,9 +39,6 @@
                 </li>
             @endif
             <li>
-                <a href="#"><i class="fa fa-fw fa-bank"></i> Altro...</a>
-            </li>
-            <li>
                 <a href="#" onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">
                     <i class="fa fa-fw fa-sign-out"></i> Esci</a>

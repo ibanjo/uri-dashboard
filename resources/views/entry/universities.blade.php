@@ -16,7 +16,7 @@
                             </div>
                             <div class="text item">
                                 <university-branch-form :countries="countries" action="{{ route('new.university') }}"
-                                              @university-branch-added="addUniversity"/>
+                                                        :degree-course-types="degree_course_types" @university-branch-added="addUniversity"/>
                             </div>
                         </el-card>
                     </el-col>

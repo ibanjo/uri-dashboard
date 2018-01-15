@@ -6,11 +6,11 @@
         <el-form-item prop="name_eng" label="Nome (ENG): ">
             <el-input v-model="country.name_eng"/>
         </el-form-item>
-        <el-form-item prop="monthly_grant" label="Monthly grant: ">
-            <el-input-number v-model="country.monthly_grant" controls-position="right" :min="0"/>
+        <el-form-item prop="monthly_grant" label="Monthly grant (EUR): ">
+            <el-input-number v-model="country.monthly_grant" controls-position="right" :min="0" :step="0.01"/>
         </el-form-item>
-        <el-form-item prop="travel_grant" label="Travel grant: ">
-            <el-input-number v-model="country.travel_grant" controls-position="right" :min="0"/>
+        <el-form-item prop="travel_grant" label="Travel grant (EUR): ">
+            <el-input-number v-model="country.travel_grant" controls-position="right" :min="0" :step="0.01"/>
         </el-form-item>
         <el-form-item>
             <el-button-group>

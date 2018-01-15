@@ -5,6 +5,7 @@ if ($('#vue-entry-universities').length) {
         data: {
             countries: DataFromBackend.countries,
             university_branches: DataFromBackend.university_branches,
+            degree_course_types: DataFromBackend.degree_course_types
         },
         methods: {
             addCountry: function (newCountry) {

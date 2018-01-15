@@ -13,6 +13,7 @@ use App\Role;
 use App\UniversityBranch;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 
 trait CreatesModels
 {
@@ -31,11 +32,17 @@ trait CreatesModels
     public function newUniversityBranch($data)
     {
         $university = new UniversityBranch;
-        $university->name = $data['name'];
-        $university->name_eng = $data['name_eng'];
-        $university->country_id = $data['country_id'];
-        $university->erasmus_code = $data['erasmus_code'];
-        $university->max_outgoing = $data['max_outgoing'];
+        foreach (array_keys($data) as $key) {
+            if (in_array($key, ['first_semester_deadline', 'second_semester_deadline', 'expiration_date']))
+                $university[$key] = Carbon::createFromFormat('d-m-Y', $data[$key]);
+            else
+                $university[$key] = $data[$key];
+        }
+//        $university->name = $data['name'];
+//        $university->name_eng = $data['name_eng'];
+//        $university->country_id = $data['country_id'];
+//        $university->erasmus_code = $data['erasmus_code'];
+//        $university->max_outgoing = $data['max_outgoing'];
         $university->save();
         return $university;
     }
