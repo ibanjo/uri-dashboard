@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('users', 'UserController@viewAll')->name('view.allusers');
         Route::get('users/{id}', 'UserController@viewOne')->name('view.user');
         Route::get('students', 'UserController@viewStudents')->name('view.students');
+        Route::get('universities', 'AdminController@viewUniversities')->name('view.universities');
     });
 });
 
@@ -64,8 +65,6 @@ Route::prefix('entry')->group(function () {
     });
 
     Route::middleware(['auth', 'admin'])->group(function() {
-        Route::get('universities', 'AdminController@entryUniversities')->name('entry.universities');
-
         Route::post('country', 'AdminController@saveNewCountry')->name('new.country');
         Route::post('university', 'AdminController@saveNewUniversity')->name('new.university');
     });

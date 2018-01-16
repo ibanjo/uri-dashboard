@@ -21,6 +21,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'country_id' => 1, // Italy
             'max_outgoing' => 6, // FIXME only in this case this means "incoming"
             'expiration_date' => Carbon::parse('2030-12-30'),
+            'iad_levels' => json_encode([1, 2, 3]),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -32,6 +33,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'country_id' => 2, // Spain
             'max_outgoing' => 6,
             'expiration_date' => Carbon::parse('2018-12-30'),
+            'iad_levels' => json_encode([1, 2]),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -43,6 +45,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'country_id' => 3, // Germany
             'max_outgoing' => 6,
             'expiration_date' => Carbon::parse('2018-12-30'),
+            'iad_levels' => json_encode([1]),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

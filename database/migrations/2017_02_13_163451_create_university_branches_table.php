@@ -26,6 +26,8 @@ class CreateUniversityBranchesTable extends Migration
             $table->integer('country_id')->unsigned();
             $table->foreign('country_id')->references('id')->on('countries');
 
+            $table->integer('contact_person_id')->unsigned()->nullable();
+
             // Agreement data
             $table->date('first_semester_deadline')->nullable();
             $table->date('second_semester_deadline')->nullable();

@@ -39,11 +39,17 @@ class UniversityBranch extends Model
         'first_semester_deadline', 'second_semester_deadline', 'expiration_date'
     ];
 
+    public function contact_person()
+    {
+        return User::where('id', $this->contact_person_id);
+    }
+
     /**
      * Queries the Country this UniversityBranch belongs to
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function country() {
+    public function country()
+    {
         return $this->belongsTo(Country::class);
     }
 }

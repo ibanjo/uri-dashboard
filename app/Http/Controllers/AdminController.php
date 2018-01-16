@@ -32,14 +32,14 @@ class AdminController extends Controller
         return View::make('admin.approve', ['vueVM' => 'vue-approve-users']);
     }
 
-    public function entryUniversities()
+    public function viewUniversities()
     {
         JavaScript::put([
             'countries' => Country::all(),
             'university_branches' => UniversityBranch::with(['country'])->get(),
             'degree_course_types' => DegreeCourseType::all()
         ]);
-        return View::make('entry.universities', ['vueVM' => 'vue-entry-universities']);
+        return View::make('view.universities', ['vueVM' => 'vue-view-universities']);
     }
 
     public function saveNewCountry(Request $request)

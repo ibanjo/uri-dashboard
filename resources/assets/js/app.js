@@ -59,4 +59,4 @@ require('./vue/vue-entry-user');
 require('./vue/vue-view-allusers');
 require('./vue/vue-view-user');
 require('./vue/vue-approve-users');
-require('./vue/vue-entry-universities');
+require('./vue/vue-view-universities');
