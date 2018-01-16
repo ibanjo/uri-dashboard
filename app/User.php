@@ -95,6 +95,13 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function active_mobilities()
+    {
+        return $this->mobilities()
+            ->where('mobility_status_id', '<>', 6)
+            ->where('mobility_status_id', '<>', 7);
+    }
+
     public function full_name()
     {
         return $this->name.' '.$this->middle_name.' '.$this->surname;

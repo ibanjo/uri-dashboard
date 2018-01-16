@@ -55,13 +55,12 @@ Route::prefix('entry')->group(function () {
     Route::middleware(['auth'])->group(function () {
         // Bank related entry operations
         Route::prefix('bank')->group(function () {
-            Route::get('account/{user_id}', 'BankController@enterNewAccount')->name('entry.bank.account');
-            Route::post('account', 'BankController@createNewAccount');
+            Route::post('account', 'BankController@createNewAccount')->name('new.bank.account');
         });
 
         // Mobility related entry operations
         Route::get('mobility/{user_id}', 'MobilityController@showNewMobilityForm')->name('entry.mobility');
-        Route::post('mobility', 'MobilityController@createNewMobility');
+        Route::post('mobility', 'MobilityController@createNewMobility')->name('new.mobility');
     });
 
     Route::middleware(['auth', 'admin'])->group(function() {
@@ -94,6 +93,7 @@ Route::prefix('edit')->group(function () {
         Route::put('user/activebank', 'UserController@changeActiveBankAccount');
         Route::put('mobility/status', 'MobilityController@changeMobilityStatus')->name('edit.mobility.status');
         Route::put('mobility', 'MobilityController@editMobility')->name('edit.mobility');
+        Route::put('mobility/abort', 'MobilityController@abortMobility')->name('mobility.abort');
     });
 });
 

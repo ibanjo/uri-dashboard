@@ -26,6 +26,7 @@ import AttachmentManager from './components/AttachmentManager';
 import CountryForm from './components/CountryForm';
 import UniversityBranchForm from './components/UniversityBranchForm';
 import MobilityForm from './components/MobilityForm';
+import BankAccountForm from './components/BankAccountForm';
 
 /**
  * Requiring minor plugins
@@ -47,6 +48,7 @@ window.Vue.component('attachment-manager', AttachmentManager);
 window.Vue.component('country-form', CountryForm);
 window.Vue.component('university-branch-form', UniversityBranchForm);
 window.Vue.component('mobility-form', MobilityForm);
+window.Vue.component('bank-account-form', BankAccountForm);
 
 /**
  * Requiring Vue VMs
@@ -56,7 +58,5 @@ require('./vue/vue-home');
 require('./vue/vue-entry-user');
 require('./vue/vue-view-allusers');
 require('./vue/vue-view-user');
-require('./vue/vue-entry-bank');
-require('./vue/vue-entry-mobility');
 require('./vue/vue-approve-users');
 require('./vue/vue-entry-universities');

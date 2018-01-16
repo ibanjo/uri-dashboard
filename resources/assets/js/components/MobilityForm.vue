@@ -129,9 +129,7 @@
                             type: response.data.status,
                             message: response.data.message
                         });
-                        setTimeout(function () {
-                            window.location = response.data.redirect;
-                        }, 1000);
+                        this.$emit('mobility-created', response.data);
                     })
                     .catch(error => {
                         this.$message({
@@ -141,7 +139,7 @@
                     });
             },
             onCancel: function () {
-                window.location = '/view/users/' + this.userId;
+                this.$emit('canceled');
             }
         }
     }

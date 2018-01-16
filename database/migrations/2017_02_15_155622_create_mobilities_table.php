@@ -24,7 +24,6 @@ class CreateMobilitiesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('mobility_status_id')->unsigned();
             $table->foreign('mobility_status_id')->references('id')->on('mobility_statuses');
-            $table->text('notes')->nullable(); // General purpose note field (e.g. for abortion motivation)
 
             $table->integer('university_branch_id')->unsigned();
             $table->foreign('university_branch_id')->references('id')->on('university_branches');
@@ -65,6 +64,8 @@ class CreateMobilitiesTable extends Migration
             $table->mediumInteger('spent_grant')->nullable();
 
             $table->string('funding_notes')->nullable();
+            $table->string('abortion_notes')->nullable();
+            $table->text('notes')->nullable(); // General purpose note field
         });
     }
 

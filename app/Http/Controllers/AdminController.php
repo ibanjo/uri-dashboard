@@ -29,7 +29,7 @@ class AdminController extends Controller
                     'mobilities.universityBranch.country',
                     'bank_accounts'])->get(),
         ]);
-        return View::make('admin.approve');
+        return View::make('admin.approve', ['vueVM' => 'vue-approve-users']);
     }
 
     public function entryUniversities()
@@ -39,7 +39,7 @@ class AdminController extends Controller
             'university_branches' => UniversityBranch::with(['country'])->get(),
             'degree_course_types' => DegreeCourseType::all()
         ]);
-        return View::make('entry.universities');
+        return View::make('entry.universities', ['vueVM' => 'vue-entry-universities']);
     }
 
     public function saveNewCountry(Request $request)

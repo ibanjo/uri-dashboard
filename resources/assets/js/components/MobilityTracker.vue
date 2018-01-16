@@ -54,6 +54,7 @@
                                         v-model="mobilityBuffer.estimated_in"
                                         type="date" :disabled="!editMobility"
                                         format="dd-MM-yyyy"
+                                        value-format="dd-MM-yyyy"
                                         placeholder="Inizio contratto"
                                         @change="addModified('estimated_in')">
                                 </el-date-picker>
@@ -63,6 +64,7 @@
                                         v-model="mobilityBuffer.estimated_out"
                                         type="date" :disabled="!editMobility"
                                         format="dd-MM-yyyy"
+                                        value-format="dd-MM-yyyy"
                                         placeholder="Fine contratto"
                                         @change="addModified('estimated_out')">
                                 </el-date-picker>
@@ -97,7 +99,7 @@
                                     <span> Documento non caricato</span>
                                 </div>
                                 <div v-else>
-                                    <i class="fa fa-fw fa-file-pdf-o"></i>
+                                    <i class="fa fa-fw fa-file-o"></i>
                                     <span> {{ mobilityBuffer.learning_agreement.name }}</span>
                                 </div>
                             </el-form-item>
@@ -154,6 +156,7 @@
                                         v-model="mobilityBuffer.acknowledged_in"
                                         type="date" :disabled="!editMobility"
                                         format="dd-MM-yyyy"
+                                        value-format="dd-MM-yyyy"
                                         placeholder="Inizio effettivo mobilità"
                                         @change="addModified('acknowledged_in')">
                                 </el-date-picker>
@@ -163,6 +166,7 @@
                                         v-model="mobilityBuffer.acknowledged_out"
                                         type="date" :disabled="!editMobility"
                                         format="dd-MM-yyyy"
+                                        value-format="dd-MM-yyyy"
                                         placeholder="Fine effettiva mobilità"
                                         @change="addModified('acknowledged_out')">
                                 </el-date-picker>
@@ -206,7 +210,7 @@
                                     <span> Documento non caricato</span>
                                 </div>
                                 <div v-else>
-                                    <i class="fa fa-fw fa-file-pdf-o"></i>
+                                    <i class="fa fa-fw fa-file-o"></i>
                                     <span> {{ mobilityBuffer.transcript.name }}</span>
                                 </div>
                             </el-form-item>
@@ -263,7 +267,7 @@
                                     <span> Documento non caricato</span>
                                 </div>
                                 <div v-else>
-                                    <i class="fa fa-fw fa-file-pdf-o"></i>
+                                    <i class="fa fa-fw fa-file-o"></i>
                                     <span> {{ mobilityBuffer.mobility_acknowledgement.name }}</span>
                                 </div>
                             </el-form-item>
@@ -302,9 +306,12 @@
             </el-col>
         </el-row>
 
-        <el-row type="flex" justify="space-around" style="margin-bottom: 20px">
-            <el-col :span="1">
-                <el-button @click="mobilityNextStep">Avanti</el-button>
+        <el-row type="flex" justify="center" style="margin-bottom: 20px">
+            <el-col :span="4">
+                <el-button type="danger" @click="abortMobility">Chiudi mobilità</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-button type="primary" @click="mobilityNextStep">Avanti</el-button>
             </el-col>
         </el-row>
 
@@ -327,7 +334,10 @@
             attachments: Array,
             semesters: Array,
             mobilityStatuses: Array,
-            universityBranches: Array
+            universityBranches: Array,
+            abortAction: {type: String, required: true},
+            editStatusAction: {type: String, required: true},
+            editAction: {type: String, required: true}
         },
         data: function () {
             return {
@@ -381,7 +391,7 @@
                         modifiedMobility[k] = this.mobilityBuffer[k]
                     });
                     modifiedMobility.id = this.mobilityBuffer.id;
-                    axios.put('/edit/mobility', modifiedMobility)
+                    axios.put(this.editAction, modifiedMobility)
                         .then(response => {
                             this.$message({
                                 type: response.data.status,
@@ -392,27 +402,29 @@
                             this.editMobility = false;
                         })
                         .catch(error => {
-                            this.$message({
-                                type: error.response.data.status,
-                                message: error.response.data.message
-                            });
+                            this.$message.error(error.response.data.message);
                         });
                 }).catch(() => {
                 });
             },
             undoEditMobility() {
-                this.$confirm('I cambiamenti effettuati verranno persi, continuare?', 'Attenzione', {
-                    confirmButtonText: 'OK',
-                    cancelButtonText: 'Annulla',
-                    type: 'warning'
-                }).then(() => {
-                    Object.keys(this.tempMobilityBuffer)
-                        .forEach(k => this.mobilityBuffer[k] = this.tempMobilityBuffer[k]);
+                if (this.modifiedKeys.length > 0) {
+                    this.$confirm('I cambiamenti effettuati verranno persi, continuare?', 'Attenzione', {
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Annulla',
+                        type: 'warning'
+                    }).then(() => {
+                        Object.keys(this.tempMobilityBuffer)
+                            .forEach(k => this.mobilityBuffer[k] = this.tempMobilityBuffer[k]);
+                        this.tempMobilityBuffer = {};
+                        this.modifiedKeys = [];
+                        this.editMobility = false;
+                    }).catch(() => {
+                    });
+                } else {
                     this.tempMobilityBuffer = {};
-                    this.modifiedKeys = [];
                     this.editMobility = false;
-                }).catch(() => {
-                });
+                }
             },
             mobilityNextStep() {
                 this.$confirm('Portare la mobilità al prossimo stato?', 'Info', {
@@ -420,7 +432,7 @@
                     cancelButtonText: 'Annulla',
                     type: 'info'
                 }).then(() => {
-                    axios.put('/edit/mobility/status', {
+                    axios.put(this.editStatusAction, {
                         id: this.mobility.id,
                         new_status_id: this.mobility.mobility_status_id + 1
                     })
@@ -432,16 +444,32 @@
                             });
                         })
                         .catch(error => {
-                            this.$message({
-                                type: error.response.data.status,
-                                message: error.response.data.message
-                            });
+                            this.$message.error(error.response.data.message);
                         });
                 }).catch(() => {
                 });
             },
             navigateToTab(navigateFunction, index) {
                 // TODO direct navigation between statuses not implemented
+            },
+            abortMobility() {
+                this.$prompt('Chiudere anticipatamente la mobilità?', 'Attenzione', {
+                    confirmButtonText: 'Chiudi mobilità',
+                    cancelButtonText: 'Annulla',
+                    inputPlaceholder: 'Messaggio di chiusura'
+                }).then(msg => {
+                    axios.put(this.abortAction, {id: this.mobilityBuffer.id, message: msg.value})
+                        .then(response => {
+                            this.$message({type: response.data.status, message: response.data.message});
+                            setTimeout(function () {
+                                window.location = response.data.redirect;
+                            }, 1000)
+                        })
+                        .catch(error => {
+                            this.$message.error(error.response.data.message);
+                        });
+                }).catch(() => {
+                });
             }
         }
     }

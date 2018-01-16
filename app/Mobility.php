@@ -102,7 +102,7 @@ class Mobility extends Model
      * Query the destination (UniversityBranch) of the Mobility
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function universityBranch()
+    public function university_branch()
     {
         return $this->belongsTo(UniversityBranch::class);
     }

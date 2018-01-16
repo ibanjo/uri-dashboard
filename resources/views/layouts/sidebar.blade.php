@@ -27,15 +27,19 @@
 
                 {{-- Sidebar hamburger --}}
                 @if(!Auth::guest())
-                <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="offcanvas">
-                    <span class="hamb-top"></span>
-                    <span class="hamb-middle"></span>
-                    <span class="hamb-bottom"></span>
-                </button>
+                    <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="offcanvas">
+                        <span class="hamb-top"></span>
+                        <span class="hamb-middle"></span>
+                        <span class="hamb-bottom"></span>
+                    </button>
                 @endif
 
-                {{-- Page content section --}}
-                @yield('content')
+                <div id="{{ $vueVM }}" class="container">
+                    {{-- Page content section --}}
+                    @yield('content')
+                    {{-- Modal dialogs --}}
+                    @yield('modals')
+                </div>
             </div>
         </div>
     </div>

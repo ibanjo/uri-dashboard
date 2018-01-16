@@ -13,22 +13,6 @@ class BankController extends Controller
 {
     use CreatesModels;
 
-    public function enterNewAccount($userId)
-    {
-        JavaScript::put([
-            'user' => User::with([
-                'department',
-                'registers',
-                'candidate_role',
-                'role',
-                'degree_course.degree_course_type',
-                'mobilities.semester',
-                'mobilities.universityBranch.country',
-                'bank_accounts'])->find($userId),
-        ]);
-        return View::make('entry.bankaccount');
-    }
-
     public function createNewAccount(Request $request)
     {
         $data = $request->all();
@@ -42,7 +26,7 @@ class BankController extends Controller
             $user->save();
         }
         return response([
-            'new_account' => $account,
+            'bank_account' => $account,
             'status' => 'success',
             'message' => 'Conto correttamente registrato',
             'redirect' => route('view.user', ['id' => $account->user_id])

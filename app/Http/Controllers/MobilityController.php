@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mobility as Mobility;
+use App\MobilityStatus;
 use App\UniversityBranch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,25 +16,6 @@ use View;
 class MobilityController extends Controller
 {
     use CreatesModels;
-
-    public function showNewMobilityForm($user_id)
-    {
-        JavaScript::put([
-            'user' => User::with([
-                'department',
-                'registers',
-                'candidate_role',
-                'role',
-                'degree_course.degree_course_type',
-                'mobilities.semester',
-                'mobilities.universityBranch.country',
-                'bank_accounts'])->find($user_id),
-            'countries' => Country::all(),
-            'semesters' => Semester::all(),
-            'university_branches' => UniversityBranch::with(['country'])->get()
-        ]);
-        return View::make('entry.mobility');
-    }
 
     public function createNewMobility(Request $request)
     {
@@ -85,6 +67,20 @@ class MobilityController extends Controller
         return response([
             'status' => 'success',
             'message' => 'Mobilità aggiornata correttamente'
+        ], 200);
+    }
+
+    public function abortMobility(Request $request)
+    {
+        $data = $request->all();
+        $mobility = Mobility::find($data['id']);
+        $mobility->abortion_notes = $data['message'];
+        $mobility->mobility_status_id = 7; // FIXME ugly, need to add an English lowercase identifier and use a query
+        $mobility->save();
+        return response([
+            'status' => 'success',
+            'message' => 'Mobilità chiusa correttamente',
+            'redirect' => route('view.allusers')
         ], 200);
     }
 }
