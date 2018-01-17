@@ -6,7 +6,7 @@ if ($('#vue-home').length) {
         data: {
             toApprove: DataFromBackend.toApprove,
             toApproveMessage: 'Nuovi utenti in attesa di approvazione',
-            nothingToBeDoneMessage: 'Hai finito!',
+            nothingToBeDoneMessage: 'Buon lavoro!',
             attentionRequired: []
         },
         computed: {

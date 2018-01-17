@@ -63,8 +63,8 @@ if ($('#vue-entry-user').length) {
                     fiscal_code: '',
                     email: '',
                     telephone: '',
-                    password: '',
-                    password_confirm: ''
+                    password: DataFromBackend.userLoggedIn ? 'password' : '',
+                    password_confirm: DataFromBackend.userLoggedIn ? 'password' : ''
                 },
                 academic: {
                     degree_course_id: '',
@@ -82,6 +82,11 @@ if ($('#vue-entry-user').length) {
                     user_is_holder: true,
                     has_bank_account: true
                 }
+            }
+        },
+        computed: {
+            recap: function () {
+                return Object.assign({}, this.user.registry, this.user.academic, this.user.bank);
             }
         },
         methods: {

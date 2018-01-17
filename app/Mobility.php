@@ -70,7 +70,13 @@ class Mobility extends Model
         'granted' => 'boolean'
     ];
 
-    public function semester() {
+    protected $dates = [
+        'created_at', 'updated_at', 'deleted_at', 'first_semester_deadline',
+        'second_semester_deadline', 'expiration_date'
+    ];
+
+    public function semester()
+    {
         return $this->belongsTo(Semester::class);
     }
 
@@ -78,7 +84,8 @@ class Mobility extends Model
      * Queries all the Exams related to the Mobility
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function exams() {
+    public function exams()
+    {
         return $this->hasMany(Exam::class);
     }
 
@@ -86,7 +93,8 @@ class Mobility extends Model
      * Query the MobilityStatus of the Mobility
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mobilityStatus() {
+    public function mobilityStatus()
+    {
         return $this->belongsTo(MobilityStatus::class);
     }
 
@@ -94,11 +102,13 @@ class Mobility extends Model
      * Query the destination (UniversityBranch) of the Mobility
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function universityBranch() {
+    public function university_branch()
+    {
         return $this->belongsTo(UniversityBranch::class);
     }
 
-    public function attachments() {
+    public function attachments()
+    {
         return $this->hasMany(Attachment::class);
     }
 
@@ -106,7 +116,23 @@ class Mobility extends Model
      * Query the person (User) involved in the Mobility
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+
+    public function learning_agreement()
+    {
+        return $this->belongsTo(LearningAgreement::class); // FIXME should be hasOne: need to change the schema
+    }
+
+    public function transcript()
+    {
+        return $this->belongsTo(Transcript::class);
+    }
+
+    public function mobility_acknowledgement()
+    {
+        return $this->belongsTo(MobilityAcknowledgement::class);
     }
 }

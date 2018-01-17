@@ -36,4 +36,9 @@ class DegreeCourse extends Model
     {
         return $this->belongsTo(DegreeCourseType::class);
     }
+
+    public function agreements()
+    {
+        // TODO agreements for each DegreeCourse not yet implemented
+    }
 }

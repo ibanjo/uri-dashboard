@@ -65,9 +65,10 @@ class RegisterController extends Controller
         JavaScript::put([
             'roles' => Role::where('hidden', false)->get(),
             'departments' => Department::all(),
-            'degreeCourses' => DegreeCourse::with('degree_course_type')->get()
+            'degreeCourses' => DegreeCourse::with('degree_course_type')->get(),
+            'userLoggedIn' => Auth::check()
         ]);
-        return View::make('entry.user');
+        return View::make('entry.user', ['vueVM' => 'vue-entry-user']);
     }
 
     /**

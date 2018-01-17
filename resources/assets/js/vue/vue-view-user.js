@@ -4,8 +4,12 @@ if ($('#vue-view-user').length) {
         el: '#vue-view-user',
         data: {
             ready: true,
+            newMobilityVisible: false,
+            newBankAccountVisible: false,
             editMobility: false,
+            countries: DataFromBackend.countries,
             user: DataFromBackend.user,
+            mobility: DataFromBackend.mobility,
             attachments: DataFromBackend.attachments,
             mobility_statuses: DataFromBackend.mobility_statuses,
             semesters: DataFromBackend.semesters,
@@ -35,16 +39,32 @@ if ($('#vue-view-user').length) {
         },
         computed: {
             full_name: function () {
-                return !this.ready ? '...' : this.user.name + ' ' + this.user.middle_name + ' ' + this.user.surname;
+                if(!this.ready) {
+                    return '...'
+                } else if(this.user.middle_name === null) {
+                    return this.user.name + ' ' + this.user.surname;
+                } else
+                    return this.user.name + ' ' + this.user.middle_name + ' ' + this.user.surname;
             },
             has_mobilities: function () {
-                return !this.ready ? false : this.user.mobilities.length > 0;
+                return !this.ready ? false : this.mobility !== null;
             },
             has_bank_account: function () {
                 return !this.ready ? false : this.user.bank_accounts.length > 0;
             }
         },
         methods: {
+            onMobilityCreated: function (data) {
+                setTimeout(function () {
+                    window.location = data.redirect;
+                }, 1000);
+            },
+            onBankAccountCreated: function (data) {
+                this.newBankAccountVisible = false;
+                this.user.bank_accounts.push(data.bank_account);
+                if(data.set_primary)
+                    this.user.active_bank_account_id = data.bank_account.id;
+            },
             changeActiveBankAccount: function (e) {
                 axios.put('/edit/user/activebank', {user_id: this.user.id, active_bank_account_id: e.row.id})
                     .then(response => {
@@ -52,11 +72,11 @@ if ($('#vue-view-user').length) {
                             type: response.data.status,
                             message: response.data.message
                         });
+                        this.user.active_bank_account_id = e.row.id;
                     })
                     .catch((response) => {
                         console.log(response);
                     });
-                this.user.active_bank_account_id = e.row.id;
             }
         }
     });

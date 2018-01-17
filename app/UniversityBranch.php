@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $erasmus_code
  * @property int $country_id
  * @property int $max_outgoing
+ * @property mixed iad_levels
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UniversityBranch whereCountryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UniversityBranch whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UniversityBranch whereDeletedAt($value)
@@ -31,14 +33,31 @@ use Illuminate\Database\Eloquent\Model;
 class UniversityBranch extends Model
 {
     protected $casts = [
-        'country_id' => 'integer'
+        'country_id' => 'integer',
+        'iad_levels' => 'array'
     ];
+
+    protected $dates = [
+        'first_semester_deadline', 'second_semester_deadline', 'expiration_date'
+    ];
+
+    public function contact_person()
+    {
+        return $this->hasOne(User::class, 'id', 'contact_person_id');
+    }
+
+    public function accepted_levels()
+    {
+        // FIXME this does not work
+        return DegreeCourseType::whereIn('id', $this->iad_levels);
+    }
 
     /**
      * Queries the Country this UniversityBranch belongs to
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function country() {
+    public function country()
+    {
         return $this->belongsTo(Country::class);
     }
 }

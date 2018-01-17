@@ -21,8 +21,8 @@
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Cerca utenti</li>
                         <li><a href="{{ route('view.allusers') }}"><i class="fa fa-fw fa-user"></i> Tutti</a></li>
-                        <li><a href="{{ route('view.students') }}"><i class="fa fa-fw fa-graduation-cap"></i>
-                                Studenti</a></li>
+                        <li><a href="{{ route('view.category', ['category' => 'student']) }}"><i class="fa fa-fw fa-graduation-cap"></i>Studenti</a></li>
+                        <li><a href="{{ route('view.category', ['category' => 'professor']) }}"><i class="fa fa-fw fa-address-book"></i>Docenti</a></li>
                     </ul>
                 </li>
 
@@ -33,15 +33,11 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Inserimento dati</li>
-                        <li><a href="#"><i class="fa fa-fw fa-globe"></i> Paesi</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-university"></i> Sedi straniere</a></li>
+                        <li><a href="{{ route('view.universities') }}"><i class="fa fa-fw fa-university"></i> Sedi universitarie</a></li>
                         <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Corsi di laurea</a></li>
                     </ul>
                 </li>
             @endif
-            <li>
-                <a href="#"><i class="fa fa-fw fa-bank"></i> Altro...</a>
-            </li>
             <li>
                 <a href="#" onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">
