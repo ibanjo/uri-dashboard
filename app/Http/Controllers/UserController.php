@@ -24,13 +24,13 @@ class UserController extends Controller
         return View::make('view.all_users', ['vueVM' => 'vue-view-users']);
     }
 
-    public function viewStudents()
+    public function viewCategory($category)
     {
-        $student_role = Role::where('name', 'student')->first();
+        $role = Role::where('name', $category)->first();
         JavaScript::put([
-            'users' => User::where('role_id', $student_role->id)
+            'users' => User::where('role_id', $role->id)
                 ->with(['registers', 'department'])->get(),
-            'subview' => ['name' => 'students', 'title' => 'Studenti']
+            'subview' => ['name' => $category, 'title' => $role->description]
         ]);
         return View::make('view.all_users', ['vueVM' => 'vue-view-users']);
     }
@@ -48,7 +48,7 @@ class UserController extends Controller
                 'mobility_acknowledgement'])
             ->first();
 
-        if(!is_null($active_mobility))
+        if (!is_null($active_mobility))
             $attachments = Attachment::where('mobility_id', $active_mobility->id)->get();
         else
             $attachments = null;
@@ -78,6 +78,6 @@ class UserController extends Controller
         $user = User::find($data['user_id']);
         $user->active_bank_account_id = $data['active_bank_account_id'];
         $user->save();
-        return(response(['status' => 'success', 'message' => 'Account principale correttamente modificato'], 200));
+        return (response(['status' => 'success', 'message' => 'Account principale correttamente modificato'], 200));
     }
 }

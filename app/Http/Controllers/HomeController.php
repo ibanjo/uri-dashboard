@@ -33,6 +33,6 @@ class HomeController extends Controller
                 'toApprove' => User::where('role_id', 6)->get()
             ]);
         }
-        return View::make('home');
+        return View::make('home', ['vueVM' => 'vue-home']);
     }
 }

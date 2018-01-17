@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
         // Match the "/view/whatever" URLs
         Route::get('users', 'UserController@viewAll')->name('view.allusers');
         Route::get('users/{id}', 'UserController@viewOne')->name('view.user');
-        Route::get('students', 'UserController@viewStudents')->name('view.students');
+        Route::get('users/category/{category}', 'UserController@viewCategory')->name('view.category');
         Route::get('universities', 'AdminController@viewUniversities')->name('view.universities');
     });
 });
@@ -93,6 +93,7 @@ Route::prefix('edit')->group(function () {
         Route::put('mobility/status', 'MobilityController@changeMobilityStatus')->name('edit.mobility.status');
         Route::put('mobility', 'MobilityController@editMobility')->name('edit.mobility');
         Route::put('mobility/abort', 'MobilityController@abortMobility')->name('mobility.abort');
+        Route::put('university', 'AdminController@editUniversity')->name('edit.university');
     });
 });
 

@@ -21,8 +21,8 @@
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Cerca utenti</li>
                         <li><a href="{{ route('view.allusers') }}"><i class="fa fa-fw fa-user"></i> Tutti</a></li>
-                        <li><a href="{{ route('view.students') }}"><i class="fa fa-fw fa-graduation-cap"></i>Studenti</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-address-book"></i>Docenti</a></li>
+                        <li><a href="{{ route('view.category', ['category' => 'student']) }}"><i class="fa fa-fw fa-graduation-cap"></i>Studenti</a></li>
+                        <li><a href="{{ route('view.category', ['category' => 'professor']) }}"><i class="fa fa-fw fa-address-book"></i>Docenti</a></li>
                     </ul>
                 </li>
 

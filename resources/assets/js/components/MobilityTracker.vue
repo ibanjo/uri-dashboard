@@ -261,7 +261,7 @@
                                         @change="addModified('acknowledged_cfu_supernumerary')"/>
                             </el-form-item>
                             <br>
-                            <el-form-item label="MCR caricato: ">
+                            <el-form-item label="MRC caricato: ">
                                 <div v-if="mobilityBuffer.mobility_acknowledgement === null">
                                     <i class="fa fa-fw fa-exclamation-triangle"></i>
                                     <span> Documento non caricato</span>

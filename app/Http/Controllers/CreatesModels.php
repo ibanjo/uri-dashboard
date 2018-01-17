@@ -38,11 +38,6 @@ trait CreatesModels
             else
                 $university[$key] = $data[$key];
         }
-//        $university->name = $data['name'];
-//        $university->name_eng = $data['name_eng'];
-//        $university->country_id = $data['country_id'];
-//        $university->erasmus_code = $data['erasmus_code'];
-//        $university->max_outgoing = $data['max_outgoing'];
         $university->save();
         return $university;
     }
