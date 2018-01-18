@@ -6,12 +6,6 @@
         <el-form-item prop="name_eng" label="Nome (ENG): ">
             <el-input v-model="country.name_eng"/>
         </el-form-item>
-        <el-form-item prop="monthly_grant" label="Monthly grant (EUR): ">
-            <el-input-number v-model="country.monthly_grant" controls-position="right" :min="0" :step="0.01"/>
-        </el-form-item>
-        <el-form-item prop="travel_grant" label="Travel grant (EUR): ">
-            <el-input-number v-model="country.travel_grant" controls-position="right" :min="0" :step="0.01"/>
-        </el-form-item>
         <el-form-item>
             <el-button-group>
                 <el-button type="primary" icon="el-icon-check" @click="submit">Salva</el-button>
@@ -33,9 +27,7 @@
             return {
                 country: {
                     name_ita: '',
-                    name_eng: '',
-                    monthly_grant: 0,
-                    travel_grant: 0
+                    name_eng: ''
                 },
                 rules: {
                     name_ita: [
@@ -49,21 +41,25 @@
         },
         methods: {
             submit: function () {
-                axios.post(this.action, Object.assign({}, this.country))
-                    .then(response => {
-                        this.$message({
-                            type: response.data.status,
-                            message: response.data.message
-                        });
-                        this.$emit('country-added', response.data.country);
-                        this.clean();
-                    })
-                    .catch(error => {
-                        this.$message({
-                            type: error.response.data.status,
-                            message: error.response.data.message
-                        });
-                    });
+                this.$refs.countryForm.validate(valid => {
+                    if (valid) {
+                        axios.post(this.action, Object.assign({}, this.country))
+                            .then(response => {
+                                this.$message({
+                                    type: response.data.status,
+                                    message: response.data.message
+                                });
+                                this.$emit('country-added', response.data.country);
+                                this.clean();
+                            })
+                            .catch(error => {
+                                this.$message({
+                                    type: error.response.data.status,
+                                    message: error.response.data.message
+                                });
+                            });
+                    }
+                });
             },
             clean: function () {
                 this.$refs.countryForm.resetFields();

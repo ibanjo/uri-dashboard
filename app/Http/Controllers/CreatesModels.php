@@ -21,10 +21,9 @@ trait CreatesModels
     public function newCountry($data)
     {
         $country = new Country;
-        $country->name_eng = $data['name_eng'];
-        $country->name_ita = $data['name_ita'];
-        $country->monthly_grant = $data['monthly_grant'];
-        $country->travel_grant = $data['travel_grant'];
+        foreach (array_keys($data) as $key) {
+            $country[$key] = $data[$key];
+        }
         $country->save();
         return $country;
     }

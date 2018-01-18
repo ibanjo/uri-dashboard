@@ -57,13 +57,11 @@ class CreateMobilitiesTable extends Migration
             $table->mediumInteger('extension')->unsigned()->nullable(); // Mobility extension in days
 
             // Money grants (in Euro)
-            $table->mediumInteger('eu_grant')->nullable();
-            $table->mediumInteger('travel_grant')->nullable();
-            $table->mediumInteger('co_funding')->nullable();
-            $table->mediumInteger('other_funding')->nullable();
-            $table->mediumInteger('spent_grant')->nullable();
+            $table->decimal('eu_grant', 15, 2)->nullable();
+            $table->decimal('travel_grant', 15, 2)->nullable();
+            $table->decimal('spent_grant', 15, 2)->nullable();
+            $table->json('other_funding')->nullable();
 
-            $table->string('funding_notes')->nullable();
             $table->string('abortion_notes')->nullable();
             $table->text('notes')->nullable(); // General purpose note field
         });

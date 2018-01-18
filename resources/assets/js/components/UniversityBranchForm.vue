@@ -1,7 +1,7 @@
 <template>
     <el-form :inline="inline" :rules="rules" :model="universityBranch" :label-width="labelWidth"
              ref="universityBranchForm">
-        <el-form-item prop="name" label="Nome originale: ">
+        <el-form-item prop="name" label="Nome: ">
             <el-input v-model="universityBranch.name" @change="addModified('name')"/>
         </el-form-item>
         <el-form-item prop="name_eng" label="Nome internazionale: ">
@@ -107,10 +107,7 @@
                 modifiedKeys: [],
                 rules: {
                     name: [
-                        {required: true, message: 'Inserire il nome originale della sede', trigger: 'blur'}
-                    ],
-                    name_eng: [
-                        {required: true, message: 'Inserire il nome in inglese della sede', trigger: 'blur'}
+                        {required: true, message: 'Inserire il nome della sede', trigger: 'blur'}
                     ],
                     expiration_date: [
                         {required: true, message: 'Inserire la data di scadenza dell\'agreement', trigger: 'blur'}

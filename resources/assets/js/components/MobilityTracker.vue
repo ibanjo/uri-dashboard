@@ -172,7 +172,7 @@
                                 </el-date-picker>
                             </el-form-item>
                             <br>
-                            <el-form-item label="EU grant:">
+                            <el-form-item label="Individual support / EU grant:">
                                 <el-input-number
                                         v-model="mobilityBuffer.eu_grant" style="width: 100px"
                                         :disabled="!editMobility" controls-position="right"
@@ -184,25 +184,31 @@
                                         :disabled="!editMobility" controls-position="right"
                                         @change="addModified('travel_grant')"/>
                             </el-form-item>
-                            <el-form-item label="Co-funding:">
-                                <el-input-number
-                                        v-model="mobilityBuffer.co_funding" style="width: 100px"
-                                        :disabled="!editMobility" controls-position="right"
-                                        @change="addModified('co_funding')"/>
-                            </el-form-item>
                             <br>
-                            <el-form-item label="Altri finanziamenti:">
-                                <el-input-number
-                                        v-model="mobilityBuffer.other_funding" style="width: 100px"
-                                        :disabled="!editMobility" controls-position="right"
-                                        @change="addModified('other_funding')"/>
-                            </el-form-item>
-                            <el-form-item label="Note finanziamenti:">
-                                <el-input v-model="mobilityBuffer.funding_notes" style="width: 100%"
-                                          :disabled="!editMobility" @change="addModified('funding_notes')"
-                                          placeholder="Note su altri finanziamenti"/>
-                            </el-form-item>
-                            <br>
+                            <div v-if="Array.isArray(mobilityBuffer.other_funding)">
+                                <div v-for="(funding, index) in mobilityBuffer.other_funding">
+                                    <el-form-item label="Altri finanziamenti (EUR):">
+                                        <el-input-number
+                                                v-model="mobilityBuffer.other_funding[index].amount" style="width: 150px"
+                                                :disabled="!editMobility" controls-position="right"
+                                                @change="addModified('other_funding')"/>
+                                    </el-form-item>
+                                    <span> - </span>
+                                    <el-form-item label=" ">
+                                        <el-input v-model="mobilityBuffer.other_funding[index].description" style="width: 300px"
+                                                  :disabled="!editMobility" @change="addModified('other_funding')"
+                                                  placeholder="Note su altri finanziamenti"/>
+                                    </el-form-item>
+                                    <el-button type="danger" :disabled="!editMobility" plain @click="removeFundingSource(index)"><i class="fa fa-fw fa-trash"></i></el-button>
+                                    <el-button type="primary" :disabled="!editMobility" plain @click="addFundingSource"><i class="fa fa-fw fa-plus"></i></el-button>
+                                    <br>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <el-form-item label="Altri finanziamenti:">
+                                    <el-button type="primary" :disabled="!editMobility" plain @click="addFundingSource"><i class="fa fa-fw fa-plus"></i></el-button>
+                                </el-form-item>
+                            </div>
 
                             <el-form-item label="Transcript of records caricato: ">
                                 <div v-if="mobilityBuffer.transcript === null">
@@ -370,6 +376,17 @@
             }
         },
         methods: {
+            addFundingSource() {
+                if(!Array.isArray(this.mobilityBuffer.other_funding))
+                    this.mobilityBuffer.other_funding = [];
+                this.mobilityBuffer.other_funding.push({amount: 0, description: ''});
+            },
+            removeFundingSource(index) {
+                this.addModified('other_funding');
+                this.mobilityBuffer.other_funding.splice(index, 1);
+                if(this.mobilityBuffer.other_funding.length === 0)
+                    this.mobilityBuffer.other_funding = null;
+            },
             triggerEditMobility() {
                 this.tempMobilityBuffer = Object.assign({}, this.mobilityBuffer);
                 this.editMobility = true;

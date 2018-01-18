@@ -67,7 +67,8 @@ class Mobility extends Model
 {
     protected $casts = [
         'mobility_status_id' => 'integer',
-        'granted' => 'boolean'
+        'granted' => 'boolean',
+        'other_funding' => 'array'
     ];
 
     protected $dates = [
