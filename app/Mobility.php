@@ -124,16 +124,16 @@ class Mobility extends Model
 
     public function learning_agreement()
     {
-        return $this->belongsTo(LearningAgreement::class); // FIXME should be hasOne: need to change the schema
+        return $this->hasOne(LearningAgreement::class);
     }
 
     public function transcript()
     {
-        return $this->belongsTo(Transcript::class);
+        return $this->hasOne(Transcript::class);
     }
 
     public function mobility_acknowledgement()
     {
-        return $this->belongsTo(MobilityAcknowledgement::class);
+        return $this->hasOne(MobilityAcknowledgement::class);
     }
 }

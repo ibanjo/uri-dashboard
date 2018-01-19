@@ -133,11 +133,15 @@ trait CreatesModels
     public function newMobilityDocument($data)
     {
         $class_name = 'App\\' . studly_case($data['document_type']);
-        $document = new $class_name();
+        $former_doc = $class_name::where('mobility_id', $data['mobility_id'])->first();
+        if(!is_null($former_doc))
+            $class_name::destroy($former_doc->id);
 
+        $document = new $class_name();
         $document->name = $data['name'];
         $document->path = $data['path'];
         $document->type = $data['type'];
+        $document->mobility_id = $data['mobility_id'];
         $document->save();
 
         return $document;

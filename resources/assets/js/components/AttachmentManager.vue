@@ -3,7 +3,7 @@
         <el-row type="flex" justify="space-between" align="middle">
             <el-col :span="6">
                 <el-upload
-                        action="/file/upload"
+                        :action="uploadAction"
                         ref="attachmentUploader"
                         :data="attachmentAdditions.data"
                         :headers="attachmentAdditions.headers"
@@ -68,7 +68,10 @@
         name: 'attachment-manager',
         props: {
             mobilityId: Number,
-            attachments: Array
+            attachments: Array,
+            uploadAction: String,
+            retrieveAction: String,
+            deleteAction: String
         },
         data: function () {
             return {
@@ -131,7 +134,7 @@
                 }
             },
             downloadAttachment: function (file) {
-                axios.post('/file/retrieve/', {id: file.id})
+                axios.post(this.retrieveAction, {id: file.id})
                     .then(response => {
                         this.$message({
                             type: response.data.status,
@@ -144,7 +147,7 @@
                     });
             },
             removeAttachment: function (file) {
-                axios.delete('/file/delete/' + file.id)
+                axios.delete(this.deleteAction + '/' + file.id)
                     .then(response => {
                         this.attachmentArray = this.attachmentArray.filter(att => {
                             return att.id !== file.id
@@ -155,11 +158,7 @@
                         });
                     })
                     .catch(error => {
-                        console.log(error);
-                        this.$message({
-                            type: error.response.data.status,
-                            message: error.response.data.message
-                        });
+                        this.$message.error(error.response.data)
                     })
             }
         },

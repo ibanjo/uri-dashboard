@@ -74,15 +74,18 @@ Route::prefix('entry')->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Generic attachment routes
     Route::prefix('file')->group(function () {
-        Route::post('upload', 'FileController@attachFile');
+        Route::post('upload', 'FileController@attachFile')->name('file.upload');
         Route::post('retrieve', 'FileController@retrieveAttachment')->name('file.retrieve');
-        Route::get('retrieve/{name}', 'FileController@downloadAttachment')->name('file.downloadattachment');
-        Route::delete('delete/{id}', 'FileController@deleteAttachment')->name('file.deleteattachment');
+        Route::get('retrieve/{id}', 'FileController@downloadAttachment')->name('file.download');
+        Route::delete('delete/{id}', 'FileController@deleteAttachment')->name('file.delete');
     });
 
     // Specific document-related routes
-    Route::prefix('document')->group(function () {
-        Route::post('upload', 'FileController@uploadDocument')->name('document.upload');
+    Route::post('document/retrieve', 'FileController@retrieveDocument')->name('document.retrieve');
+    Route::get('document/download/{document_type}/{id}', 'FileController@downloadDocument')->name('document.download');
+    Route::middleware(['admin'])->group(function () {
+        Route::post('document', 'FileController@uploadDocument')->name('document.upload');
+        Route::delete('document/delete/{document_type}/{id}', 'FileController@deleteDocument')->name('document.delete');
     });
 });
 

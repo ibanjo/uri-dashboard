@@ -33,7 +33,7 @@ class FileController extends Controller
         $data = $request->all();
         $file = Attachment::find($data['id']);
         return response([
-            'url' => route('file.downloadattachment', ['id' => $file->id]),
+            'url' => route('file.download', ['id' => $file->id]),
             'status' => 'success',
             'message' => 'Download in corso'
         ], 200);
@@ -42,7 +42,7 @@ class FileController extends Controller
     public function downloadAttachment($id)
     {
         $file = Attachment::find($id);
-        return response()->download(storage_path('app/'.$file->path), $file->name);
+        return response()->download(storage_path('app/' . $file->path), $file->name);
     }
 
     public function deleteAttachment($id)
@@ -54,7 +54,8 @@ class FileController extends Controller
         ], 200);
     }
 
-    public function uploadDocument(Request $request) {
+    public function uploadDocument(Request $request)
+    {
         $data = $request->all();
         $file = $request->file('document');
         $path = $file->store('documents');
@@ -64,14 +65,39 @@ class FileController extends Controller
             'path' => $path
         ]));
 
-        $mobility = Mobility::find($data['mobility_id']);
-        $mobility[$data['document_type'].'_id'] = $document->id;
-        $mobility->save();
-
         return response([
             'file' => $document,
             'status' => 'success',
             'message' => 'Documento inserito correttamente'
+        ], 200);
+    }
+
+    public function retrieveDocument(Request $request)
+    {
+        $data = $request->all();
+        $class_name = 'App\\' . studly_case($data['document_type']);
+        $document = $class_name::find($data['id']);
+        return response([
+            'url' => route('document.download', ['id' => $document->id, 'document_type' => $data['document_type']]),
+            'status' => 'success',
+            'message' => 'Download in corso'
+        ], 200);
+    }
+
+    public function downloadDocument($document_type, $id)
+    {
+        $class_name = 'App\\' . studly_case($document_type);
+        $file = $class_name::find($id);
+        return response()->download(storage_path('app/' . $file->path), $file->name);
+    }
+
+    public function deleteDocument($document_type, $id)
+    {
+        $class_name = 'App\\' . studly_case($document_type);
+        $class_name::destroy($id);
+        return response([
+            'status' => 'success',
+            'message' => 'Documento eliminato correttamente'
         ], 200);
     }
 }

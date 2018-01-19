@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTranscriptsTable extends Migration
+class CreateLearningAgreementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateTranscriptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transcripts', function (Blueprint $table) {
+        Schema::create('learning_agreements', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
 
             $table->string('name');
             $table->string('type');
             $table->string('path');
+
+            $table->integer('mobility_id')->unsigned();
+            $table->foreign('mobility_id')->references('id')->on('mobilities');
         });
     }
 
@@ -30,6 +33,6 @@ class CreateTranscriptsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transcripts');
+        Schema::dropIfExists('learning_agreements');
     }
 }
