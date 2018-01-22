@@ -64,7 +64,7 @@ Route::prefix('entry')->group(function () {
         Route::post('mobility', 'MobilityController@createNewMobility')->name('new.mobility');
     });
 
-    Route::middleware(['auth', 'admin'])->group(function() {
+    Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('country', 'AdminController@saveNewCountry')->name('new.country');
         Route::post('university', 'AdminController@saveNewUniversity')->name('new.university');
     });
@@ -106,6 +106,19 @@ Route::prefix('admin')->group(function () {
         Route::get('approve', 'AdminController@checkUnapproved');
         Route::put('approve', 'AdminController@approveUser');
     });
+});
+
+// Data export routes
+Route::prefix('export')->group(function () {
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('mobilities', 'ExportController@showExportMobilitiesForm')->name('export.mobilities.form');
+        Route::post('mobilities', 'ExportController@mobilitiesToExcel')->name('export.mobilities');
+        Route::get('download/{identifier}/{name}', 'ExportController@downloadExportedFile')->name('export.download');
+    });
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('test', 'ExportController@mobilityToExcel');
 });
 
 // FIXME need to completely refactor routes (before it is too late)
