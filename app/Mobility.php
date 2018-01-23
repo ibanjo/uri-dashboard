@@ -65,6 +65,49 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Mobility extends Model
 {
+    public static $filters = [
+        [
+            'name' => 'incoming_outgoing',
+            'label' => 'Incoming/Outgoing',
+            'type' => 'BooleanFilter',
+            'activeText' => 'Outgoing',
+            'inactiveText' => 'Incoming'
+        ],
+        [
+            'name' => 'granted',
+            'label' => 'Assegnatario/Idoneo',
+            'type' => 'BooleanFilter',
+            'activeText' => 'Assegnatario',
+            'inactiveText' => 'Idoneo'
+        ],
+        [
+            'name' => 'academic_year',
+            'label' => 'Anno accademico',
+            'type' => 'TextFilter',
+            'placeholder' => 'Formato: AAAA/AA'
+        ],
+        [
+            'name' => 'estimated_in',
+            'label' => 'Inizio (Learning Agreement)',
+            'type' => 'DateFilter'
+        ],
+        [
+            'name' => 'estimated_out',
+            'label' => 'Fine (Learning Agreement)',
+            'type' => 'DateFilter'
+        ],
+        [
+            'name' => 'acknowledged_in',
+            'label' => 'Inizio (Transcript)',
+            'type' => 'DateFilter'
+        ],
+        [
+            'name' => 'acknowledged_out',
+            'label' => 'Fine (Transcript)',
+            'type' => 'DateFilter'
+        ]
+    ];
+
     protected $casts = [
         'mobility_status_id' => 'integer',
         'granted' => 'boolean',

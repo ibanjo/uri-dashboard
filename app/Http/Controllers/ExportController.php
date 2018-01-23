@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mobility;
 use App\User;
 use DB;
 use Excel;
-use function foo\func;
 use Illuminate\Http\Request;
+use JavaScript;
 use View;
 
 class ExportController extends Controller
 {
     public function showExportMobilitiesForm()
     {
+        JavaScript::put([
+            'available_filters' => Mobility::$filters
+        ]);
         return View::make('query.mobilities', ['vueVM' => 'vue-query']);
     }
 
@@ -46,12 +50,12 @@ class ExportController extends Controller
         return response([
             'status' => 'success',
             'message' => 'Download in corso',
-            'identifier' => $filename.'.xlsx'
+            'identifier' => $filename . '.xlsx'
         ], 200);
     }
 
     public function downloadExportedFile($identifier, $name)
     {
-        return response()->download(storage_path('app/exports/'.$identifier), $name);
+        return response()->download(storage_path('app/exports/' . $identifier), $name);
     }
 }

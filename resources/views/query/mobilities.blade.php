@@ -20,7 +20,8 @@
                     </div>
                     <div class="panel-body">
                         <query-mobilities action="{{ route('export.mobilities') }}"
-                                          download-action="{{route('export.download', ['identifier' => 'identifier', 'name' => 'export.xlsx'])}}"/>
+                                          download-action="{{route('export.download', ['identifier' => 'identifier', 'name' => 'filename'])}}"
+                                          file-name="export.xlsx" :available-filters="availableFilters"/>
                     </div>
                 </div>
             </el-row>
