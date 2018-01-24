@@ -22,10 +22,6 @@ class CreateCountriesTable extends Migration
             // Country related data
             $table->string('name_ita');
             $table->string('name_eng');
-
-            // TODO consider referencing the monthly grant field to an external table with timestamps
-            $table->decimal('monthly_grant', 15, 2);
-            $table->decimal('travel_grant', 15, 2);
         });
     }
 

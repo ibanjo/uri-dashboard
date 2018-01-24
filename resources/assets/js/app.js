@@ -27,6 +27,7 @@ import CountryForm from './components/CountryForm';
 import UniversityBranchForm from './components/UniversityBranchForm';
 import MobilityForm from './components/MobilityForm';
 import BankAccountForm from './components/BankAccountForm';
+import QueryMobilities from './components/QueryMobilities';
 
 /**
  * Requiring minor plugins
@@ -49,6 +50,7 @@ window.Vue.component('country-form', CountryForm);
 window.Vue.component('university-branch-form', UniversityBranchForm);
 window.Vue.component('mobility-form', MobilityForm);
 window.Vue.component('bank-account-form', BankAccountForm);
+window.Vue.component('query-mobilities', QueryMobilities);
 
 /**
  * Requiring Vue VMs
@@ -60,3 +62,4 @@ require('./vue/vue-view-allusers');
 require('./vue/vue-view-user');
 require('./vue/vue-approve-users');
 require('./vue/vue-view-universities');
+require('./vue/vue-query');

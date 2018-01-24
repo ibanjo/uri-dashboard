@@ -19,10 +19,13 @@ class CreateMobilitiesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            // FIXME temporary before full programmes table implementation
+            $table->string('programme_name');
+
             // Mobility person, status and location
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('mobility_status_id')->unsigned();
+            $table->integer('mobility_status_id')->unsigned()->default(1);
             $table->foreign('mobility_status_id')->references('id')->on('mobility_statuses');
 
             $table->integer('university_branch_id')->unsigned();
@@ -31,7 +34,6 @@ class CreateMobilitiesTable extends Migration
             $table->string('academic_year');
 
             // Estimated mobility data
-            $table->integer('learning_agreement_id')->unsigned()->nullable();
             $table->integer('semester_id')->unsigned();
             $table->foreign('semester_id')->references('id')->on('semesters');
             $table->date('estimated_in');
@@ -43,27 +45,23 @@ class CreateMobilitiesTable extends Migration
             $table->boolean('granted')->nullable();
 
             // Transcript data
-            $table->integer('transcript_id')->unsigned()->nullable();
             $table->unsignedSmallInteger('transcript_cfu_exams')->nullable();
             $table->unsignedSmallInteger('transcript_cfu_thesis')->nullable();
             $table->date('acknowledged_in')->nullable();
             $table->date('acknowledged_out')->nullable();
 
             // Acknowledgement data
-            $table->integer('mobility_acknowledgement_id')->unsigned()->nullable();
             $table->unsignedSmallInteger('acknowledged_cfu_exams')->nullable();
             $table->unsignedSmallInteger('acknowledged_cfu_thesis')->nullable();
             $table->unsignedSmallInteger('acknowledged_cfu_supernumerary')->nullable();
             $table->mediumInteger('extension')->unsigned()->nullable(); // Mobility extension in days
 
             // Money grants (in Euro)
-            $table->mediumInteger('eu_grant')->nullable();
-            $table->mediumInteger('travel_grant')->nullable();
-            $table->mediumInteger('co_funding')->nullable();
-            $table->mediumInteger('other_funding')->nullable();
-            $table->mediumInteger('spent_grant')->nullable();
+            $table->decimal('eu_grant', 15, 2)->nullable();
+            $table->decimal('travel_grant', 15, 2)->nullable();
+            $table->decimal('spent_grant', 15, 2)->nullable();
+            $table->json('other_funding')->nullable();
 
-            $table->string('funding_notes')->nullable();
             $table->string('abortion_notes')->nullable();
             $table->text('notes')->nullable(); // General purpose note field
         });

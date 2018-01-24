@@ -16,7 +16,7 @@ class RolesTableSeeder extends Seeder
         DB::table($tab)->insert(['name' => 'root', 'description' => 'Utente radice', 'hidden' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         DB::table($tab)->insert(['name' => 'admin', 'description' => 'Amministratore di sistema', 'hidden' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         DB::table($tab)->insert(['name' => 'staff', 'description' => 'Personale amministrativo', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
-        DB::table($tab)->insert(['name' => 'professor', 'description' => 'Peronale docente (coordinatori Erasmus, ecc.)', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+        DB::table($tab)->insert(['name' => 'professor', 'description' => 'Peronale docente', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         DB::table($tab)->insert(['name' => 'student', 'description' => 'Studente', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         DB::table($tab)->insert(['name' => 'suspended', 'description' => 'Account in attesa di approvazione', 'hidden' => true, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
     }

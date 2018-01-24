@@ -64,7 +64,7 @@ Route::prefix('entry')->group(function () {
         Route::post('mobility', 'MobilityController@createNewMobility')->name('new.mobility');
     });
 
-    Route::middleware(['auth', 'admin'])->group(function() {
+    Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('country', 'AdminController@saveNewCountry')->name('new.country');
         Route::post('university', 'AdminController@saveNewUniversity')->name('new.university');
     });
@@ -74,15 +74,18 @@ Route::prefix('entry')->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Generic attachment routes
     Route::prefix('file')->group(function () {
-        Route::post('upload', 'FileController@attachFile');
+        Route::post('upload', 'FileController@attachFile')->name('file.upload');
         Route::post('retrieve', 'FileController@retrieveAttachment')->name('file.retrieve');
-        Route::get('retrieve/{name}', 'FileController@downloadAttachment')->name('file.downloadattachment');
-        Route::delete('delete/{id}', 'FileController@deleteAttachment')->name('file.deleteattachment');
+        Route::get('retrieve/{id}', 'FileController@downloadAttachment')->name('file.download');
+        Route::delete('delete/{id}', 'FileController@deleteAttachment')->name('file.delete');
     });
 
     // Specific document-related routes
-    Route::prefix('document')->group(function () {
-        Route::post('upload', 'FileController@uploadDocument')->name('document.upload');
+    Route::post('document/retrieve', 'FileController@retrieveDocument')->name('document.retrieve');
+    Route::get('document/download/{document_type}/{id}', 'FileController@downloadDocument')->name('document.download');
+    Route::middleware(['admin'])->group(function () {
+        Route::post('document', 'FileController@uploadDocument')->name('document.upload');
+        Route::delete('document/delete/{document_type}/{id}', 'FileController@deleteDocument')->name('document.delete');
     });
 });
 
@@ -103,6 +106,19 @@ Route::prefix('admin')->group(function () {
         Route::get('approve', 'AdminController@checkUnapproved');
         Route::put('approve', 'AdminController@approveUser');
     });
+});
+
+// Data export routes
+Route::prefix('export')->group(function () {
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('mobilities', 'ExportController@showExportMobilitiesForm')->name('query.mobilities.form');
+        Route::post('mobilities', 'ExportController@mobilitiesToExcel')->name('query.mobilities');
+        Route::get('download/{identifier}/{name}', 'ExportController@downloadExportedFile')->name('export.download');
+    });
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('test', 'ExportController@mobilityToExcel');
 });
 
 // FIXME need to completely refactor routes (before it is too late)

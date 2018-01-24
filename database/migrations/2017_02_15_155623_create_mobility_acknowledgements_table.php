@@ -20,6 +20,9 @@ class CreateMobilityAcknowledgementsTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('path');
+
+            $table->integer('mobility_id')->unsigned();
+            $table->foreign('mobility_id')->references('id')->on('mobilities');
         });
     }
 

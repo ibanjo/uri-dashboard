@@ -17,8 +17,6 @@ class CountriesTableSeeder extends Seeder
         DB::table($tab)->insert([
             'name_ita' => 'Italia',
             'name_eng' => 'Italy',
-            'monthly_grant' => 200,
-            'travel_grant' => 1000,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -26,8 +24,6 @@ class CountriesTableSeeder extends Seeder
         DB::table($tab)->insert([
             'name_ita' => 'Spagna',
             'name_eng' => 'Spain',
-            'monthly_grant' => 200,
-            'travel_grant' => 1000,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -35,8 +31,6 @@ class CountriesTableSeeder extends Seeder
         DB::table($tab)->insert([
             'name_ita' => 'Germania',
             'name_eng' => 'Germany',
-            'monthly_grant' => 200,
-            'travel_grant' => 1000,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

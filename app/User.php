@@ -95,6 +95,27 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $exportables = [
+        ['attribute' => 'name', 'as' => 'Nome'],
+        ['attribute' => 'middle_name', 'as' => 'Secondo nome'],
+        ['attribute' => 'surname', 'as' => 'Cognome'],
+        ['attribute' => 'fiscal_code', 'as' => 'Codice Fiscale'],
+        ['attribute' => 'email', 'as' => 'Email'],
+        ['attribute' => 'telephone', 'as' => 'Telefono']
+    ];
+
+    public function export($fields = null)
+    {
+        if (is_null($fields))
+            $fields = collect($this->exportables);
+
+        $exported = [];
+        foreach ($fields as $field) {
+            $exported = array_merge($exported, [$field['as'] => $this[$field['attribute']]]);
+        }
+        return $exported;
+    }
+
     public function active_mobilities()
     {
         return $this->mobilities()
@@ -104,7 +125,7 @@ class User extends Authenticatable
 
     public function full_name()
     {
-        return $this->name.' '.$this->middle_name.' '.$this->surname;
+        return $this->name . ' ' . $this->middle_name . ' ' . $this->surname;
     }
 
     public function registers()

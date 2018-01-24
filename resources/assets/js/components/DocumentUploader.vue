@@ -4,7 +4,7 @@
         <el-form-item :label="label">
             <el-upload
                     :action="uploadUrl"
-                    ref="DocumentUploader"
+                    ref="TheUploader"
                     :data="uploaderAdditions.data"
                     :headers="uploaderAdditions.headers"
                     :name="fileKey"
@@ -62,15 +62,15 @@
         },
         methods: {
             onDocumentSelected: function () {
-                let fileList = this.$refs.DocumentUploader.uploadFiles;
+                let fileList = this.$refs.TheUploader.uploadFiles;
                 if(fileList.length > 0) {
                     this.attachmentBuffer = [fileList[fileList.length - 1]];
                     this.namePreview = this.attachmentBuffer[0].name;
                 }
             },
             uploadDocument: function () {
-                this.$refs.DocumentUploader.uploadFiles = this.attachmentBuffer;
-                this.$refs.DocumentUploader.submit();
+                this.$refs.TheUploader.uploadFiles = this.attachmentBuffer;
+                this.$refs.TheUploader.submit();
             },
             onDocumentUploaded: function (response, file, fileList) {
                 this.$message({
@@ -78,7 +78,7 @@
                     message: response.message
                 });
                 this.mobilityBuffer[this.documentType] = response.file;
-                this.$refs.DocumentUploader.uploadFiles = [];
+                this.$refs.TheUploader.uploadFiles = [];
                 this.attachmentBuffer = [];
             }
         }

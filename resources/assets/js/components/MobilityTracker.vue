@@ -93,6 +93,13 @@
                             </el-form-item>
                             <br>
 
+                            <el-form-item label="Progetto: ">
+                                <el-input v-model="mobilityBuffer.programme_name"
+                                          :disabled="!editMobility" @change="addModified('programme_name')">
+                                </el-input>
+                            </el-form-item>
+
+                            <br>
                             <el-form-item label="Learning agreement caricato: ">
                                 <div v-if="mobilityBuffer.learning_agreement === null">
                                     <i class="fa fa-fw fa-exclamation-triangle"></i>
@@ -100,12 +107,27 @@
                                 </div>
                                 <div v-else>
                                     <i class="fa fa-fw fa-file-o"></i>
-                                    <span> {{ mobilityBuffer.learning_agreement.name }}</span>
+                                    <span> {{ mobilityBuffer.learning_agreement.name }} <i
+                                            class="fa fa-fw fa-long-arrow-right"></i></span>
+                                    <el-button-group>
+                                        <el-tooltip class="item" effect="dark" content="Download" placement="top-start">
+                                            <el-button type="primary" plain
+                                                       @click="downloadDocument('learning_agreement')">
+                                                <i class="fa fa-fw fa-download"></i>
+                                            </el-button>
+                                        </el-tooltip>
+                                        <el-tooltip class="item" effect="dark" content="Elimina" placement="top-start">
+                                            <el-button type="danger" plain :disabled="!editMobility"
+                                                       @click="deleteDocument('learning_agreement')">
+                                                <i class="fa fa-fw fa-trash"></i>
+                                            </el-button>
+                                        </el-tooltip>
+                                    </el-button-group>
                                 </div>
                             </el-form-item>
 
                             <document-uploader
-                                    upload-url="/document/upload"
+                                    :upload-url="documentUploadAction"
                                     document-type="learning_agreement"
                                     label="Carica learning agreement: "
                                     :mobility-buffer="mobilityBuffer"
@@ -119,7 +141,7 @@
                                 <el-button type="success" v-if="editMobility" @click="commitEditMobility">
                                     Salva
                                 </el-button>
-                                <el-button type="warning" v-if="editMobility" @click="undoEditMobility">
+                                <el-button type="danger" v-if="editMobility" @click="undoEditMobility">
                                     Annulla
                                 </el-button>
                             </el-form-item>
@@ -172,7 +194,7 @@
                                 </el-date-picker>
                             </el-form-item>
                             <br>
-                            <el-form-item label="EU grant:">
+                            <el-form-item label="Individual support / EU grant:">
                                 <el-input-number
                                         v-model="mobilityBuffer.eu_grant" style="width: 100px"
                                         :disabled="!editMobility" controls-position="right"
@@ -184,25 +206,37 @@
                                         :disabled="!editMobility" controls-position="right"
                                         @change="addModified('travel_grant')"/>
                             </el-form-item>
-                            <el-form-item label="Co-funding:">
-                                <el-input-number
-                                        v-model="mobilityBuffer.co_funding" style="width: 100px"
-                                        :disabled="!editMobility" controls-position="right"
-                                        @change="addModified('co_funding')"/>
-                            </el-form-item>
                             <br>
-                            <el-form-item label="Altri finanziamenti:">
-                                <el-input-number
-                                        v-model="mobilityBuffer.other_funding" style="width: 100px"
-                                        :disabled="!editMobility" controls-position="right"
-                                        @change="addModified('other_funding')"/>
-                            </el-form-item>
-                            <el-form-item label="Note finanziamenti:">
-                                <el-input v-model="mobilityBuffer.funding_notes" style="width: 100%"
-                                          :disabled="!editMobility" @change="addModified('funding_notes')"
-                                          placeholder="Note su altri finanziamenti"/>
-                            </el-form-item>
-                            <br>
+                            <div v-if="Array.isArray(mobilityBuffer.other_funding)">
+                                <div v-for="(funding, index) in mobilityBuffer.other_funding">
+                                    <el-form-item label="Altri finanziamenti (EUR):">
+                                        <el-input-number
+                                                v-model="mobilityBuffer.other_funding[index].amount"
+                                                style="width: 150px"
+                                                :disabled="!editMobility" controls-position="right"
+                                                @change="addModified('other_funding')"/>
+                                    </el-form-item>
+                                    <span> - </span>
+                                    <el-form-item label=" ">
+                                        <el-input v-model="mobilityBuffer.other_funding[index].description"
+                                                  style="width: 300px"
+                                                  :disabled="!editMobility" @change="addModified('other_funding')"
+                                                  placeholder="Note su altri finanziamenti"/>
+                                    </el-form-item>
+                                    <el-button type="danger" :disabled="!editMobility" plain
+                                               @click="removeFundingSource(index)"><i class="fa fa-fw fa-trash"></i>
+                                    </el-button>
+                                    <el-button type="primary" :disabled="!editMobility" plain @click="addFundingSource">
+                                        <i class="fa fa-fw fa-plus"></i></el-button>
+                                    <br>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <el-form-item label="Altri finanziamenti:">
+                                    <el-button type="primary" :disabled="!editMobility" plain @click="addFundingSource">
+                                        <i class="fa fa-fw fa-plus"></i></el-button>
+                                </el-form-item>
+                            </div>
 
                             <el-form-item label="Transcript of records caricato: ">
                                 <div v-if="mobilityBuffer.transcript === null">
@@ -211,11 +245,26 @@
                                 </div>
                                 <div v-else>
                                     <i class="fa fa-fw fa-file-o"></i>
-                                    <span> {{ mobilityBuffer.transcript.name }}</span>
+                                    <span> {{ mobilityBuffer.transcript.name }} <i
+                                            class="fa fa-fw fa-long-arrow-right"></i></span>
+                                    <el-button-group>
+                                        <el-tooltip class="item" effect="dark" content="Download" placement="top-start">
+                                            <el-button type="primary" plain
+                                                       @click="downloadDocument('transcript')">
+                                                <i class="fa fa-fw fa-download"></i>
+                                            </el-button>
+                                        </el-tooltip>
+                                        <el-tooltip class="item" effect="dark" content="Elimina" placement="top-start">
+                                            <el-button type="danger" plain :disabled="!editMobility"
+                                                       @click="deleteDocument('transcript')">
+                                                <i class="fa fa-fw fa-trash"></i>
+                                            </el-button>
+                                        </el-tooltip>
+                                    </el-button-group>
                                 </div>
                             </el-form-item>
                             <document-uploader
-                                    upload-url="/document/upload"
+                                    :upload-url="documentUploadAction"
                                     document-type="transcript"
                                     label="Carica transcript of records: "
                                     :mobility-buffer="mobilityBuffer"
@@ -268,12 +317,27 @@
                                 </div>
                                 <div v-else>
                                     <i class="fa fa-fw fa-file-o"></i>
-                                    <span> {{ mobilityBuffer.mobility_acknowledgement.name }}</span>
+                                    <span> {{ mobilityBuffer.mobility_acknowledgement.name }} <i
+                                            class="fa fa-fw fa-long-arrow-right"></i></span>
+                                    <el-button-group>
+                                        <el-tooltip class="item" effect="dark" content="Download" placement="top-start">
+                                            <el-button type="primary" plain
+                                                       @click="downloadDocument('mobility_acknowledgement')">
+                                                <i class="fa fa-fw fa-download"></i>
+                                            </el-button>
+                                        </el-tooltip>
+                                        <el-tooltip class="item" effect="dark" content="Elimina" placement="top-start">
+                                            <el-button type="danger" plain :disabled="!editMobility"
+                                                       @click="deleteDocument('mobility_acknowledgement')">
+                                                <i class="fa fa-fw fa-trash"></i>
+                                            </el-button>
+                                        </el-tooltip>
+                                    </el-button-group>
                                 </div>
                             </el-form-item>
 
                             <document-uploader
-                                    upload-url="/document/upload"
+                                    :upload-url="documentUploadAction"
                                     document-type="mobility_acknowledgement"
                                     label="Carica modulo riconoscimento crediti: "
                                     :mobility-buffer="mobilityBuffer"
@@ -315,7 +379,9 @@
             </el-col>
         </el-row>
 
-        <attachment-manager :mobility-id="mobility.id" :attachments="attachments"/>
+        <attachment-manager :mobility-id="mobility.id" :attachments="attachments"
+                            :upload-action="attachmentUploadAction" :retrieve-action="attachmentRetrieveAction"
+                            :delete-action="attachmentDeleteAction"/>
     </div>
 </template>
 
@@ -337,13 +403,17 @@
             universityBranches: Array,
             abortAction: {type: String, required: true},
             editStatusAction: {type: String, required: true},
-            editAction: {type: String, required: true}
+            editAction: {type: String, required: true},
+            documentUploadAction: {type: String, required: true},
+            documentRetrieveAction: {type: String, required: true},
+            documentDeleteAction: {type: String, required: true},
+            attachmentUploadAction: {type: String, required: true},
+            attachmentRetrieveAction: {type: String, required: true},
+            attachmentDeleteAction: {type: String, required: true}
         },
         data: function () {
             return {
                 editMobility: false,
-                editTranscript: false,
-                editAcknowledgement: false,
                 mobilityBuffer: this.mobility,
                 tempMobilityBuffer: {},
                 modifiedKeys: []
@@ -370,6 +440,46 @@
             }
         },
         methods: {
+            downloadDocument(documentType) {
+                axios.post(this.documentRetrieveAction, {
+                    id: this.mobilityBuffer[documentType].id,
+                    document_type: documentType
+                })
+                    .then(response => {
+                        this.$message({
+                            type: response.data.status,
+                            message: response.data.message
+                        });
+                        window.open(response.data.url);
+                    })
+                    .catch(error => {
+                        this.$message.error(error.response.data)
+                    });
+            },
+            deleteDocument(documentType) {
+                axios.delete(this.documentDeleteAction + '/' + documentType + '/' + this.mobilityBuffer[documentType].id)
+                    .then(response => {
+                        this.mobilityBuffer[documentType] = null;
+                        this.$message({
+                            type: response.data.status,
+                            message: response.data.message
+                        });
+                    })
+                    .catch(error => {
+                        this.$message.error(error.response.data)
+                    });
+            },
+            addFundingSource() {
+                if (!Array.isArray(this.mobilityBuffer.other_funding))
+                    this.mobilityBuffer.other_funding = [];
+                this.mobilityBuffer.other_funding.push({amount: 0, description: ''});
+            },
+            removeFundingSource(index) {
+                this.addModified('other_funding');
+                this.mobilityBuffer.other_funding.splice(index, 1);
+                if (this.mobilityBuffer.other_funding.length === 0)
+                    this.mobilityBuffer.other_funding = null;
+            },
             triggerEditMobility() {
                 this.tempMobilityBuffer = Object.assign({}, this.mobilityBuffer);
                 this.editMobility = true;
@@ -381,31 +491,36 @@
                 });
             },
             commitEditMobility() {
-                this.$confirm('Applicare i cambiamenti?', 'Info', {
-                    confirmButtonText: 'OK',
-                    cancelButtonText: 'Annulla',
-                    type: 'info'
-                }).then(() => {
-                    let modifiedMobility = {};
-                    this.modifiedKeys.forEach(k => {
-                        modifiedMobility[k] = this.mobilityBuffer[k]
-                    });
-                    modifiedMobility.id = this.mobilityBuffer.id;
-                    axios.put(this.editAction, modifiedMobility)
-                        .then(response => {
-                            this.$message({
-                                type: response.data.status,
-                                message: response.data.message
-                            });
-                            this.tempMobilityBuffer = {};
-                            this.modifiedKeys = [];
-                            this.editMobility = false;
-                        })
-                        .catch(error => {
-                            this.$message.error(error.response.data.message);
+                if (this.modifiedKeys.length > 0) {
+                    this.$confirm('Applicare i cambiamenti?', 'Info', {
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Annulla',
+                        type: 'info'
+                    }).then(() => {
+                        let modifiedMobility = {};
+                        this.modifiedKeys.forEach(k => {
+                            modifiedMobility[k] = this.mobilityBuffer[k]
                         });
-                }).catch(() => {
-                });
+                        modifiedMobility.id = this.mobilityBuffer.id;
+                        axios.put(this.editAction, modifiedMobility)
+                            .then(response => {
+                                this.$message({
+                                    type: response.data.status,
+                                    message: response.data.message
+                                });
+                                this.tempMobilityBuffer = {};
+                                this.modifiedKeys = [];
+                                this.editMobility = false;
+                            })
+                            .catch(error => {
+                                this.$message.error(error.response.data.message);
+                            });
+                    }).catch(() => {
+                    });
+                } else {
+                    this.tempMobilityBuffer = {};
+                    this.editMobility = false;
+                }
             },
             undoEditMobility() {
                 if (this.modifiedKeys.length > 0) {

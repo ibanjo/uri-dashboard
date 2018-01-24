@@ -1,5 +1,10 @@
 <template>
     <el-form :inline="inline" :model="mobility" :rules="rules.mobility" label-width="200px">
+        <el-form-item label="Progetto" prop="programme_name">
+            <el-input v-model="mobility.programme_name">
+            </el-input>
+        </el-form-item>
+
         <el-form-item label="Sede estera">
             <el-select v-model="mobility.university_branch_id" filterable
                        placeholder="Sede estera">
@@ -91,6 +96,7 @@
         data: function () {
             return {
                 mobility: {
+                    programme_name: '',
                     university_branch_id: '',
                     semester_id: 1,
                     estimated_in: '',
@@ -102,6 +108,9 @@
                 },
                 rules: {
                     mobility: {
+                        programme_name: [
+                            {required: true, message: 'Inserire il nome del progetto', trigger: 'blur'}
+                        ],
                         academic_year: [
                             {required: true, message: 'L\'anno accademico è richiesto', trigger: 'blur'},
                             {

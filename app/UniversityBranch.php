@@ -41,6 +41,23 @@ class UniversityBranch extends Model
         'first_semester_deadline', 'second_semester_deadline', 'expiration_date'
     ];
 
+    protected $exportables = [
+        ['attribute' => 'name', 'as' => 'Università'],
+        ['attribute' => 'erasmus_code', 'as' => 'Codice Erasmus']
+    ];
+
+    public function export($fields = null)
+    {
+        if (is_null($fields))
+            $fields = collect($this->exportables);
+
+        $exported = [];
+        foreach ($fields as $field) {
+            $exported = array_merge($exported, [$field['as'] => $this[$field['attribute']]]);
+        }
+        return $exported;
+    }
+
     public function contact_person()
     {
         return $this->hasOne(User::class, 'id', 'contact_person_id');
