@@ -111,8 +111,8 @@ Route::prefix('admin')->group(function () {
 // Data export routes
 Route::prefix('export')->group(function () {
     Route::middleware(['auth', 'admin'])->group(function () {
-        Route::get('mobilities', 'ExportController@showExportMobilitiesForm')->name('export.mobilities.form');
-        Route::post('mobilities', 'ExportController@mobilitiesToExcel')->name('export.mobilities');
+        Route::get('mobilities', 'ExportController@showExportMobilitiesForm')->name('query.mobilities.form');
+        Route::post('mobilities', 'ExportController@mobilitiesToExcel')->name('query.mobilities');
         Route::get('download/{identifier}/{name}', 'ExportController@downloadExportedFile')->name('export.download');
     });
 });

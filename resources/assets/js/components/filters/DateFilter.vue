@@ -1,6 +1,6 @@
 <template>
     <el-form-item :label="label">
-        <el-checkbox v-if="!deletable" v-model="disable_min" border><i class="fa fa-fw fa-close"></i></el-checkbox>
+        <el-checkbox v-model="disable_min" border><i class="fa fa-fw fa-close"></i></el-checkbox>
         <el-date-picker
                 v-model="date_min"
                 type="date" :disabled="disable_min"
@@ -28,7 +28,8 @@
             valueFormat: {type: String, default: 'dd-MM-yyyy'},
             placeholder: {type: String, default: ''},
             deletable: {type: Boolean, default: false},
-            name: {type: String, required: true}
+            name: {type: String, required: true},
+            queryScope: {type: Boolean, required: true}
         },
         data: function() {
             return {

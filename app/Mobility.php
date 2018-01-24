@@ -67,7 +67,8 @@ class Mobility extends Model
 {
     public static $filters = [
         [
-            'name' => 'incoming_outgoing',
+            'name' => 'outgoing',
+            'queryScope' => true, // Determines if the filter is a scope or directly an attribute
             'label' => 'Incoming/Outgoing',
             'type' => 'BooleanFilter',
             'activeText' => 'Outgoing',
@@ -75,6 +76,7 @@ class Mobility extends Model
         ],
         [
             'name' => 'granted',
+            'queryScope' => false,
             'label' => 'Assegnatario/Idoneo',
             'type' => 'BooleanFilter',
             'activeText' => 'Assegnatario',
@@ -82,27 +84,39 @@ class Mobility extends Model
         ],
         [
             'name' => 'academic_year',
+            'queryScope' => false,
             'label' => 'Anno accademico',
             'type' => 'TextFilter',
             'placeholder' => 'Formato: AAAA/AA'
         ],
         [
+            'name' => 'programme_name',
+            'queryScope' => false,
+            'label' => 'Progetto',
+            'type' => 'TextFilter',
+            'placeholder' => 'Progetto di afferenza'
+        ],
+        [
             'name' => 'estimated_in',
+            'queryScope' => false,
             'label' => 'Inizio (Learning Agreement)',
             'type' => 'DateFilter'
         ],
         [
             'name' => 'estimated_out',
+            'queryScope' => false,
             'label' => 'Fine (Learning Agreement)',
             'type' => 'DateFilter'
         ],
         [
             'name' => 'acknowledged_in',
+            'queryScope' => false,
             'label' => 'Inizio (Transcript)',
             'type' => 'DateFilter'
         ],
         [
             'name' => 'acknowledged_out',
+            'queryScope' => false,
             'label' => 'Fine (Transcript)',
             'type' => 'DateFilter'
         ]
@@ -118,6 +132,59 @@ class Mobility extends Model
         'created_at', 'updated_at', 'deleted_at', 'first_semester_deadline',
         'second_semester_deadline', 'expiration_date'
     ];
+
+    protected $exportables = [
+        ['attribute' => 'programme_name', 'as' => 'Progetto'],
+        ['attribute' => 'academic_year', 'as' => 'Anno accademico'],
+        ['attribute' => 'estimated_in', 'as' => 'Inizio (LA)'],
+        ['attribute' => 'estimated_out', 'as' => 'Fine (LA)'],
+        ['attribute' => 'acknowledged_in', 'as' => 'Inizio (ToR)'],
+        ['attribute' => 'acknowledged_out', 'as' => 'Fine (ToR)'],
+        ['attribute' => 'extension', 'as' => 'Estensione mobilità (gg)'],
+        ['attribute' => 'estimated_cfu_exams', 'as' => 'CFU esami (LA)'],
+        ['attribute' => 'estimated_cfu_thesis', 'as' => 'CFU tesi (LA)'],
+        ['attribute' => 'transcript_cfu_exams', 'as' => 'CFU esami (ToR)'],
+        ['attribute' => 'transcript_cfu_thesis', 'as' => 'CFU tesi (ToR)'],
+        ['attribute' => 'acknowledged_cfu_exams', 'as' => 'CFU esami (MRC)'],
+        ['attribute' => 'acknowledged_cfu_thesis', 'as' => 'CFU tesi (MRC)'],
+        ['attribute' => 'acknowledged_cfu_supernumerary', 'as' => 'CFU sovrannumerari (MRC)'],
+    ];
+
+    public function export($fields = null)
+    {
+        if (is_null($fields))
+            $fields = collect($this->exportables);
+        $exported = [];
+        foreach ($fields as $field) {
+            if (in_array($field['attribute'], $this->dates))
+                // FIXME formatting dates does not work
+                $value = $this[$field['attribute']]->format('d/m/Y');
+            else
+                $value = $this[$field['attribute']];
+            $exported = array_merge($exported, [$field['as'] => $value]);
+        }
+        return $exported;
+    }
+
+    public function scopeOutgoing($query, $value)
+    {
+        if ($value)
+            $operator = '<>';
+        else
+            $operator = '=';
+
+        return $query->where('university_branch_id', $operator, 1);
+    }
+
+    public function scopeIncoming($query, $value)
+    {
+        if ($value)
+            $operator = '=';
+        else
+            $operator = '<>';
+
+        return $query->where('university_branch_id', $operator, 1);
+    }
 
     public function semester()
     {

@@ -16,7 +16,8 @@
             label: {type: String, default: 'Text filter'},
             placeholder: {type: String},
             deletable: {type: Boolean, default: false},
-            name: {type: String, required: true}
+            name: {type: String, required: true},
+            queryScope: {type: Boolean, required: true}
         },
         data: function() {
             return {

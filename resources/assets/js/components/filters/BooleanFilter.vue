@@ -15,7 +15,8 @@
             activeText: {type: String, default: 'True'},
             inactiveText: {type: String, default: 'False'},
             deletable: {type: Boolean, default: false},
-            name: {type: String, required: true}
+            name: {type: String, required: true},
+            queryScope: {type: Boolean, required: true}
         },
         data: function() {
             return {

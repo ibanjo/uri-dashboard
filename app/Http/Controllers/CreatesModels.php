@@ -6,6 +6,7 @@ use App\Attachment;
 use App\BankAccount;
 use App\Country;
 use App\LearningAgreement;
+use App\Mobility;
 use App\Transcript;
 use App\MobilityAcknowledgement;
 use App\Register;
@@ -17,7 +18,6 @@ use Carbon\Carbon;
 
 trait CreatesModels
 {
-
     public function newCountry($data)
     {
         $country = new Country;
@@ -26,6 +26,19 @@ trait CreatesModels
         }
         $country->save();
         return $country;
+    }
+
+    public function newMobility($data)
+    {
+        $mobility = new Mobility;
+        foreach (array_keys($data) as $key) {
+            if (in_array($key, ['estimated_in', 'estimated_out']))
+                $mobility[$key] = Carbon::createFromFormat('d-m-Y', $data[$key]);
+            else
+                $mobility[$key] = $data[$key];
+        }
+        $mobility->save();
+        return $mobility;
     }
 
     public function newUniversityBranch($data)
@@ -134,7 +147,7 @@ trait CreatesModels
     {
         $class_name = 'App\\' . studly_case($data['document_type']);
         $former_doc = $class_name::where('mobility_id', $data['mobility_id'])->first();
-        if(!is_null($former_doc))
+        if (!is_null($former_doc))
             $class_name::destroy($former_doc->id);
 
         $document = new $class_name();

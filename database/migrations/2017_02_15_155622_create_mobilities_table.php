@@ -19,10 +19,13 @@ class CreateMobilitiesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            // FIXME temporary before full programmes table implementation
+            $table->string('programme_name');
+
             // Mobility person, status and location
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('mobility_status_id')->unsigned();
+            $table->integer('mobility_status_id')->unsigned()->default(1);
             $table->foreign('mobility_status_id')->references('id')->on('mobility_statuses');
 
             $table->integer('university_branch_id')->unsigned();

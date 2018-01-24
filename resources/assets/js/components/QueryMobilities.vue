@@ -9,7 +9,7 @@
                         :value="index"
                 />
             </el-select>
-            <el-button type="primary" plain @click="addFilter">
+            <el-button type="success" plain @click="addFilter">
                 <i class="fa fa-fw fa-plus"></i>
             </el-button>
         </el-form-item>
@@ -21,7 +21,7 @@
         </div>
 
         <el-form-item>
-            <el-button type="primary" @click="testQuery"><i class="fa fa-fw fa-download"></i> Esporta</el-button>
+            <el-button type="primary" @click="submitQuery"><i class="fa fa-fw fa-download"></i> Esporta</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -55,7 +55,8 @@
                 this.filters.splice(index, 1);
             },
             submitQuery: function () {
-                axios.post(this.action, {query: this.query, flags: this.flags})
+                let output = this.generateQuery();
+                axios.post(this.action, output)
                     .then(response => {
                         this.$message({
                             type: response.data.status,
@@ -70,18 +71,19 @@
                         this.$message.error(error.response.data);
                     });
             },
-            testQuery: function () {
-                // FIXME temporary. Now output is ok, just need to rewrite the backend to parse it
+            generateQuery: function () {
                 let output = [];
                 for (let prop in this.$refs) {
                     if (this.$refs.hasOwnProperty(prop)) {
                         output.push(Object.assign(
                             {}, this.$refs[prop][0].$data,
-                            {name: this.$refs[prop][0].name}
+                            {name: this.$refs[prop][0].name},
+                            {queryScope: this.$refs[prop][0].queryScope},
+                            {type: this.$refs[prop][0].$attrs.type},
                         ));
                     }
                 }
-                console.log(output);
+                return output;
             }
         }
     }

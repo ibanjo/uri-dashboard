@@ -9,7 +9,7 @@
         <el-main>
             <el-row>
                 <el-col :span="24">
-                    <h2>Consultazione ed esportazione Mobilità</h2>
+                    <h2>Esportazione Mobilità</h2>
                 </el-col>
             </el-row>
 
@@ -19,7 +19,7 @@
                         <h4>Parametri</h4>
                     </div>
                     <div class="panel-body">
-                        <query-mobilities action="{{ route('export.mobilities') }}"
+                        <query-mobilities action="{{ route('query.mobilities') }}"
                                           download-action="{{route('export.download', ['identifier' => 'identifier', 'name' => 'filename'])}}"
                                           file-name="export.xlsx" :available-filters="availableFilters"/>
                     </div>

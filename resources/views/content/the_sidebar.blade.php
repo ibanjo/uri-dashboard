@@ -34,7 +34,6 @@
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Inserimento dati</li>
                         <li><a href="{{ route('view.universities') }}"><i class="fa fa-fw fa-university"></i> Sedi universitarie</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Corsi di laurea</a></li>
                     </ul>
                 </li>
 
@@ -45,7 +44,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Esportazione dati</li>
-                        <li><a href="{{ route('export.mobilities.form') }}"><i class="fa fa-fw fa-plane"></i> Mobilità</a></li>
+                        <li><a href="{{ route('query.mobilities.form') }}"><i class="fa fa-fw fa-plane"></i> Mobilità</a></li>
                     </ul>
                 </li>
             @endif

@@ -20,23 +20,12 @@ class MobilityController extends Controller
     public function createNewMobility(Request $request)
     {
         $data = $request->all();
-        $mob = new Mobility;
-        $mob->user_id = $data['user_id'];
-        $mob->mobility_status_id = 1;
-        $mob->university_branch_id = $data['university_branch_id'];
-        $mob->semester_id = $data['semester_id'];
-        $mob->estimated_in = Carbon::createFromFormat('d-m-Y', $data['estimated_in']);
-        $mob->estimated_out = Carbon::createFromFormat('d-m-Y', $data['estimated_out']);
-        $mob->estimated_cfu_exams = $data['estimated_cfu_exams'];
-        $mob->estimated_cfu_thesis = $data['estimated_cfu_thesis'];
-        $mob->academic_year = $data['academic_year'];
-        $mob->granted = $data['granted'];
-
-        $mob->save();
+        $mobility = $this->newMobility($data);
 
         return response([
             'status' => 'success',
             'message' => 'Mobilità registrata con successo! Stiamo tornando alla pagina dell\'utente',
+            'mobility' => $mobility,
             'redirect' => route('view.user', ['id' => $data['user_id']])
         ], 200);
     }

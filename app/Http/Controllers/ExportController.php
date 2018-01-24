@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mobility;
 use App\User;
+use Carbon\Carbon;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
@@ -22,28 +23,60 @@ class ExportController extends Controller
 
     public function mobilitiesToExcel(Request $request)
     {
-        $data = $request->all();
-        $fields = $data['query'];
-        $flags = $data['flags'];
-        $mobilities = DB::table('mobilities')
-            ->when(!$flags['disable_incoming'], function ($query) use ($fields) {
-                if ($fields['incoming'])
-                    return $query->where('university_branch_id', 1);
-                else
-                    return $query->where('university_branch_id', '<>', 1);
-            })
-            ->when(!$flags['disable_academic_year'], function ($query) use ($fields) {
-                return $query->where('academic_year', $fields['academic_year']);
-            })->get();
+        $filters = $request->all();
+        $query = Mobility::query();
+        foreach ($filters as $filter) {
+            switch ($filter['type']) {
+                case 'BooleanFilter':
+                    if (!$filter['queryScope'])
+                        $query = $query->where($filter['name'], $filter['value']);
+                    else {
+                        $scope = $filter['name'];
+                        $query = $query->$scope($filter['value']);
+                    }
+                    break;
+                case 'TextFilter':
+                    if (!$filter['queryScope'])
+                        $query = $query->where($filter['name'], $filter['value']);
+                    else {
+                        $scope = $filter['name'];
+                        $query = $query->$scope($filter['value']);
+                    }
+                    break;
+                case 'DateFilter':
+                    if (!$filter['disable_min'] && !$filter['disable_max'])
+                        $query = $query
+                            ->where($filter['name'], '>', Carbon::createFromFormat('d-m-Y', $filter['date_min']))
+                            ->where($filter['name'], '<', Carbon::createFromFormat('d-m-Y', $filter['date_max']));
+                    else if ($filter['disable_min'])
+                        $query = $query
+                            ->where($filter['name'], '<', Carbon::createFromFormat('d-m-Y', $filter['date_max']));
+                    else if ($filter['disable_max'])
+                        $query = $query
+                            ->where($filter['name'], '>', Carbon::createFromFormat('d-m-Y', $filter['date_min']));
+                    break;
+                default:
+                    // TODO raise an exception or return a warning
+                    break;
+            }
+        }
+        $mobilities = $query->with(['user', 'university_branch'])->get();
 
+        $exported = [];
+        foreach ($mobilities as $mobility) {
+            $user = $mobility->user->export();
+            $branch = $mobility->university_branch->export();
+            $semester = $mobility->semester->export();
+            $mob = $mobility->export();
+            array_push($exported, array_merge($semester, $mob, $branch, $user));
+        }
 
-        $mobilities = json_decode(json_encode($mobilities), true);
-
+        //$mobilities = json_decode(json_encode($mobilities), true);
         $filename = str_random(10);
-        $excel = Excel::create($filename, function ($file) use ($mobilities) {
+        $excel = Excel::create($filename, function ($file) use ($exported) {
             $file->setTitle('Dati esportati');
-            $file->sheet('Mobility', function ($sheet) use ($mobilities) {
-                $sheet->fromModel($mobilities);
+            $file->sheet('Mobility', function ($sheet) use ($exported) {
+                $sheet->fromModel($exported);
             });
         })->store('xlsx');
 

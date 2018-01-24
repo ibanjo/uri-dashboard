@@ -93,6 +93,13 @@
                             </el-form-item>
                             <br>
 
+                            <el-form-item label="Progetto: ">
+                                <el-input v-model="mobilityBuffer.programme_name"
+                                          :disabled="!editMobility" @change="addModified('programme_name')">
+                                </el-input>
+                            </el-form-item>
+
+                            <br>
                             <el-form-item label="Learning agreement caricato: ">
                                 <div v-if="mobilityBuffer.learning_agreement === null">
                                     <i class="fa fa-fw fa-exclamation-triangle"></i>
