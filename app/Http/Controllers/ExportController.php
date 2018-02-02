@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mobility;
-use App\User;
+use App\MobilityStatus;
 use Carbon\Carbon;
-use DB;
 use Excel;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -15,8 +14,10 @@ class ExportController extends Controller
 {
     public function showExportMobilitiesForm()
     {
+        $available_filters = Mobility::$filters;
+        $available_filters[1]['options'] = MobilityStatus::all(); // FIXME ugly: find 'status' filter by name
         JavaScript::put([
-            'available_filters' => Mobility::$filters
+            'available_filters' => $available_filters
         ]);
         return View::make('query.mobilities', ['vueVM' => 'vue-query']);
     }
@@ -55,6 +56,12 @@ class ExportController extends Controller
                         $query = $query
                             ->where($filter['name'], '>', Carbon::createFromFormat('d-m-Y', $filter['date_min']));
                     break;
+
+                case 'MultipleOptionsFilter':
+                    $scope = $filter['name'];
+                    $query = $query->$scope($filter['value']); // TODO test the status filter
+                    break;
+
                 default:
                     // TODO raise an exception or return a warning
                     break;

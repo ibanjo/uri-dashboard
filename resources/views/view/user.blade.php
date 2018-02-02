@@ -29,21 +29,26 @@
                             </p>
                         </div>
                         <div v-if="has_mobilities" class="panel-body">
-                            <mobility-tracker
-                                    :mobility="mobility" :semesters="semesters"
-                                    :attachments="attachments"
-                                    :mobility-statuses="mobility_statuses"
-                                    :university-branches="university_branches"
-                                    abort-action="{{ route('mobility.abort') }}"
-                                    edit-action="{{ route('edit.mobility') }}"
-                                    edit-status-action="{{ route('edit.mobility.status') }}"
-                                    document-retrieve-action="{{ route('document.retrieve') }}"
-                                    document-delete-action="/document/delete"
-                                    document-upload-action="{{ route('document.upload') }}"
-                                    attachment-retrieve-action="{{ route('file.retrieve') }}"
-                                    attachment-delete-action="/file/delete"
-                                    attachment-upload-action="{{ route('file.upload') }}">
-                            </mobility-tracker>
+                            <el-tabs tab-position="top" type="border-tab">
+                                <el-tab-pane v-for="mobility in mobilities" :key="mobility.id"
+                                             :label="mobility.academic_year">
+                                    {{-- TODO tab label icon and color for closed/aborted mobilities --}}
+                                    <mobility-tracker
+                                            :mobility="mobility" :semesters="semesters"
+                                            :mobility-statuses="mobility_statuses"
+                                            :university-branches="university_branches"
+                                            abort-action="{{ route('mobility.abort') }}"
+                                            edit-action="{{ route('edit.mobility') }}"
+                                            edit-status-action="{{ route('edit.mobility.status') }}"
+                                            document-retrieve-action="{{ route('document.retrieve') }}"
+                                            document-delete-action="/document/delete"
+                                            document-upload-action="{{ route('document.upload') }}"
+                                            attachment-retrieve-action="{{ route('file.retrieve') }}"
+                                            attachment-delete-action="/file/delete"
+                                            attachment-upload-action="{{ route('file.upload') }}">
+                                    </mobility-tracker>
+                                </el-tab-pane>
+                            </el-tabs>
                         </div>
                     </div>
                 </el-col>

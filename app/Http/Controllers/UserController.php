@@ -38,20 +38,20 @@ class UserController extends Controller
     public function viewOne($id)
     {
         $user = User::find($id);
-        $active_mobility = $user->mobilities()
-            ->where('mobility_status_id', '<', 6)
-            ->with([
-                'semester',
-                'university_branch.country',
-                'learning_agreement',
-                'transcript',
-                'mobility_acknowledgement'])
+        $active_mobility = $user->active_mobilities()
             ->first();
 
-        if (!is_null($active_mobility))
-            $attachments = Attachment::where('mobility_id', $active_mobility->id)->get();
-        else
-            $attachments = null;
+        $mobilities = $user->mobilities()->with([
+            'semester',
+            'university_branch.country',
+            'learning_agreement',
+            'transcript',
+            'mobility_acknowledgement',
+            'attachments'])->get();
+
+        is_null($active_mobility) ?
+            $active_mobility_id = null :
+            $active_mobility_id = $active_mobility->id;
 
         JavaScript::put([
             'user' => User::with([
@@ -61,8 +61,8 @@ class UserController extends Controller
                 'role',
                 'degree_course.degree_course_type',
                 'bank_accounts'])->find($id),
-            'mobility' => $active_mobility,
-            'attachments' => $attachments,
+            'mobilities' => $mobilities,
+            'active_mobility_id' => $active_mobility_id,
             'mobility_statuses' => MobilityStatus::all(),
             'semesters' => Semester::all(),
             'university_branches' => UniversityBranch::all(),

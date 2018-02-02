@@ -75,6 +75,16 @@ class Mobility extends Model
             'inactiveText' => 'Incoming'
         ],
         [
+            'name' => 'status',
+            'queryScope' => true,
+            'label' => 'Stato mobilità',
+            'type' => 'MultipleOptionsFilter',
+            'options' => [], // MobilityStatus data grabbed by the controller
+            'titles' => ['Stati mobilità', 'Stati scelti'],
+            'optionKey' => 'id',
+            'optionLabel' => 'name'
+        ],
+        [
             'name' => 'granted',
             'queryScope' => false,
             'label' => 'Assegnatario/Idoneo',
@@ -184,6 +194,11 @@ class Mobility extends Model
             $operator = '<>';
 
         return $query->where('university_branch_id', $operator, 1);
+    }
+
+    public function scopeStatus($query, $value)
+    {
+        return $query->whereIn('mobility_status_id', $value);
     }
 
     public function semester()

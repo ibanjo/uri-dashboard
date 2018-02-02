@@ -30,9 +30,10 @@
     import DateFilter from "./filters/DateFilter";
     import TextFilter from "./filters/TextFilter";
     import BooleanFilter from "./filters/BooleanFilter";
+    import MultipleOptionsFilter from "./filters/MultipleOptionsFilter";
 
     export default {
-        components: {DateFilter, TextFilter, BooleanFilter},
+        components: {DateFilter, TextFilter, BooleanFilter, MultipleOptionsFilter},
         name: 'query-mobilities',
         props: {
             inline: {type: Boolean, default: false},
