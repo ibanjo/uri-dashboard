@@ -1,7 +1,6 @@
 @extends('layouts.sidebar')
 
 @section('the_sidebar')
-    {{-- FIXME the side color looks altered after first dropdown --}}
     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
         <ul class="nav sidebar-nav">
             <li class="sidebar-brand">

@@ -16,7 +16,7 @@
                 <el-col :span="24" v-if="ready">
                     <div class="panel" :class="{'panel-info': has_mobilities, 'panel-default': !has_mobilities}">
                         <div class="panel-heading">
-                            <div class="pull-right" v-if="!has_mobilities">
+                            <div class="pull-right">
                                 <el-button type="primary" @click="newMobilityVisible = true">
                                     <i class="fa fa-plus-circle"></i> Nuova
                                 </el-button>
@@ -29,9 +29,9 @@
                             </p>
                         </div>
                         <div v-if="has_mobilities" class="panel-body">
-                            <el-tabs tab-position="top" type="border-tab">
-                                <el-tab-pane v-for="mobility in mobilities" :key="mobility.id"
-                                             :label="mobility.academic_year">
+                            <el-tabs tab-position="top" type="card">
+                                <el-tab-pane v-for="mobility in mobilities" :key="mobility.id">
+                                    <span slot="label"><i class="fa fa-globe"></i> @{{ mobility.university_branch.erasmus_code + ' - ' + mobility.academic_year }}</span>
                                     {{-- TODO tab label icon and color for closed/aborted mobilities --}}
                                     <mobility-tracker
                                             :mobility="mobility" :semesters="semesters"

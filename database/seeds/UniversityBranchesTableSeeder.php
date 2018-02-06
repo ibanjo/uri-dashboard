@@ -19,7 +19,7 @@ class UniversityBranchesTableSeeder extends Seeder
             'name_eng' => 'Polytechnic University of Bari',
             'erasmus_code' => 'I BARI05',
             'country_id' => 1, // Italy
-            'max_outgoing' => 6, // FIXME only in this case this means "incoming"
+            'max_outgoing' => 6, // In this case only this means "incoming"
             'expiration_date' => Carbon::parse('2030-12-30'),
             'iad_levels' => json_encode([1, 2, 3]),
             'created_at' => Carbon::now(),

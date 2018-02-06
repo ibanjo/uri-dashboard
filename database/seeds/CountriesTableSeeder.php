@@ -12,7 +12,6 @@ class CountriesTableSeeder extends Seeder
      */
     public function run()
     {
-        // FIXME check travel and monthly grants
         $tab = 'countries';
         DB::table($tab)->insert([
             'name_ita' => 'Italia',

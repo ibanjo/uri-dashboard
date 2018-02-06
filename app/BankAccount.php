@@ -47,7 +47,6 @@ class BankAccount extends Model
      */
     public function user()
     {
-        // TODO this should become a many-to-many relationship
         return $this->belongsTo(User::class);
     }
 }

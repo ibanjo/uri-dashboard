@@ -68,7 +68,6 @@ class UserController extends Controller
             'university_branches' => UniversityBranch::all(),
             'countries' => Country::all()
         ]);
-        // FIXME attachments go under user.mobilities
         return View::make('view.user', ['user_id' => $id, 'vueVM' => 'vue-view-user']);
     }
 

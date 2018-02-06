@@ -23,5 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Department extends Model
 {
-    // TODO hasMany Users
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

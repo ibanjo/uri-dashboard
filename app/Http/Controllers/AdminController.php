@@ -35,7 +35,6 @@ class AdminController extends Controller
 
     public function viewUniversities()
     {
-        // TODO find a way to add accepted levels
         JavaScript::put([
             'countries' => Country::all(),
             'university_branches' => $branches = UniversityBranch::with(['country', 'contact_person'])->get(),

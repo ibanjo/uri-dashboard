@@ -11,8 +11,7 @@
             <form-wizard title="Registrazione nuovo utente" subtitle="Inserisci i tuoi dati" @on-complete="registerUser"
                          next-button-text="Avanti" back-button-text="Indietro" finish-button-text="Invia">
                 <tab-content title="Dati Anagrafici">
-                    <el-form :model="user.registry" :rules="rules.registry" label-width="200px">
-                        {{-- TODO profile picture upload and form validation --}}
+                    <el-form :model="user.registry" :rules="rules.registry" label-width="200px"
                         <el-form-item label="Nome" prop="name">
                             <el-input v-model="user.registry.name" placeholder="Nome"/>
                         </el-form-item>

@@ -42,7 +42,6 @@ class CreateUsersTable extends Migration
             $table->integer('candidate_role_id')->unsigned()->default(6);
             $table->foreign('candidate_role_id')->references('id')->on('roles');
 
-            //$table->string('degree_course'); // FIXME degree_course might be chosen from a fixed list
             $table->integer('degree_course_id')->unsigned();
             $table->foreign('degree_course_id')->references('id')->on('degree_courses');
 

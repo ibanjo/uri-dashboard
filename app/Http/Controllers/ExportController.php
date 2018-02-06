@@ -59,11 +59,10 @@ class ExportController extends Controller
 
                 case 'MultipleOptionsFilter':
                     $scope = $filter['name'];
-                    $query = $query->$scope($filter['value']); // TODO test the status filter
+                    $query = $query->$scope($filter['value']);
                     break;
 
                 default:
-                    // TODO raise an exception or return a warning
                     break;
             }
         }

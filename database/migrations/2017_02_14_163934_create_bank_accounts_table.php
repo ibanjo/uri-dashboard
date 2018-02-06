@@ -32,8 +32,7 @@ class CreateBankAccountsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             // Bank data
-            // TODO find a free API to validate bank branch and perhaps add bank_name and bank_branch fields
-            $table->string('iban')->unique();
+            $table->string('iban');
         });
     }
 
