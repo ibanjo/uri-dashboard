@@ -79,4 +79,9 @@ class UserController extends Controller
         $user->save();
         return (response(['status' => 'success', 'message' => 'Account principale correttamente modificato'], 200));
     }
+
+    public function editUser()
+    {
+        //
+    }
 }

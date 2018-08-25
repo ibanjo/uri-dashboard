@@ -97,6 +97,7 @@ Route::prefix('edit')->group(function () {
         Route::put('mobility', 'MobilityController@editMobility')->name('edit.mobility');
         Route::put('mobility/abort', 'MobilityController@abortMobility')->name('mobility.abort');
         Route::put('university', 'AdminController@editUniversity')->name('edit.university');
+        Route::put('user', 'UserController@editUser')->name('edit.user');
     });
 });
 

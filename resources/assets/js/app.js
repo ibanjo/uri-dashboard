@@ -54,7 +54,7 @@ window.Vue.component('query-mobilities', QueryMobilities);
 
 /**
  * Requiring Vue VMs
- * FIXME maybe a more elegant way to assign different VMs to each page could be found
+ * FIXME refactor everything to suit a single component-based vue VM
  */
 require('./vue/vue-home');
 require('./vue/vue-entry-user');
